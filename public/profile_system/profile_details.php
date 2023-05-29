@@ -17,7 +17,7 @@
 }
 .rheader {
     padding: 10px 10px 10px 10px !important;
-    display: inline-block;
+    display: block;
     margin-bottom: 10px;
 }
 </style>
