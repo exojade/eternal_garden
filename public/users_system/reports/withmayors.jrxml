@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="for_release" language="groovy" pageWidth="936" pageHeight="612" orientation="Landscape" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="db24d431-4eed-416c-8649-7a64c67508d8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT v.MTOP_NO, CONCAT(lastname,', ',firstname) as fullname, address, plate_no, make, chassis_no, motor_no, reg_no, DATE_FORMAT(mp_expiration_date,'%b %d %Y') as exp FROM vehicle v, operator o WHERE v.MTOP_NO = o.MTOP_NO AND mp_expiration_date >= DATE_FORMAT(NOW(),'%Y-12-31') AND status != 'DROP' ORDER BY v.MTOP_NO]]>
+	</queryString>
+	<field name="MTOP_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plate_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="make" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chassis_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="reg_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="exp" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="62">
+			<staticText>
+				<reportElement uuid="c81481d6-e454-4566-9dce-4dd08bd2b925" x="195" y="0" width="183" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LIST OF HAVE MAYOR'S PERMIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5e692bdc-1484-4f77-a4b3-8c962fef3738" x="194" y="16" width="186" height="15"/>
+				<textElement/>
+				<text><![CDATA[City Mayor's Office - Licensing Section]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="59837769-3d9a-4ff2-9f8f-d5a408bdf094" x="219" y="31" width="28" height="14"/>
+				<textElement/>
+				<text><![CDATA[as of  ]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="486838fd-de54-478d-84f7-eb7820794c85" x="246" y="31" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="3d4dd2f4-23fb-4f26-9b3b-dd2eb1761baf" x="0" y="0" width="42" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[MTOP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="747992b2-57ca-492c-a1d8-f617f06d688f" x="42" y="0" width="134" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="60832246-a305-445f-a0cf-58ba98118832" x="184" y="0" width="179" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0aeb08aa-a72d-43c5-871c-3b9a496851e3" x="435" y="1" width="47" height="20"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Plate No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fe9c17d6-c3b2-4743-8f04-bc3914cc6f47" x="371" y="0" width="60" height="20"/>
+				<textElement/>
+				<text><![CDATA[Make]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7e493188-32eb-4782-95a9-8475d73e8a7c" x="485" y="2" width="66" height="18"/>
+				<textElement/>
+				<text><![CDATA[MP Exp Date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement uuid="84cdf0b1-fde0-45c5-bd36-2f31b4f83e93" x="0" y="0" width="42" height="16"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MTOP_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="139e0b42-8e61-4fab-b9b2-e0d17bbc5920" x="42" y="0" width="134" height="16"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4e2578d1-4d27-4f66-a7f1-7285d069684b" x="184" y="0" width="179" height="16"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="52ec8e6d-5b7a-423d-9648-3477328a64fd" x="435" y="-1" width="47" height="16"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plate_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2d6ada14-42ee-4fc1-8120-947121f414c2" x="371" y="-1" width="60" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{make}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a63241dc-25fd-4247-9f47-8739caf43267" x="485" y="0" width="66" height="16"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{exp}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="29">
+			<textField>
+				<reportElement uuid="cd849abf-9732-423b-a991-4ce9655c0a46" x="466" y="9" width="56" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="bc459dac-2d03-40b0-83f7-4f3ffc93f6b5" x="522" y="9" width="29" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3a611149-98d8-4e8c-b682-57a4762e0d21" x="0" y="9" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

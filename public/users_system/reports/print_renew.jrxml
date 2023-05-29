@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Renew" language="groovy" pageWidth="612" pageHeight="936" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="41f408e5-441d-428c-974f-c81a80931e1c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="mtop_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT vehicle.MTOP_NO, CONCAT(firstname,' ',lastname) as  fullname , address, plate_no, make, chassis_no, motor_no, reg_no, route, status, released_date, expiration_date FROM vehicle JOIN operator ON vehicle.MTOP_NO = operator.MTOP_NO AND vehicle.MTOP_NO = $P{mtop_no}]]>
+	</queryString>
+	<field name="MTOP_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plate_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="make" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chassis_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="reg_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="route" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="released_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="expiration_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="316" splitType="Stretch">
+			<textField>
+				<reportElement x="451" y="48" width="100" height="16" uuid="f2b79b12-03e7-457d-b002-5bca34433cbb"/>
+				<textElement>
+					<font fontName="Tahoma" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MTOP_NO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="452" y="32" width="99" height="16" uuid="a5ad28ae-fb11-47ae-adfe-a4bcad01656d"/>
+				<textElement>
+					<font fontName="Tahoma" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="125" y="75" width="400" height="18" uuid="122c99ee-0b2e-4909-bfca-8caada668de1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="211" y="180" width="138" height="18" uuid="48faac02-8c52-4e7e-8d9b-2ef51357a3bb"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motor_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="200" width="138" height="18" uuid="18503ac0-78aa-43f5-8ac5-3a6ccace4b38"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chassis_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="240" width="138" height="18" uuid="9a9f49c2-5d44-4d02-887d-6e9c3909bfd6"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reg_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="220" width="138" height="18" uuid="10636f86-183c-4a9b-bb78-939131474e35"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plate_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="212" y="160" width="138" height="18" uuid="e319baa4-6d29-457f-8590-fffa16190d7b"/>
+				<textElement>
+					<font fontName="Tahoma" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{make}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="127" y="92" width="400" height="18" uuid="2c0c7615-106a-4ec2-aff1-79c7b55390ea"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="246" y="127" width="60" height="14" uuid="91fa692d-0f77-44f8-a367-43cd698a47ac"/>
+				<textFieldExpression><![CDATA[$F{route}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="449" y="127" width="17" height="14" uuid="dd62bdf8-0cc9-435b-b431-7baa57ea906a"/>
+				<text><![CDATA[1]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

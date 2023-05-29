@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="for_release" language="groovy" pageWidth="842" pageHeight="595" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="db24d431-4eed-416c-8649-7a64c67508d8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="from_date" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="to_date" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT MTOP_NO, CONCAT(firstname,' ',lastname) as fullname, plate_num, make, chassis_no, motor_no, IFNULL(DATE_FORMAT(ddate,'%b %d %Y'),'') as ddate, type, action FROM transaction_logs WHERE ddate >= $P{from_date} AND ddate <= $P{to_date} AND type = 'Dropping' ORDER BY ID]]>
+	</queryString>
+	<field name="MTOP_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plate_num" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="make" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chassis_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ddate" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="action" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="62">
+			<staticText>
+				<reportElement uuid="c81481d6-e454-4566-9dce-4dd08bd2b925" x="205" y="0" width="327" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LIST OF DROPPED MOTORIZED TRICYCLE OPERATOR'S PERMIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5e692bdc-1484-4f77-a4b3-8c962fef3738" x="302" y="16" width="186" height="15"/>
+				<textElement/>
+				<text><![CDATA[City Mayor's Office - Licensing Section]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c6948aac-377d-48fb-8cf6-63eb96472bfb" x="329" y="34" width="71" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{from_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="701190c2-09c4-4986-85c4-429311c5f095" x="431" y="33" width="58" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{to_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5833115a-9057-4ce6-a3c2-fa2af884d5cf" x="298" y="35" width="31" height="15"/>
+				<textElement/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="59907d8d-5c47-4e69-8051-c0c5ce6986e9" x="409" y="34" width="21" height="15"/>
+				<textElement/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="e3dc0d4a-837e-4be0-9b21-4619928390e2" x="3" y="2" width="52" height="20"/>
+				<textElement/>
+				<text><![CDATA[MTOP NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b2bbf68d-9e35-4e08-b10c-7b05481934a3" x="70" y="2" width="131" height="20"/>
+				<textElement/>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="565f0ee9-aff3-43a6-bcc2-c5f8058f387b" x="224" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Plate No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="478a857c-65e6-487e-bd66-048f6590b39b" x="344" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Make]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="491a935f-866a-46cb-b8db-df676c7e703a" x="462" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Chassis No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a5649768-c365-4535-be04-cdc6a00c0375" x="582" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Motor No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="31f77bfe-4da9-48a2-a814-dbdd20f8ad69" x="698" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e6af6ce5-3fe5-4581-89d6-c96936980dfc" x="3" y="-1" width="52" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{MTOP_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f1ead96f-5662-434a-bec3-eabc94d54126" x="70" y="-1" width="131" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="532c1814-67f7-415a-9e36-119c258f65e4" x="224" y="-1" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{plate_num}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="996bc949-0c65-4c22-b440-1772c2b14428" x="344" y="-1" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{make}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="24adacc8-812d-43f2-958d-0394b9685a0c" x="462" y="-1" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{chassis_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5428f277-452b-4b55-aec9-00f4483f32bc" x="582" y="-1" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{motor_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="56e08ada-056a-40b6-aebf-ff74de8fe0e8" x="698" y="-1" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ddate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="29">
+			<textField>
+				<reportElement uuid="cd849abf-9732-423b-a991-4ce9655c0a46" x="712" y="9" width="56" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="bc459dac-2d03-40b0-83f7-4f3ffc93f6b5" x="768" y="9" width="29" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3a611149-98d8-4e8c-b682-57a4762e0d21" x="0" y="9" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

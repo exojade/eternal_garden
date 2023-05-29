@@ -1,0 +1,14 @@
+[
+    {
+        "Name": "ADMINISTRATOR" 
+		},
+
+	{
+			"Name": "USER" 
+		},
+
+		{
+				"Name": "INTERVIEWER" 
+			}
+    
+]

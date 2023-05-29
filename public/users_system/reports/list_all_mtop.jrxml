@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="for_release" language="groovy" pageWidth="936" pageHeight="612" orientation="Landscape" columnWidth="864" leftMargin="36" rightMargin="36" topMargin="20" bottomMargin="20" uuid="db24d431-4eed-416c-8649-7a64c67508d8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="184"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT vehicle.MTOP_NO, IF(STRCMP(CONCAT(lastname,', ',firstname), ', '), CONCAT(lastname,', ',firstname) , ' ') as fullname, Gender , address, plate_no, make, chassis_no, motor_no, reg_no, IFNULL(DATE_FORMAT(released_date,'%b %d %Y'),'') as rel,  IFNULL(DATE_FORMAT(expiration_date,'%b %d %Y'),'') as exp FROM vehicle JOIN operator ON vehicle.MTOP_NO = operator.MTOP_NO ORDER BY vehicle.MTOP_NO]]>
+	</queryString>
+	<field name="MTOP_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plate_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="make" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chassis_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Gender" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="reg_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rel" class="java.lang.String"/>
+	<field name="exp" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="62">
+			<staticText>
+				<reportElement x="253" y="0" width="289" height="16" uuid="c81481d6-e454-4566-9dce-4dd08bd2b925"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LIST OF ALL MOTORIZED TRICYCLE OPERATOR'S PERMIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="16" width="186" height="15" uuid="5e692bdc-1484-4f77-a4b3-8c962fef3738"/>
+				<text><![CDATA[City Mayor's Office - Licensing Section]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="328" y="31" width="28" height="14" uuid="59837769-3d9a-4ff2-9f8f-d5a408bdf094"/>
+				<text><![CDATA[as of  ]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="354" y="31" width="100" height="14" uuid="486838fd-de54-478d-84f7-eb7820794c85"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="42" height="20" uuid="3d4dd2f4-23fb-4f26-9b3b-dd2eb1761baf"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[MTOP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="0" width="134" height="20" uuid="747992b2-57ca-492c-a1d8-f617f06d688f"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="182" y="0" width="179" height="20" uuid="60832246-a305-445f-a0cf-58ba98118832"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="1" width="64" height="20" uuid="0aeb08aa-a72d-43c5-871c-3b9a496851e3"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Plate No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="369" y="0" width="60" height="20" uuid="fe9c17d6-c3b2-4743-8f04-bc3914cc6f47"/>
+				<text><![CDATA[Make]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="791" y="2" width="66" height="18" uuid="7e493188-32eb-4782-95a9-8475d73e8a7c"/>
+				<text><![CDATA[Exp Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="509" y="2" width="71" height="18" uuid="80912e6d-00e5-4138-8ad9-333bd1d836e6"/>
+				<text><![CDATA[Motor No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="587" y="2" width="67" height="18" uuid="dc6d768e-d98b-4624-994d-895c10e21d06"/>
+				<text><![CDATA[Chassis No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="721" y="2" width="68" height="18" uuid="d8dceab5-b8fe-4bbd-845d-eaa20fd6c6db"/>
+				<text><![CDATA[Release Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="661" y="2" width="55" height="18" uuid="cd29d979-c2fc-4f2d-a92c-967b1ddea1ce"/>
+				<text><![CDATA[Reg No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="855" y="2" width="55" height="18" uuid="cd29d979-c2fc-4f2d-a92c-967b1ddea1ce"/>
+				<text><![CDATA[Gender]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="-1" width="42" height="15" uuid="84cdf0b1-fde0-45c5-bd36-2f31b4f83e93"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MTOP_NO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="42" y="-1" width="134" height="15" uuid="139e0b42-8e61-4fab-b9b2-e0d17bbc5920"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="182" y="-1" width="179" height="15" uuid="4e2578d1-4d27-4f66-a7f1-7285d069684b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="437" y="-1" width="64" height="15" uuid="52ec8e6d-5b7a-423d-9648-3477328a64fd"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plate_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="369" y="-1" width="60" height="15" uuid="2d6ada14-42ee-4fc1-8120-947121f414c2"/>
+				<textFieldExpression><![CDATA[$F{make}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="791" y="-1" width="66" height="15" uuid="a63241dc-25fd-4247-9f47-8739caf43267"/>
+				<textFieldExpression><![CDATA[$F{exp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="509" y="-1" width="71" height="15" uuid="09b27f2c-580a-4d78-bd56-67ace14d54d2"/>
+				<textFieldExpression><![CDATA[$F{motor_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="587" y="-1" width="67" height="15" uuid="7a2d1e55-69fb-4a8c-a243-44dbd98fd59f"/>
+				<textFieldExpression><![CDATA[$F{chassis_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="721" y="-1" width="68" height="15" uuid="df5a4f2b-058a-4197-b36c-8324a39f4b86"/>
+				<textFieldExpression><![CDATA[$F{rel}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="661" y="-1" width="55" height="15" uuid="a384259f-6616-4f9e-82fb-1dc6294715f7"/>
+				<textFieldExpression><![CDATA[$F{reg_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="855" y="-1" width="55" height="15" uuid="a384259f-6616-4f9e-82fb-1dc6294715f7"/>
+				<textFieldExpression><![CDATA[$F{Gender}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="29">
+			<textField>
+				<reportElement x="769" y="9" width="56" height="20" uuid="cd849abf-9732-423b-a991-4ce9655c0a46"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="824" y="9" width="29" height="20" uuid="bc459dac-2d03-40b0-83f7-4f3ffc93f6b5"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="9" width="100" height="20" uuid="3a611149-98d8-4e8c-b682-57a4762e0d21"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

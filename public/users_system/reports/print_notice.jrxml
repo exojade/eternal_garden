@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notice" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7620894f-bce4-4ee9-b234-1cff322cf159">
+	<property name="ireport.zoom" value="0.8467108950806659"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="240"/>
+	<parameter name="mtop_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT MTOP_NO, (SELECT city_admin from settings LIMIT 1 ) as city_ad,(SELECT city_admin_pos from settings LIMIT 1 ) as city_ad_pos, (SELECT head from settings LIMIT 1 ) as head1, (SELECT mayor from settings LIMIT 1 ) as mayor1, CONCAT(UCASE(MID(lastname,1,1)),LCASE(MID(lastname,2)),',') AS lastname, CONCAT(firstname,' ',lastname) as  fullname , address FROM  operator WHERE MTOP_NO = $P{mtop_no} LIMIT 1]]>
+	</queryString>
+	<field name="MTOP_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="city_ad" class="java.lang.String"/>
+	<field name="city_ad_pos" class="java.lang.String"/>
+	<field name="head1" class="java.lang.String"/>
+	<field name="mayor1" class="java.lang.String"/>
+	<field name="lastname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="380" y="158" width="122" height="18" uuid="5c530363-0ce1-47cc-a980-8588a7905a7a"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="43" y="203" width="291" height="16" uuid="b0d443f0-2e59-4ab4-9411-ef325a2ff70d"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}.trim()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="43" y="220" width="291" height="16" uuid="565e79f7-cb4e-4d0b-805f-5d71b59bd941"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="259" y="304" width="29" height="15" uuid="198c1f09-3755-4bc4-ad6b-ab17a65c9b38"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MTOP_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="121" y="267" width="100" height="15" uuid="130aa29b-069c-4c15-8cbd-10d47f831a52"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lastname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="481" width="279" height="20" uuid="0ed32b2e-8bb6-42a7-8f46-8c9584dec9ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mayor1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="259" y="572" width="280" height="20" uuid="7d87ffc5-c433-432a-9e80-149dd1abd637"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_ad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="43" y="267" width="84" height="15" uuid="32915cd0-0659-4045-aaa4-1e4b876766b4"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Dear  Mr. / Ms.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="182" y="78" width="176" height="20" uuid="2d41f323-69af-4863-aa6a-d77825eb6c1e"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Province of Davao del Norte]]></text>
+			</staticText>
+			<line>
+				<reportElement x="11" y="133" width="536" height="1" uuid="dce4c936-f41a-446a-835f-be89b9ee0231"/>
+			</line>
+			<staticText>
+				<reportElement x="184" y="92" width="176" height="20" uuid="9317c330-427d-4e62-bc6c-4130376c4492"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CITY OF PANABO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="182" y="65" width="176" height="20" uuid="2bc3fb8b-c5ac-4228-bc22-d091260758a8"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Republic of the Philippines]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="184" y="105" width="176" height="20" uuid="20b9b7a1-32e8-4cd3-bcca-6cc331207edc"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[oo-0-oo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="117" y="120" width="308" height="20" uuid="c87f39db-fa2a-4393-9de1-6e442018cfb0"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OFFICE OF THE CITY MAYOR-LICENSING SECTION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="291" width="461" height="141" uuid="7e8d0ed5-27d1-4323-81de-7948915b7446"/>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font size="11" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[          Records of the licensing Section reveals that you talled to renew your MOTORIZED TRICYCLE OPERATION PERMIT (MTOP) #             .
+
+          With this you are requested to renew the same within five (5) days upon receipt hereof, otherwise, your failure to do will nullify your present records and correspondingly your registration numbers will be awarded to new applicants on a First - Come - First Serve Basis, in accordance with the provision of Municipal Ordinance No. 33, series of 1999.
+
+          Anticipating to your Immediate action on this regard.]]></text>
+			</staticText>
+			<image>
+				<reportElement x="234" y="-7" width="71" height="73" uuid="2e6d1c1b-ee9e-41e5-9232-3b4e38bd985f"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="260" y="447" width="279" height="15" uuid="eec3040a-43e9-45f5-9ae0-1344580fec4d"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Very truly yours,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="259" y="500" width="280" height="15" uuid="3ea35097-88b7-41fa-8393-b616e101e0bb"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[City Mayor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="538" width="279" height="15" uuid="e8074186-547a-4979-bf4b-0821d12c1573"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[BY THE AUTHORITY OF THE MAYOR:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="259" y="591" width="280" height="15" uuid="b6bde5f7-2d3f-4dd6-8cc7-7bb846b96064"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_ad_pos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="42" y="642" width="218" height="64" uuid="0f98a565-4a4c-4d1c-9d69-5fb1966f106b"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Received by: __________________
+
+Date Received: ________________]]></text>
+			</staticText>
+			<line>
+				<reportElement x="437" y="304" width="65" height="1" uuid="ccf26ede-f8f2-4c95-aa18-456b5d964427"/>
+			</line>
+			<line>
+				<reportElement x="41" y="319" width="262" height="1" uuid="83c004b6-c21d-429f-9cac-843b2208439a"/>
+			</line>
+		</band>
+		<band height="50"/>
+	</detail>
+</jasperReport>

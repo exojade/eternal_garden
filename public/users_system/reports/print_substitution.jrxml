@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="print_substitution" language="groovy" pageWidth="612" pageHeight="936" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6858ae65-58d5-4212-80c3-3c26d20a069c">
+	<property name="ireport.zoom" value="1.0514816984441773"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="555"/>
+	<property name="ireport.callouts" value="##Fri Nov 08 10:48:05 CST 2013"/>
+	<parameter name="mtop_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="make" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year_model" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="motor_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="chassis_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT vehicle.MTOP_NO, concat(vehicle.MTOP_NO,'-',YEAR(curdate())) as mtop_year, (SELECT city_admin from settings LIMIT 1 ) as city_ad,(SELECT city_admin_pos from settings LIMIT 1 ) as city_ad_pos, (SELECT head from settings LIMIT 1 ) as head1, (SELECT head_pos from settings LIMIT 1 ) as head_pos,(SELECT head_office from settings LIMIT 1 ) as head_office ,(SELECT mayor from settings LIMIT 1 ) as mayor1, CONCAT(firstname,' ',lastname) as  fullname , address, plate_no, make, chassis_no, motor_no,
+vehicle.plate_no1, vehicle.make1, vehicle.motor_no1, vehicle.chassis_no1, vehicle.yearModel1,
+vehicle.plate_no, vehicle.make, vehicle.motor_no, vehicle.chassis_no, vehicle.yearModel,
+IFNULL(DATE_FORMAT(expiration_date,'%b %d %Y'),'') as exp, or_no, DATE_FORMAT(date_paid,'%b %d %Y') as paid, substitution_fee FROM vehicle, operator, fees WHERE vehicle.MTOP_NO = operator.MTOP_NO AND vehicle.MTOP_NO = fees.MTOP_NO AND vehicle.MTOP_NO = $P{mtop_no}  ORDER BY fees.ID DESC LIMIT 1]]>
+	</queryString>
+	<field name="MTOP_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mtop_year" class="java.lang.String"/>
+	<field name="city_ad" class="java.lang.String"/>
+	<field name="city_ad_pos" class="java.lang.String"/>
+	<field name="head1" class="java.lang.String"/>
+	<field name="head_pos" class="java.lang.String"/>
+	<field name="head_office" class="java.lang.String"/>
+	<field name="mayor1" class="java.lang.String"/>
+	<field name="fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plate_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="make" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chassis_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="exp" class="java.lang.String"/>
+	<field name="or_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="paid" class="java.lang.String"/>
+	<field name="substitution_fee" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="yearModel" class="java.lang.String"/>
+	<field name="make1" class="java.lang.String"/>
+	<field name="yearModel1" class="java.lang.String"/>
+	<field name="motor_no1" class="java.lang.String"/>
+	<field name="chassis_no1" class="java.lang.String"/>
+	<detail>
+		<band height="896" splitType="Stretch">
+			<textField>
+				<reportElement x="116" y="203" width="303" height="16" uuid="8b0ab2a3-8b8e-4425-a04a-ab4af9e5d214"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="235" width="100" height="16" uuid="1c3485a3-4c2f-4726-9d11-ad1f5b1c6b80"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="313" y="494" width="59" height="20" uuid="e372b736-3b91-4d01-aaf8-37fdaac976f7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{make}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="419" y="494" width="87" height="20" uuid="6c5f7194-fa58-4ffe-b460-c9ee885a019c"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motor_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="507" y="494" width="72" height="20" uuid="aee1d85d-eb39-4bd3-92f4-4fcbd95e1bf8"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chassis_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="359" y="601" width="245" height="20" uuid="488c0622-3ab8-48fd-b335-d7a6a27bd7de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="809" width="282" height="20" uuid="e268bae2-c1e0-47ec-8b7d-a4b75c773b33"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_ad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="829" width="282" height="20" uuid="f81d8a84-c041-4518-b263-36840de16648"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_ad_pos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="837" width="100" height="12" uuid="c5a88cf8-3dd8-43fc-9fdf-238aa3e7c020"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{substitution_fee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="143" y="848" width="100" height="12" uuid="0457649f-fd9f-463e-9b73-80f944363fe4"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{or_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="144" y="859" width="100" height="12" uuid="06156dd1-e59e-4213-b1f3-250d660eaa70"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="44" y="663" width="224" height="20" uuid="10cc288f-cd75-4ed8-a5b7-a2fc9996deed"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="720" width="282" height="20" uuid="7fcc9f74-c5d4-4d66-9780-dd391ccc0a28"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mayor1}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="267" y="4" width="71" height="73" uuid="d98384bd-209a-4490-848a-11b14d178b0b"/>
+				<imageExpression><![CDATA["logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="215" y="76" width="176" height="20" uuid="45f62df0-dc61-4fec-a378-54485a5b63c2"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Republic of the Philippines]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="91" width="176" height="20" uuid="3a1287bb-7432-46a2-ab5d-2eaa2836446f"/>
+				<textElement textAlignment="Center">
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Province of Davao del Norte]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="106" width="176" height="20" uuid="5525554f-3908-4a1a-ad9e-d72befb446ef"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CITY OF PANABO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="121" width="176" height="20" uuid="6de2e54c-eb08-48ac-9d21-8b31a0e4d9b3"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[oo-0-oo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="135" width="308" height="20" uuid="a7c920b5-b8bd-477a-a771-7281561a04aa"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OFFICE OF THE CITY MAYOR-LICENSNING SECTION]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="175" y="234" width="133" height="16" uuid="455c729d-147d-4f23-9c39-e4715d3991b5"/>
+				<textElement>
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mtop_year}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="217" width="304" height="16" uuid="4f4b7f02-1998-4cf2-b2bf-2886d4ae2369"/>
+				<textElement>
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="44" y="149" width="536" height="1" uuid="aec45d13-122f-4c3d-9a67-3e02b5403399"/>
+			</line>
+			<staticText>
+				<reportElement x="144" y="161" width="308" height="20" uuid="ebaf6f1d-0d5a-44d9-a19c-18a5c3efe60a"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[APPLICATION FOR SUBSTITUTION OF UNIT]]></text>
+			</staticText>
+			<line>
+				<reportElement x="29" y="459" width="550" height="1" uuid="1a84a947-8d6e-4bfb-a36b-97aea4ac2692"/>
+			</line>
+			<line>
+				<reportElement x="29" y="486" width="550" height="1" uuid="09c5842b-cc1b-4905-bedb-31c23256adaa"/>
+			</line>
+			<line>
+				<reportElement x="29" y="519" width="550" height="1" uuid="8792b0bb-9445-44be-82fb-6b86e7d9d0fe"/>
+			</line>
+			<line>
+				<reportElement x="28" y="420" width="1" height="99" uuid="2bd6e2e9-687b-4ec4-b9e9-34728e4453a9"/>
+			</line>
+			<line>
+				<reportElement x="29" y="420" width="550" height="1" uuid="3b58f129-d355-41b3-a2ef-c6bb34e819c4"/>
+			</line>
+			<line>
+				<reportElement x="579" y="420" width="1" height="99" uuid="94c2e387-7fb1-4fcb-9f4d-a4bf66a8358d"/>
+			</line>
+			<line>
+				<reportElement x="88" y="460" width="1" height="59" uuid="fb02af3d-1a47-47e6-82cf-9e01908874d5"/>
+			</line>
+			<line>
+				<reportElement x="135" y="459" width="1" height="59" uuid="09858fb5-d849-4df9-9ced-893d6d21673a"/>
+			</line>
+			<line>
+				<reportElement x="216" y="459" width="1" height="59" uuid="f03644b2-6348-41b5-8086-a16558963500"/>
+			</line>
+			<line>
+				<reportElement x="312" y="421" width="1" height="97" uuid="75adb279-b94a-4d78-8328-067ad0daa84a"/>
+			</line>
+			<line>
+				<reportElement x="370" y="459" width="1" height="59" uuid="cddc51fa-4396-4946-998d-1ca301803c37"/>
+			</line>
+			<line>
+				<reportElement x="418" y="460" width="1" height="59" uuid="4fdf2f95-3c90-43b2-b268-5498ce236a51"/>
+			</line>
+			<line>
+				<reportElement x="506" y="459" width="1" height="59" uuid="e170871d-2988-44e7-948b-b061f430112c"/>
+			</line>
+			<staticText>
+				<reportElement x="44" y="202" width="72" height="20" uuid="58877e90-1a3d-4564-9bc5-e466c1184a7e"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Operator:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="218" width="72" height="20" uuid="327df8cf-8de5-4a4e-9ef6-6b5efa343a9e"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Address:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="234" width="130" height="20" uuid="0895790e-9c47-43b8-92d6-c1c95c632f4c"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Franchise / MTOP No.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="234" width="119" height="20" uuid="c8ea55fc-0463-4dbe-97d6-d027b383e141"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MTOP VALID UNTIL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="268" width="130" height="20" uuid="c962548f-1255-4888-ac0e-468c4d9bee01"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Type of Ownership:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="103" y="288" width="288" height="65" uuid="ea5ff524-def6-4984-aad9-1eea11181776"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[(   )  Single Proprietorship
+(   )  Partnership
+(   )  Corporation
+(   )  Other: Specify]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="364" width="536" height="20" uuid="1d24de8d-54d7-4e13-a625-d7f6ca2d5e66"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[APPLICANT REQUEST AUTHORITY TO SUBSTITUTE UNIT AS DESCRIBED AS FOLLOWS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="555" width="536" height="20" uuid="cdddac2d-886d-4dc8-9683-3e1d3f653635"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[I hereby certify that all the information contained in this application are true and correct.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="144" y="529" width="308" height="20" uuid="8dcf5cc0-e24c-4768-8423-62075f0e02ef"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICATION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="359" y="620" width="245" height="20" uuid="38600f12-2e95-49f8-8086-bfd1883f1a10"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Applicant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="629" width="245" height="20" uuid="9837a9de-148e-4727-9249-fe48db780bbb"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Recommending Approval:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="44" y="680" width="245" height="40" uuid="f2b1c329-81d7-4c79-bb76-a7ce83908118"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head_pos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="44" y="695" width="245" height="40" uuid="f2b1c329-81d7-4c79-bb76-a7ce83908118"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head_office}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="313" y="680" width="241" height="20" uuid="89d392bd-152b-46d4-bcdf-e77585388c79"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Approved as requested for:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="738" width="282" height="20" uuid="0d5bacae-f45c-44b0-a70c-1f15fdd75e43"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[City Mayor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="774" width="241" height="20" uuid="7cfd470f-1a61-413c-b2cf-60bca28f407b"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[BY THE AUTHORITY OF THE MAYOR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="429" width="282" height="20" uuid="f537468e-e1f5-4edc-b812-a0ef0a580dcb"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIT WITHDRAWN / SUBSTITUTED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="312" y="429" width="267" height="20" uuid="65213622-f267-4b37-b02a-3ebdf5282c81"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIT TO BE REGISTERED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="460" width="60" height="26" uuid="d3591dad-c3a4-4595-8683-df7b6dbd4a9a"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MAKE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="88" y="460" width="47" height="27" uuid="66fc5539-fe7b-469b-be8a-21719ad6b019"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[YEAR
+MODEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="136" y="459" width="80" height="27" uuid="ed4973f9-a270-4e69-9ceb-e30c957f14c3"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MOTOR NO.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="219" y="459" width="93" height="27" uuid="e4754457-e337-441b-81ec-bbd541140464"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[CHASSIS NO.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="461" width="57" height="26" uuid="fd1de567-a71a-4ae7-9065-ac07cf2170a5"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MAKE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="460" width="47" height="27" uuid="bf50c1ce-435e-4437-b96f-e40ff275e285"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[YEAR
+MODEL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="419" y="461" width="87" height="27" uuid="8b1bd8a4-c755-4abf-aa76-2bcdcbda2024"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MOTOR NO.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="506" y="461" width="73" height="27" uuid="68839bc0-3565-472c-a15f-92023bb21093"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[CHASSIS NO.]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="371" y="494" width="46" height="20" uuid="8ea40fd5-8a27-4c02-ac66-2afe5d7e35a0"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{yearModel}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="32" y="494" width="57" height="20" uuid="4f748917-a08c-4cab-ae1e-2dc763f2b357"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{make1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="89" y="494" width="47" height="20" uuid="125839c5-1fa2-4dab-933c-7e5c1e261b35"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{yearModel1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="136" y="494" width="79" height="20" uuid="3258921b-315e-4cc8-bc93-e66312b56527"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{motor_no1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="219" y="494" width="93" height="20" uuid="e2bfa5ad-eeba-4e0c-807f-1affee3a8a57"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{chassis_no1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

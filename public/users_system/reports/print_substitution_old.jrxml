@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="print_substitution" language="groovy" pageWidth="612" pageHeight="936" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6858ae65-58d5-4212-80c3-3c26d20a069c">
+	<property name="ireport.zoom" value="1.5394743546921206"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.callouts" value="##Fri Nov 08 10:48:05 CST 2013"/>
+	<parameter name="mtop_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="make" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="year_model" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="motor_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="chassis_no" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT vehicle.MTOP_NO, concat(vehicle.MTOP_NO,'-',YEAR(curdate())) as mtop_year, (SELECT city_admin from settings LIMIT 1 ) as city_ad, (SELECT head from settings LIMIT 1 ) as head1, (SELECT mayor from settings LIMIT 1 ) as mayor1, CONCAT(firstname,' ',lastname) as  fullname , address, plate_no, make, chassis_no, motor_no, IFNULL(DATE_FORMAT(expiration_date,'%b %d %Y'),'') as exp, or_no, DATE_FORMAT(date_paid,'%b %d %Y') as paid, substitution_fee FROM vehicle, operator, fees WHERE vehicle.MTOP_NO = operator.MTOP_NO AND vehicle.MTOP_NO = fees.MTOP_NO AND vehicle.MTOP_NO = $P{mtop_no}  ORDER BY fees.ID DESC LIMIT 1]]>
+	</queryString>
+	<field name="MTOP_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="mtop_year" class="java.lang.String"/>
+	<field name="city_ad" class="java.lang.String"/>
+	<field name="head1" class="java.lang.String"/>
+	<field name="mayor1" class="java.lang.String"/>
+	<field name="fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plate_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="make" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chassis_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="exp" class="java.lang.String"/>
+	<field name="or_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="paid" class="java.lang.String"/>
+	<field name="substitution_fee" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="896" splitType="Stretch">
+			<image>
+				<reportElement uuid="193ea921-537d-4231-873c-febf4130eb7e" x="0" y="0" width="612" height="896"/>
+				<imageExpression><![CDATA["reports/form.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="455c729d-147d-4f23-9c39-e4715d3991b5" x="175" y="232" width="69" height="16"/>
+				<textElement>
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mtop_year}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4f4b7f02-1998-4cf2-b2bf-2886d4ae2369" x="119" y="217" width="304" height="16"/>
+				<textElement>
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8b0ab2a3-8b8e-4425-a04a-ab4af9e5d214" x="116" y="203" width="303" height="16"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1c3485a3-4c2f-4726-9d11-ad1f5b1c6b80" x="452" y="230" width="100" height="16"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e372b736-3b91-4d01-aaf8-37fdaac976f7" x="29" y="494" width="59" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{make}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6c5f7194-fa58-4ffe-b460-c9ee885a019c" x="138" y="494" width="77" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motor_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aee1d85d-eb39-4bd3-92f4-4fcbd95e1bf8" x="219" y="494" width="89" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chassis_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="488c0622-3ab8-48fd-b335-d7a6a27bd7de" x="359" y="601" width="245" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e268bae2-c1e0-47ec-8b7d-a4b75c773b33" x="308" y="809" width="282" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_ad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="f81d8a84-c041-4518-b263-36840de16648" x="354" y="824" width="193" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[City Administrator]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c5a88cf8-3dd8-43fc-9fdf-238aa3e7c020" x="143" y="837" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{substitution_fee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0457649f-fd9f-463e-9b73-80f944363fe4" x="143" y="848" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{or_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="06156dd1-e59e-4213-b1f3-250d660eaa70" x="144" y="859" width="100" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ddd72b37-6423-4756-ace6-0afc9a6ff448" x="317" y="494" width="52" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{make}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6774b659-f63c-43ca-9a3c-77d983b27b92" x="373" y="494" width="40" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{year_model}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="274fd5d8-ce65-415f-9818-f9c73d39ec92" x="423" y="494" width="78" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{motor_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="11d9b16b-0bf2-4b9b-b248-42a9b1c8cd4f" x="512" y="494" width="67" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{chassis_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="10cc288f-cd75-4ed8-a5b7-a2fc9996deed" x="44" y="663" width="224" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7fcc9f74-c5d4-4d66-9780-dd391ccc0a28" x="338" y="720" width="241" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mayor1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

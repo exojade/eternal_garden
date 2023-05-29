@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="print_dropping" language="groovy" pageWidth="612" pageHeight="936" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8c606d8f-d136-4d48-be44-56f0da542583">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="551"/>
+	<parameter name="dropping" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="transferee" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="address" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT vehicle.MTOP_NO, (SELECT city_admin from settings LIMIT 1 ) as city_ad, (SELECT city_admin_pos from settings LIMIT 1 ) as city_ad_pos, (SELECT head from settings LIMIT 1 ) as bpls_head,(SELECT head_pos from settings LIMIT 1 ) as head_pos, (SELECT head_office from settings LIMIT 1 ) as head_office, (SELECT mayor from settings LIMIT 1 ) as city_mayor, CONCAT(firstname,' ',lastname) as  fullname , address, plate_no, make, chassis_no, motor_no, reg_no, status, IFNULL(DATE_FORMAT(released_date,'%b %d %Y'),'') as rel, IFNULL(DATE_FORMAT(expiration_date,'%b %d %Y'),'') as exp, or_no, DATE_FORMAT(date_paid,'%b %d %Y') as paid, dropping_fee FROM vehicle, operator, fees WHERE vehicle.MTOP_NO = operator.MTOP_NO AND vehicle.MTOP_NO = fees.MTOP_NO AND vehicle.MTOP_NO= $P{dropping} ORDER BY fees.ID DESC LIMIT 1]]>
+	</queryString>
+	<field name="MTOP_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="city_ad" class="java.lang.String"/>
+	<field name="city_ad_pos" class="java.lang.String"/>
+	<field name="fullname" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="plate_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="make" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="chassis_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="motor_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="reg_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="status" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="rel" class="java.lang.String"/>
+	<field name="exp" class="java.lang.String"/>
+	<field name="or_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="paid" class="java.lang.String"/>
+	<field name="dropping_fee" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="city_mayor" class="java.lang.String"/>
+	<field name="bpls_head" class="java.lang.String"/>
+	<field name="head_pos" class="java.lang.String"/>
+	<field name="head_office" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="886" splitType="Stretch">
+			<textField>
+				<reportElement x="528" y="207" width="49" height="13" uuid="3d0c95c0-3e53-45e8-aea0-5cc077ecf335"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MTOP_NO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="114" y="207" width="248" height="15" uuid="f2ba2511-8ff0-4197-a865-f8337c84edc6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fullname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="220" width="247" height="15" uuid="a3a626a4-1205-4b5b-825b-265fd3257c6a"/>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="87" y="353" width="100" height="13" uuid="52c6e7b1-4af7-4ddd-b14c-f2a0ec4cc672"/>
+				<textFieldExpression><![CDATA[$F{exp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="91" y="296" width="70" height="20" uuid="40b8e02a-39cf-4dc5-a8a5-35719941503d"/>
+				<textElement textAlignment="Justified">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MTOP_NO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="296" width="70" height="20" uuid="8bff36cc-082a-4fde-91a6-2406342e8afd"/>
+				<textElement textAlignment="Justified">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plate_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="261" y="296" width="98" height="20" uuid="82c90f94-8710-4a37-ac51-ffca9a480886"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{make}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="370" y="296" width="83" height="20" uuid="afed2394-1e1f-4fc7-bc8b-bfdd4507228a"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motor_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="470" y="296" width="88" height="20" uuid="63375f94-0ab5-4ce0-99db-1cab8a2fcdfb"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chassis_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="394" y="342" width="95" height="13" uuid="215e252b-b4a2-44c1-9add-fcc8ec408fd2"/>
+				<textFieldExpression><![CDATA[$F{rel}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="158" y="516" width="30" height="13" uuid="cb2276a6-d04f-4362-960e-f0a3b7049fb6"/>
+				<textFieldExpression><![CDATA[new java.util.Date().format('dd').toString()]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="258" y="517" width="100" height="13" uuid="aabd445d-b4ba-488a-9e8f-3b3dc5c06a91"/>
+				<textFieldExpression><![CDATA[new java.util.Date().format('MMMMM YYYY').toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="590" width="206" height="20" uuid="b7939150-aca0-43cb-97fe-2949b367daf7"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{transferee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="283" y="615" width="206" height="20" uuid="df52dcbf-4977-4ee7-b533-a0f5601ae698"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="842" width="100" height="13" uuid="275a4d77-7124-459e-a7d0-d88738853b0d"/>
+				<textFieldExpression><![CDATA[$F{dropping_fee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="855" width="100" height="13" uuid="92ff262a-e263-4098-a989-684a4aeaab37"/>
+				<textFieldExpression><![CDATA[$F{or_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="868" width="100" height="13" uuid="573d9d7d-b4a9-4429-92a1-2b943f7c7d9e"/>
+				<textFieldExpression><![CDATA[$F{paid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="819" width="247" height="20" uuid="d9a5a85b-4d57-402d-a311-c6a68c55677a"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_ad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="839" width="142" height="20" uuid="60f0d080-9cae-4199-9c48-0b679ca2a5bd"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_ad_pos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="393" y="724" width="100" height="20" uuid="c36742f8-9268-4924-b7f2-b5d578409df9"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[City Mayor]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="325" y="706" width="247" height="20" uuid="6f3047c8-a02c-41c8-8ad0-a5a21c6152f6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city_mayor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="765" width="248" height="36" uuid="fcbd06f2-e5db-4c1c-8c08-ed876f124e4e"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head_pos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="780" width="248" height="36" uuid="fcbd06f2-e5db-4c1c-8c08-ed876f124e4e"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head_office}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="37" y="749" width="246" height="20" uuid="213ae8d0-a5a0-4dac-8dc9-1891fc4a7cde"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bpls_head}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
