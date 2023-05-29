@@ -9,6 +9,10 @@
 			render("public/transfer_system/transfer_list.php",[]);
 		}
 
+		if($_GET["action"] == "details"){
+			render("public/transfer_system/transfer_details.php",[]);
+		}
+
 		
 	}
 ?>

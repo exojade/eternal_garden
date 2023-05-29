@@ -44,12 +44,10 @@
               <ul class="products-list product-list-in-box">
                 <li class="item">
                   <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">MACARIO SAKAY
-                      <span class="pull-right">0 day left<br>
-                      <span class="btn btn-success" pull-right>awit</span>
-                    </span>
-                    </a>
-                    
+                    <a href="javascript:void(0)" class="product-title">MACARIO SAKAY</a>
+                    <span class="pull-right">0 day left<br>
+                    </span><br>
+                    <a href="transfer?action=details" class="pull-right btn btn-success btn-flat">VIEW</a>
                     <span class="product-description">
                           MT. GILIAD<br>#22
                         </span>
@@ -58,32 +56,36 @@
                 <!-- /.item -->
                 <li class="item">
                   <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">Bicycle
-                      <span class="label label-info pull-right">$700</span></a><br>
-                      <span class="label label-info pull-right">$700</span></a>
+                    <a href="javascript:void(0)" class="product-title">BERNARDO CARPIO</a>
+                    <span class="pull-right">2 day left<br>
+                    </span><br>
+                    <a href="transfer?action=details" class="pull-right btn btn-success btn-flat">VIEW</a>
                     <span class="product-description">
-                          26" Mongoose Dolomite Men's 7-speed, Navy Blue.
+                          MT. GILIAD<br>#89
                         </span>
                   </div>
                 </li>
                 <!-- /.item -->
                 <li class="item">
-               
                   <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">Xbox One <span class="label label-danger pull-right">$350</span></a>
+                    <a href="javascript:void(0)" class="product-title">GREGORIO DEL PILAR</a>
+                    <span class="pull-right">15 day left<br>
+                    </span><br>
+                    <a href="transfer?action=details" class="pull-right btn btn-success btn-flat">VIEW</a>
                     <span class="product-description">
-                          Xbox One Console Bundle with Halo Master Chief Collection.
+                          MT. MAYON<br>#12
                         </span>
                   </div>
                 </li>
                 <!-- /.item -->
                 <li class="item">
-                 
                   <div class="product-info">
-                    <a href="javascript:void(0)" class="product-title">PlayStation 4
-                      <span class="label label-success pull-right">$399</span></a>
+                    <a href="javascript:void(0)" class="product-title">HENERAL LUNA</a>
+                    <span class="pull-right">30 day left<br>
+                    </span><br>
+                    <a href="transfer?action=details" class="pull-right btn btn-success btn-flat">VIEW</a>
                     <span class="product-description">
-                          PlayStation 4 500GB Console (PS4)
+                          MT. APO<br>#45
                         </span>
                   </div>
                 </li>
