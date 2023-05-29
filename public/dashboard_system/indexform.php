@@ -202,7 +202,7 @@ function find_deceased() {
 			  console.log(data[i]);
 			  $('.results-data').after('\
 			  <tr class="rowings">\
-			  <td><a target="_blank" href="profile?action=details&id='+data[i].slot_id+'" class="btn btn-primary btn-flat btn-block">Details</a></td>\
+			  <td><a href="profile?action=details&id='+data[i].slot_id+'" class="btn btn-primary btn-flat btn-block">Details</a></td>\
 			  <td>'+data[i].deceased_name+'</td>\
 			  <td>'+data[i].deceased_date_death+'</td>\
 			  <td>'+data[i].location+'</td>\

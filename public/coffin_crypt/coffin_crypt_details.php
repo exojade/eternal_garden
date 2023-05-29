@@ -138,7 +138,7 @@
 
                       <!-- <td><a data-id="<?php echo($crypt_slots[$x]["slot_id"]); ?>" data-toggle="modal" data-target="#modal_add_client" href="#" class="btn btn-primary btn-block btn-flat open_modal"><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td> -->
                     <?php elseif($crypt_slots[$x]["active_status"] == "OCCUPIED"): ?>
-                      <td><a target="_blank" href="profile?action=details&id=<?php echo($crypt_slots[$x]["slot_id"]); ?>" href="#" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
+                      <td><a href="profile?action=details&id=<?php echo($crypt_slots[$x]["slot_id"]); ?>" href="#" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
                     <?php endif; ?>
                     <?php $x++; ?>
                   <?php endfor; ?>

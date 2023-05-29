@@ -72,7 +72,7 @@
                 </div>
               </div>
             </div>
-            <a href="profile?action=details&id=<?php echo($p["slot_id"]); ?>" target="_blank" class="btn btn-block btn-primary">Open Crypt Details</a>
+            <a href="profile?action=details&id=<?php echo($p["slot_id"]); ?>" class="btn btn-block btn-primary">Open Crypt Details</a>
 
               </div>
               <div class="modal-footer">

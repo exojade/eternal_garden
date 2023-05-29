@@ -82,7 +82,7 @@ endforeach;
         <div class="box box-widget widget-user">
             <div class="widget-user-header bg-yellow-active">
               <h3 class="widget-user-username"><?php echo($m["crypt_name"]); ?></h3>
-              <h5 class="widget-user-desc">Bone Crypt</h5>
+              <h5 class="widget-user-desc">Mausoleum</h5>
             </div>
             <div class="widget-user-image">
               <img  src="resources/crypt_building.png" alt="User Avatar">
