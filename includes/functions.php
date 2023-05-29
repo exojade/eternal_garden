@@ -147,10 +147,10 @@
                 {
                     // connect to database
                     $handle = new PDO("mysql:dbname=" . DATABASE_ETRACS . ";host=" . SERVER_ETRACS, USERNAME_ETRACS, PASSWORD_ETRACS);
-                    $handle->exec("set names utf8");
-                    $handle->exec("set character_set_results='utf8'");
-                    $handle->exec("set collation_connection='utf8'");
-                    $handle->exec("set character_set_client='utf8'");
+                    // $handle->exec("set names utf8");
+                    // $handle->exec("set character_set_results='utf8'");
+                    // $handle->exec("set collation_connection='utf8'");
+                    // $handle->exec("set character_set_client='utf8'");
                     // ensure that PDO::prepare returns false when passed invalid SQL
                     $handle->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); 
                 }
