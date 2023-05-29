@@ -44,6 +44,9 @@
 
 				else if ($request == 'lawn')
 					require 'public/lawn_lots/lawn.php';
+
+				else if ($request == 'transfer')
+					require 'public/transfer_system/transfer.php';
 				else if ($request == 'logout')
 					require 'logout.php';
 

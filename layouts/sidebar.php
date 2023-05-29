@@ -32,6 +32,11 @@
             <li><a href="schedule"><i class="fa fa-calendar"></i> <span>Schedule</span></a></li>
 
           <?php endif; ?>
+
+          <li><a href="transfer?action=list"><i class="fa fa-bell"></i> <span>Notice to Transfer</span>
+            <span class="pull-right-container">
+              <span class="label label-danger pull-right">5</span>
+            </span></a></li>
         <!-- <li class="header">SETTINGS</li>
           <li><a href="index"><i class="fa fa-database"></i> <span>Requirements</span></a></li>
           <li><a href="index"><i class="fa fa-bolt"></i> <span>Services</span></a></li>
