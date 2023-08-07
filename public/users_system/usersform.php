@@ -40,8 +40,8 @@
 				<tr>
                   <td><?php echo($u["username"]); ?></td>
                   <td><?php echo($u["username"]); ?></td>
-                  <td><?php echo($u["role"]); ?></td>
                   <td><?php echo($u["fullname"]); ?></td>
+                  <td><?php echo($u["role"]); ?></td>
 				</tr>
 				<?php endforeach; ?>
               </tbody>

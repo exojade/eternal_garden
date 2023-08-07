@@ -230,14 +230,7 @@ input[type=text] {
               <br>
               <br>
             <button disabled class="btn btn-primary btn-flat" type="submit">Submit</button>
-
             </form>
-
-
-
-
-
-              
             </div>
             <!-- /.box-body -->
           </div>
