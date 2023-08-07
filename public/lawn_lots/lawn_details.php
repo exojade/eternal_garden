@@ -178,14 +178,23 @@
                     //      return $result;
                     //  }
                     foreach($result as $row){
+
+                     
+
+
                             $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
-                                echo '"button": "<a target=\'_blank\' href=\'lawn?action=new&id='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
+                                echo '"button": "<a target=\'_blank\' href=\'lawn?action=slot_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 echo '"Grave No.": "'.$row['slot_number'].'",';
                                 echo '"Name": "'."Empty".'",'; 
                                 echo '"Birth": "'."Empty".'",'; 
                                 echo '"Death": "'."Empty".'",'; 
                                 echo '"Visibility": "-",'; 
+                                if():
+
+                                else:
+
+                                endif;
                                 echo '"Status": "VACANT",';
                                 echo '"Photos": "'."Empty".'",';  
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
@@ -345,7 +354,7 @@
 
             function style_Marker_3_0(feature) {
                 switch(String(feature.properties['Status'])) {
-                    case 'occupied1':
+                    case 'OCCUPIED':
                         return {
                     pane: 'pane_Marker_3',
                     radius: 8.0,

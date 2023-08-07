@@ -1,20 +1,15 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
 <link rel="stylesheet" href="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css">
-
 <style>
-
-
 input[type=text] {
     text-transform: uppercase;
 }
-
 .rheader {
     padding: 10px 10px 10px 10px !important;
     display: inline-block;
     margin-bottom: 10px;
 }
-
 .checkbox{
 
                       /* If you want to implement it in very old browser-versions */
@@ -29,11 +24,6 @@ input[type=text] {
 }
 
 </style>
-
-
-
-
-<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
   <section class="content-header">
