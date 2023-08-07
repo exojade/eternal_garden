@@ -30,9 +30,7 @@
 				{
 					apologize("Sorry, that username has already been taken!");
 				}
-				query("update crypt_slot set occupied_by = ? where slot_id = ?", $profile_id, $_POST["slot_number"]);
-
-
+				query("update crypt_slot set occupied_by = ?, active_status = 'OCCUPIED' where slot_id = ?", $profile_id, $_POST["slot_number"]);
 				$res_arr = [
 					"result" => "success",
 					"title" => "Success",
@@ -41,11 +39,7 @@
 					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 					];
 					echo json_encode($res_arr); exit();
-
 		elseif($_POST["action"] == "add_deceased"):
-			// dump($_POST);
-
-
 			$datetime1 = new DateTime($_POST["birthdate"]);
 			$datetime2 = new DateTime($_POST["date_of_death"]);
 			$interval = $datetime1->diff($datetime2);

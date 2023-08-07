@@ -153,6 +153,14 @@
 
 
 <?php
+
+$deceased_profile = query("select * from deceased_profile");
+$Deceased = [];
+foreach($deceased_profile as $d):
+    $Deceased[$d["slot_number"]][$d["deceased_id"]] = $d;
+endforeach;
+
+
             if($_GET["filter"] == "ALL"){
               $result = query("select * from crypt_slot where crypt_id = ?", $_GET["id"]);
             }
@@ -179,23 +187,29 @@
                     //  }
                     foreach($result as $row){
 
-                     
+                        // if(isset($Deceased[$row["slot_number"]])):
+                        //     $deceased = $Deceased[$row["slot_number"]];
+                        //     foreach($deceased)
+                        // else:
+
+                        // endif;
 
 
-                            $trim = str_replace('""', '', $row['coordinates']);
+                                $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
                                 echo '"button": "<a target=\'_blank\' href=\'lawn?action=slot_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 echo '"Grave No.": "'.$row['slot_number'].'",';
-                                echo '"Name": "'."Empty".'",'; 
                                 echo '"Birth": "'."Empty".'",'; 
                                 echo '"Death": "'."Empty".'",'; 
                                 echo '"Visibility": "-",'; 
-                                // if():
-
-                                // else:
-
-                                // endif;
-                                echo '"Status": "VACANT",';
+                                if($row["active_status"] == "OCCUPIED"):
+                                    echo '"Status": "OCCUPIED",';
+                                    echo '"Name": "'."Empty".'",'; 
+                                else:
+                                    echo '"Status": "VACANT",';
+                                    echo '"Name": "'."Empty".'",'; 
+                                endif;
+                                
                                 echo '"Photos": "'."Empty".'",';  
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
@@ -359,7 +373,7 @@
                     pane: 'pane_Marker_3',
                     radius: 8.0,
                     opacity: 1,
-                    color: 'rgba(61,128,53,1.0)',
+                    color: 'rgba(0,0,0,1.0)',
                     dashArray: '',
                     lineCap: 'butt',
                     lineJoin: 'miter',
@@ -369,7 +383,7 @@
                     // fillColor: 'rgba(251,124,92,1.0)',
                     // fillColor: '#3695E7',
                     // fillColor: '#4e73df',
-                    fillColor: '#858796',
+                    fillColor: '#E73F32',
                     interactive: true,
                 }
                         break;
