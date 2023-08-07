@@ -190,11 +190,11 @@
                                 echo '"Birth": "'."Empty".'",'; 
                                 echo '"Death": "'."Empty".'",'; 
                                 echo '"Visibility": "-",'; 
-                                if():
+                                // if():
 
-                                else:
+                                // else:
 
-                                endif;
+                                // endif;
                                 echo '"Status": "VACANT",';
                                 echo '"Photos": "'."Empty".'",';  
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
