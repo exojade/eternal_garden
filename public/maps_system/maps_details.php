@@ -77,8 +77,8 @@
     <section class="content">
 
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" >
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalLabel">Point Information</h5>
@@ -92,8 +92,6 @@
     </div>
   </div>
 </div>
-
-
 <div class="modal fade" id="assignCrypt_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -117,7 +115,6 @@
             <?php endforeach; ?>
         </select>
       </div>
-
       <button type="submit" class="btn btn-primary btn-flat">Submit</button>
         <!-- Point information will be displayed here -->
     </form>
@@ -125,9 +122,7 @@
     </div>
   </div>
 </div>
-
     <div class="row">
-    <!-- <div id="popup-content" style="display: none;"></div> -->
                     <div class="col-sm-6">
                     <h3>Legend:</h3>
                         <p><i class="fa fa-square text-vacant"></i> Vacant</p>
@@ -136,7 +131,6 @@
                         <p><i class="fa fa-square text-mausoleum"></i> Mausoleum</p>
                         <p><i class="fa fa-square text-bone"></i> Bone Crypt</p>
                         <p><i class="fa fa-square text-no_slot"></i> No Slot</p>
-                        
                     </div>
                     <div class="col-sm-6">
                       <form class="generic_form" data-url="maps">
@@ -160,16 +154,13 @@
                       </form>
                     </div>
                 </div>
-
     <div id="map" style="border: 1px solid black; width: 99%; height: 600px;">
                                 <div id="loading">
                                     <img id="loading-image" class="mx-auto" src="gravekeeper/Preloader_3.gif" alt="Loading..." />
                                 </div>
                             </div>
     </section>
-    <!-- /.content -->
   </div>
-  
   <?php 
     require("layouts/footer.php");
   ?>
