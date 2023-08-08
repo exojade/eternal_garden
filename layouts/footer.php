@@ -240,12 +240,15 @@
 
 
   $('.generic_form_trigger').submit(function(e) {
+
+
+    var form = $(this)[0];
+    var formData = new FormData(form);
+      var promptmessage = 'This form will be submitted. Are you sure you want to continue?';
+      var prompttitle = 'Data submission';
       e.preventDefault();
       var url = $(this).data('url');
-   
-        var promptmessage = 'This form will be submitted. Are you sure you want to continue?';
-        var prompttitle = 'Data submission';
-        e.preventDefault();
+      
         swal({
             title: prompttitle,
             text: promptmessage,
@@ -259,13 +262,14 @@
             $.ajax({
                 type: 'post',
                 url: url,
-                data: $(this).serialize(),
+                processData: false,
+                contentType: false,
+                data: formData,
                 success: function (results) {
                 var o = jQuery.parseJSON(results);
                 console.log(o);
                 if(o.result === "success") {
                     swal.close();
-                 
                     swal({title: "Submit success",
                     text: o.message,
                     type:"success"})

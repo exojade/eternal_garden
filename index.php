@@ -30,6 +30,9 @@
 				else if ($request == 'profile')
 					require 'public/profile_system/profile.php';
 
+				else if ($request == 'maps')
+					require 'public/maps_system/maps.php';
+
 
 				else if ($request == 'coffin_crypt')
 					require 'public/coffin_crypt/coffin_crypt.php';

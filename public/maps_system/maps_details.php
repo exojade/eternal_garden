@@ -14,17 +14,24 @@
 <link rel="stylesheet" href="gravekeeper/assets/css/home.css">
 
 <style>
-.text-occupied2 {
-    color: rgb(128, 45, 45)!important;
-}.text-occupied3 {
-    color: rgb(24, 22, 22)!important;
+.text-bone {
+    color: #D33724!important;
+}.text-coffin {
+    color: #00A7D0!important;
 }
 .text-vacant {
     color: #1cc88a!important;
 }
-.text-occupied1 {
-    color: #858796!important;
+.text-no_slot {
+    color: #000!important;
 }
+.text-occupied {
+    color: #C57B57!important;
+}
+.text-mausoleum {
+    color: #F7DBA7!important;
+}
+
 
     #loading {
     position: static;
@@ -64,7 +71,7 @@
 
   <section class="content-header">
       <h1>
-        Lawn Lots
+        Map Details
       </h1>
     </section>
     <section class="content">
@@ -86,17 +93,53 @@
   </div>
 </div>
 
+
+<div class="modal fade" id="assignCrypt_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Assign Crypt</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+      <form class="generic_form" data-url="maps">
+      <input type="hidden" name="action" value="assign_crypt">
+      <input type="hidden" name="slot_id" id="slot_id">
+      <?php $crypts = query("select * from crypt_list where crypt_type != 'LAWN' and coordinates is null or coordinates = ''"); ?>
+
+      <div class="form-group">
+        <label>Select Crypt</label>
+        <select class="form-control" name="crypt">
+            <?php foreach($crypts as $c): ?>
+                <option value="<?php echo($c["crypt_id"]); ?>"><?php echo($c["crypt_name"] . " | " . $c["crypt_type"]); ?></option>
+            <?php endforeach; ?>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-flat">Submit</button>
+        <!-- Point information will be displayed here -->
+    </form>
+      </div>
+    </div>
+  </div>
+</div>
+
     <div class="row">
     <!-- <div id="popup-content" style="display: none;"></div> -->
                     <div class="col-sm-6">
                     <h3>Legend:</h3>
                         <p><i class="fa fa-square text-vacant"></i> Vacant</p>
-                        <p><i class="fa fa-square text-occupied1"></i> Occupied by 1 person</p>
-                        <p><i class="fa fa-square text-occupied2"></i> Occupied by 2 person</p>
-                        <p><i class="fa fa-square text-occupied3"></i> Occupied by 3 person</p>
+                        <p><i class="fa fa-square text-occupied"></i> Occupied</p>
+                        <p><i class="fa fa-square text-coffin"></i> Coffin Crypt</p>
+                        <p><i class="fa fa-square text-mausoleum"></i> Mausoleum</p>
+                        <p><i class="fa fa-square text-bone"></i> Bone Crypt</p>
+                        <p><i class="fa fa-square text-no_slot"></i> No Slot</p>
+                        
                     </div>
                     <div class="col-sm-6">
-                      <form class="generic_form" data-url="lawn">
+                      <form class="generic_form" data-url="maps">
                         <input type="hidden" name="action" value="filter_lawn">
                         <input type="hidden" name="id" value="<?php echo($_GET["id"]); ?>">
                         <label>Filter</label>
@@ -114,7 +157,6 @@
                            <option></option>
                         </select>
                         <button class="btn btn-primary" type="submit">Filter</button>
-
                       </form>
                     </div>
                 </div>
@@ -171,12 +213,6 @@
 
 <?php
 
-$deceased_profile = query("select * from deceased_profile");
-$Deceased = [];
-foreach($deceased_profile as $d):
-    $Deceased[$d["slot_number"]][$d["deceased_id"]] = $d;
-endforeach;
-
 
 
 
@@ -186,16 +222,16 @@ endforeach;
               $result = query("select slot.*,client.client_name from crypt_slot slot
                                 left join profile_list client
                                 on client.slot_number = slot.slot_id
-                                where crypt_id = ?", $_GET["id"]);
+                                where crypt_slot_type = 'LAWN'");
             }
             else{
               $result = query("select slot.*,client.client_name from crypt_slot slot
               left join profile_list client
               on client.slot_number = slot.slot_id
-              where crypt_id = ?
-              and lawn_type = ?", $_GET["id"], $_GET["filter"]);
+              where crypt_slot_type = 'LAWN'
+              and lawn_type = ?", $_GET["filter"]);
             }
-           
+        //    dump($result);
             
         ?>
         <script>
@@ -205,14 +241,7 @@ endforeach;
             "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
             "features": [
                 <?php
-                    //  function format_interval(DateInterval $interval) {
-                    //      $result = "";
-                    //      if ($interval->y) { $result .= $interval->format("%y years"); }
-                    //      if ($interval->m) { $result .= $interval->format("%m months"); }
-                    //      if ($interval->d) { $result .= $interval->format("%d days"); }
-
-                    //      return $result;
-                    //  }
+              
                     foreach($result as $row){
                         if(isset($Deceased[$row["slot_id"]])):
                             $deceased = $Deceased[$row["slot_id"]];
@@ -248,13 +277,53 @@ endforeach;
                                 echo '"slot_number": "'.$row['slot_id'].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
-
                         endif;
-
-
-                                
-                        
                     }
+
+                    foreach($mausoleum as $row):
+                        if($row["coordinates"] != ""):
+                            $trim = str_replace('""', '', $row['coordinates']);
+                                echo '{ "type": "Feature", "properties": { ';
+                                echo '"Status": "MAUSOLEUM",';
+                                echo '"Name": "'.$row["crypt_name"].'",'; 
+                                echo '"slot_number": "'.$row['crypt_id'].'",';
+                                echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                        endif;
+                    endforeach;
+                    foreach($bone as $row):
+                        if($row["coordinates"] != ""):
+                        $trim = str_replace('""', '', $row['coordinates']);
+                            echo '{ "type": "Feature", "properties": { ';
+                            echo '"Status": "BONE",';
+                            echo '"Name": "'.$row["crypt_name"].'",'; 
+                            echo '"slot_number": "'.$row['crypt_id'].'",';
+                            echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                            echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                        endif;
+                    endforeach;
+                    foreach($coffin as $row):
+                        if($row["coordinates"] != ""):
+                        $trim = str_replace('""', '', $row['coordinates']);
+                            echo '{ "type": "Feature", "properties": { ';
+                            echo '"Status": "COFFIN",';
+                            echo '"Name": "'.$row["crypt_name"].'",'; 
+                            echo '"slot_number": "'.$row['crypt_id'].'",';
+                            echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                            echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                        endif;
+                    endforeach;
+                    foreach($no_slot as $row):
+                        if($row["coordinates"] != ""):
+                        $trim = str_replace('""', '', $row['coordinates']);
+                            echo '{ "type": "Feature", "properties": { ';
+                            echo '"Status": "NO_SLOT",';
+                            echo '"Name": "NO SLOT",'; 
+                            echo '"slot_number": "'.$row['slot_id'].'",';
+                            echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_id'].'" },'; 
+                            echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                        endif;
+                    endforeach;
                 ?>
             ]
             }
@@ -384,7 +453,7 @@ endforeach;
                     pane: 'pane_Marker_3',
                     radius: 8.0,
                     opacity: 1,
-                    color: 'rgba(0,0,0,1.0)',
+                    color: '#C57B57',
                     dashArray: '',
                     lineCap: 'butt',
                     lineJoin: 'miter',
@@ -394,7 +463,7 @@ endforeach;
                     // fillColor: 'rgba(251,124,92,1.0)',
                     // fillColor: '#3695E7',
                     // fillColor: '#4e73df',
-                    fillColor: '#E73F32',
+                    fillColor: '#C57B57',
                     interactive: true,
                 }
                         break;
@@ -416,12 +485,12 @@ endforeach;
                     interactive: true,
                 }
                 break;
-                    case 'occupied2':
+                    case 'NO_SLOT':
                     return {
                         pane: 'pane_Marker_3',
                         radius: 8.0,
                         opacity: 1,
-                        color: 'rgba(61,128,53,1.0)',
+                        color: '#111D13',
                         dashArray: '',
                         lineCap: 'butt',
                         lineJoin: 'miter',
@@ -429,16 +498,16 @@ endforeach;
                         fill: true,
                         fillOpacity: 1,
                         // rgb(24, 22, 22)
-                        fillColor: 'rgb(128, 45, 45)',
+                        fillColor: '#111D13',
                         interactive: true,
                     }
                     break;
-                    case 'occupied3':
+                    case 'COFFIN':
                     return {
                         pane: 'pane_Marker_3',
                         radius: 8.0,
                         opacity: 1,
-                        color: 'rgba(61,128,53,1.0)',
+                        color: '#00A7D0',
                         dashArray: '',
                         lineCap: 'butt',
                         lineJoin: 'miter',
@@ -446,7 +515,41 @@ endforeach;
                         fill: true,
                         fillOpacity: 1,
                         // rgb(24, 22, 22)
-                        fillColor: 'rgb(24, 22, 22)',
+                        fillColor: '#00A7D0',
+                        interactive: true,
+                    }
+                    break;
+                    case 'MAUSOLEUM':
+                    return {
+                        pane: 'pane_Marker_3',
+                        radius: 8.0,
+                        opacity: 1,
+                        color: '#F7DBA7',
+                        dashArray: '',
+                        lineCap: 'butt',
+                        lineJoin: 'miter',
+                        weight: 2.0,
+                        fill: true,
+                        fillOpacity: 1,
+                        // rgb(24, 22, 22)
+                        fillColor: '#F7DBA7',
+                        interactive: true,
+                    }
+                    break;
+                    case 'BONE':
+                    return {
+                        pane: 'pane_Marker_3',
+                        radius: 8.0,
+                        opacity: 1,
+                        color: '#D33724',
+                        dashArray: '',
+                        lineCap: 'butt',
+                        lineJoin: 'miter',
+                        weight: 2.0,
+                        fill: true,
+                        fillOpacity: 1,
+                        // rgb(24, 22, 22)
+                        fillColor: '#D33724',
                         interactive: true,
                     }
                 }
@@ -473,14 +576,32 @@ endforeach;
             map.addLayer(layer_Marker_3);
 
             layer_Marker_3.on('click', function(e) {
-                // Get the clicked point's properties
-                // console.log();
                 var properties = e.layer.feature.properties;
+                // alert(properties.Status );
+                if(properties.Status == 'NO_SLOT'){
+                    $('#assignCrypt_modal #slot_id').val(properties.slot_number);
+                    $('#assignCrypt_modal').modal('show');
+                }
+                else if(properties.Status != 'VACANT' && properties.Status != 'OCCUPIED'){
+                
+                    $.ajax({
+                    type : 'post',
+                    url : 'maps',
+                    data: {
+                        slot_number: properties.slot_number, action: "modal_crypt_profile"
+                    },
+                    success : function(data){
+                        $('#myModal #modalBody').html(data);
+                        // swal.close();
+                        $('#myModal').modal('show');
+                        // $(".select2").select2();//Show fetched data from database
+                    }
+                });
 
-                // // Populate the modal body with point information
-                document.getElementById('modalBody').innerHTML = '<p>Name: ' + properties.slot_number + '</p>' +
-                                                                '<p>Description: ' + properties.description + '</p>';
-                $.ajax({
+
+                }
+                else{
+                    $.ajax({
                     type : 'post',
                     url : 'profile',
                     data: {
@@ -493,6 +614,11 @@ endforeach;
                         // $(".select2").select2();//Show fetched data from database
                     }
                 });
+
+                }
+
+
+                
 
 
 
@@ -551,7 +677,6 @@ endforeach;
         </script>
 
 
-  <?php require("public/bone_crypt/bone_crypt_js.php"); ?>
 
   <?php
 	// render footer 2

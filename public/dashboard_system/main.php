@@ -1,16 +1,21 @@
 <?php
 
-
+// $crypt_list = query("select * from crypt_list where crypt_type not in ('LAWN', 'MAUSOLEUM')");
+// foreach($crypt_list as $list):
+// 	$crypt_slot = query("select * from crypt_slot where crypt_id = ?", $list["crypt_id"]);
+// 	foreach($crypt_slot as $slot):
+// 		query("update crypt_slot set crypt_slot_type = ? where slot_id = ?", $list["crypt_type"], $slot["slot_id"]);
+// 	endforeach;
+// endforeach;
+// dump("finished");
 
 // $grave = query("select * from gravekeeper.grave_data");
 // $crypt_id = 'CRYPT-796caa375ef68-230525';
 // // dump($grave);
 // // $lawn = query("select * from crypt_list where crypt_id = 'CRYPT-796caa375ef68-230525'");
 // // // dump($lawn);
-
 // $inserts = array();
 // $queryFormat = "('%s','%s','%s','%s','%s','%s')";
-
 // // $rows = 10;
 // // $columns = 15;
 
