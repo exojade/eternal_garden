@@ -30,6 +30,9 @@
 				else if ($request == 'profile')
 					require 'public/profile_system/profile.php';
 
+				else if ($request == 'pending_burial')
+					require 'public/pending_system/pending.php';
+
 				else if ($request == 'maps')
 					require 'public/maps_system/maps.php';
 

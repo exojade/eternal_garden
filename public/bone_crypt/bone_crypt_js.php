@@ -131,7 +131,7 @@ $('.coffin_crypt_form').submit(function(e) {
       console.log(my_id);
 
         var promptmessage = 'Occupy Bone Crpyt';
-        var prompttitle = 'COFFIN CRYPT';
+        var prompttitle = 'Bone CRYPT';
     
         swal({
             title: prompttitle,
@@ -147,7 +147,7 @@ $('.coffin_crypt_form').submit(function(e) {
           //   cancelButtonText: 'Indigent'
         }).then((result) => {
             if (result.value) {
-                window.open("profile?action=client_details&slot="+my_id+"", "_blank");
+                location.replace("profile?action=client_details&slot="+my_id+"");
                 swal.close();
             // --- end of ajax
             }

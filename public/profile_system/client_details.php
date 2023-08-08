@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css">
 <link rel="stylesheet" href="AdminLTE/dist/css/AdminLTE.min.css">
 <style>
 .products-list {
@@ -49,6 +50,7 @@
               <div class="modal-body">
                 <input type="hidden" name="action" value="add_client">
                 <input type="hidden" name="slot_number" value="<?php echo($_GET["slot"]) ?>">
+                <input type="hidden" name="crypt_slot_type" value="<?php echo($slot["crypt_slot_type"]) ?>">
               <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
@@ -64,13 +66,21 @@
                 </div>
               </div>
 
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Client Contact</label>
                   <input required type="text" name="client_contact" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Client Email</label>
+                    <input required type="email" name="email_address" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+
+
+              <div class="col-md-4">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Gender</label>
                   <select required class="form-control" name="gender">
@@ -106,6 +116,27 @@
                 </div>
               </div>
 
+
+              <?php if($slot["crypt_slot_type"] == "BONE"): ?>
+
+
+              <?php elseif($slot["crypt_slot_type"] == "COFFIN"): ?>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Occupant Type</label>
+                  <select required class="form-control" name="occupant_type">
+                    <option value="" selected disabled>Please select occupant type</option>
+                    <option value="ORDINARY">ORDINARY</option>
+                    <option value="INDIGENT">INDIGENT</option>
+                  </select>
+                </div>
+              </div>
+                
+              <?php elseif($slot["crypt_slot_type"] == "MAUSOLEUM"): ?>
+
+              <?php elseif($slot["crypt_slot_type"] == "LAWN"): ?>\
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Lease Status</label>
@@ -116,6 +147,13 @@
                   </select>
                 </div>
               </div>
+
+              <?php endif; ?>
+
+              
+
+
+
             </div>
 
 
@@ -205,8 +243,8 @@
                   <input required type="text" name="religion" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
-
-              <div class="col-md-12">
+              <?php if($slot["crypt_slot_type"] == "LAWN"): ?>
+                <div class="col-md-12">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Interment Type</label>
                   <select required class="form-control" name="interment_type">
@@ -216,6 +254,10 @@
                   </select>
                 </div>
               </div>
+
+              <?php endif; ?>
+
+              
             </div>
               </div>
               <div class="modal-footer">
@@ -245,7 +287,7 @@
                 <input type="hidden" name="action" value="forward_cemetery">
                 <input type="hidden" name="slot_number" value="<?php echo($_GET["slot"]) ?>">
               <div class="form-group">
-                <label>Interment Services to be availed</label>
+                <label>Interment Services to be availed (optional)</label>
                 <select name="services[]" class="form-control select2" multiple data-placeholder="Select Interment Service"
                         style="width: 100%;">
                   <option value="Chapel Only">Chapel Only</option>
@@ -253,6 +295,38 @@
                   <option value="Tents and Chairs Rental">Tents and Chairs Rental</option>
                 </select>
               </div>
+              <div class="row">
+                  <div class="col-md-6">
+
+                  <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label>Burial Schedule Date (optional)</label>
+                        <div class="input-group">
+                          <input name="deceased_burial_date" type="date" class="form-control">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                  </div>
+                  <div class="col-md-6">
+                    <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label>Burial Time (optional)</label>
+                        <div class="input-group">
+                          <input name="deceased_burial_time" value="" type="text" class="form-control timepicker">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+              
 
               </div>
               <div class="modal-footer">
@@ -271,6 +345,7 @@
               <img class="profile-user-img img-responsive img-circle" src="AdminLTE/dist/img/user4-128x128.jpg" alt="User profile picture">
               <h3 class="profile-username text-center"><?php echo($client["client_name"]); ?></h3>
               <p class="text-muted text-center"><?php echo($client["client_address"]); ?></p>
+              <p class="text-muted text-center"><?php echo($client["email_address"]); ?></p>
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
                   <b>Crypt Type</b> <a class="pull-right"><?php echo($slot["crypt_slot_type"]); ?></a>
@@ -341,7 +416,7 @@
                     <th>Date of Death</th>
                     <th>Burial Date</th>
                     <th>Burial Status</th>
-                    <th>Type</th>
+                    <th>Remarks</th>
                 </thead>
                 <tbody>
                     <?php foreach($deceased as $d): ?>
@@ -363,18 +438,13 @@
                   <a href="#" data-toggle="modal" data-target="#modal_forward" class="btn btn-primary btn-flat">Forward to Cemetery for Burial Scheduling</a>
                   <?php endif; ?>
               </div>
-              <!-- /.tab-pane -->
               <div class="tab-pane" id="timeline">
-                <!-- The timeline -->
                 <ul class="timeline timeline-inverse">
-                  <!-- timeline time label -->
                   <li class="time-label">
                         <span class="bg-red">
                           10 Feb. 2014
                         </span>
                   </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
                   <li>
                     <i class="fa fa-envelope bg-blue"></i>
 
@@ -546,6 +616,7 @@
 <script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
 <script src="AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
+<script src="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
   <?php require("public/coffin_crypt/coffin_crypt_js.php"); ?>
 
   <?php
@@ -559,3 +630,12 @@
     $('.select2').select2()
   })
 </script>
+
+<script>
+$('.timepicker').timepicker({
+      showInputs: false,
+      autoUpdateInput: false,   
+    })
+    $('.timepicker').val("");
+  
+  </script>

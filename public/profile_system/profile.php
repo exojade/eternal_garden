@@ -1,21 +1,74 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "add_client"):
+
+			// dump($_POST);
+			if($_POST["crypt_slot_type"] == "LAWN"):
 			$profile_id = create_uuid("PROF");
 			$t = strtotime($_POST["lease_date"]);
 			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
 			if (query("insert into profile_list 
-				(profile_id,client_name,client_address,client_contact,gender,id_presented,id_number,place_issued,
+				(profile_id,client_name,email_address,client_address,client_contact,gender,id_presented,id_number,place_issued,
 					lease_date,date_expired,slot_number,lease_status
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
-				$profile_id,$_POST["client_name"],$_POST["client_address"],$_POST["client_contact"],
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,$_POST["client_name"],$_POST["email_address"],$_POST["client_address"],$_POST["client_contact"],
 				$_POST["gender"],$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
 				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["lease_status"],
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
 				}
+			else;
+
+			elseif($_POST["crypt_slot_type"] == "COFFIN"):
+
+			$profile_id = create_uuid("PROF");
+			$t = strtotime($_POST["lease_date"]);
+			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+			if (query("insert into profile_list 
+				(profile_id,client_name,email_address,client_address,client_contact,gender,id_presented,id_number,place_issued,
+					lease_date,date_expired,slot_number,occupant_type
+				) 
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,$_POST["client_name"],$_POST["email_address"],$_POST["client_address"],$_POST["client_contact"],
+				$_POST["gender"],$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
+				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["occupant_type"],
+				) === false)
+				{
+					apologize("Sorry, that username has already been taken!");
+				}
+			else;
+				
+			elseif($_POST["crypt_slot_type"] == "BONE"):
+
+			$profile_id = create_uuid("PROF");
+			$t = strtotime($_POST["lease_date"]);
+			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+			if (query("insert into profile_list 
+				(profile_id,client_name,email_address,client_address,client_contact,gender,id_presented,id_number,place_issued,
+					lease_date,date_expired,slot_number
+				) 
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,$_POST["client_name"],$_POST["email_address"],$_POST["client_address"],$_POST["client_contact"],
+				$_POST["gender"],$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
+				$_POST["lease_date"],$lease_expired,$_POST["slot_number"]
+				) === false)
+				{
+					apologize("Sorry, that username has already been taken!");
+				}
+			else;
+
+			elseif($_POST["crypt_slot_type"] == "MAUSOLEUM"):
+			
+			endif;
+
+				
+
+
+
+
+			
 
 				$transaction_id = create_uuid("LOGS");
 				$message = $_POST["client_name"] . " availed LEASE from " . $_POST["lease_date"] . " to " . $lease_expired;
@@ -42,6 +95,9 @@
 			$datetime2 = new DateTime($_POST["date_of_death"]);
 			$interval = $datetime1->diff($datetime2);
 			$age = $interval->format('%y');
+			
+			if(!isset($_POST["interment_type"]))
+				$_POST["interment_type"] = "";
 
 			$deceased_id = create_uuid("DEC");
 			if (query("insert into deceased_profile 
@@ -174,62 +230,55 @@
 			endif;
 
 			elseif($_POST["action"] == "forward_cemetery"):
-				// dump($_POST);
-				$services = "";
+				$status = "";
+				$burial_date = "";
+				$burial_time = "";
 				if(isset($_POST["services"]))
 				$services = serialize($_POST["services"]);
-
-				// dump($services);
-
 				$client = query("select * from crypt_slot where slot_id = ?", $_POST["slot_number"]);
 				$client=$client[0];
-				// dump($client);
 				$deceased = query("select * from deceased_profile where slot_number = ? and burial_status = 'NO BURIAL DATE'", $_POST["slot_number"]);
-				// foreach($deceased as $d):
+				
+				if($_POST["deceased_burial_date"] == ""):
+					$status = "FOR SCHEDULING";
+					$update_query = "update deceased_profile set burial_status = 'FOR SCHEDULING' where 
+					slot_number = '".$_POST["slot_number"]."' and burial_status = 'NO BURIAL DATE'";
+				else:
+					if($_POST["deceased_burial_time"] == ""):
+						$res_arr = [
+							"result" => "failed",
+							"title" => "Failed",
+							"message" => "Burial Time is required if Burial Date is not blank!",
+							];
+							echo json_encode($res_arr); exit();
+					else:
+						$status = "PENDING";
+						$burial_date = $_POST["deceased_burial_date"];
+						$burial_time = $_POST["deceased_burial_time"];
+						$update_query = "update deceased_profile set burial_status = 'PENDING' where 
+						slot_number = '".$_POST["slot_number"]."' and burial_status = 'NO BURIAL DATE'";
+					endif;
+				endif;
+
+				$services = "";
 				$schedule_id = create_uuid("SCHED");
 				if (query("insert into burial_schedule 
-				(profile_id,slot_number,remarks,schedule_id,services_availed,timestamp,date,time) 
-				VALUES(?,?,?,?,?,?,?,?)", 
-				$client["occupied_by"],$_POST["slot_number"],"FOR SCHEDULING",$schedule_id,
-				$services,time(),date("Y-m-d"),date("h:i:s a")
+				(profile_id,slot_number,remarks,schedule_id,services_availed,timestamp,date,time,burial_date,burial_time) 
+				VALUES(?,?,?,?,?,?,?,?,?,?)", 
+				$client["occupied_by"],$_POST["slot_number"],$status,$schedule_id,
+				$services,time(),date("Y-m-d"),date("h:i:s a"),$burial_date,$burial_time
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
 				}
-
-				query("update deceased_profile set burial_status = 'FOR SCHEDULING' where 
-						slot_number = ? and burial_status = 'NO BURIAL DATE'", $_POST["slot_number"]);
-
+				query($update_query);
 				$res_arr = [
 					"result" => "success",
 					"title" => "Success",
 					"message" => "Success on adding Data",
-					"link" => "lawn?action=slot_details&slot=".$_POST["slot_number"],
-					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+					"link" => "profile?action=client_details&slot=".$_POST["slot_number"],
 					];
 					echo json_encode($res_arr); exit();
-				// endforeach;
-
-				// $message = $_POST["deceased_name"] . " was added to this slot";
-				// if (query("insert into transaction_logs 
-				// (transaction_id,slot_number,transaction_type,message,timestamp,transaction_date,transaction_time,services_availed) 
-				// VALUES(?,?,?,?,?,?,?,?)", 
-				// $transaction_id,$_POST["slot_number"],"FORWARDED TO CEMETERY",$message,
-				// time(),date("Y-m-d"),date("h:i:s a"),""
-				// ) === false)
-				// {
-				// 	apologize("Sorry, that username has already been taken!");
-				// }
-
-
-				
-				
-
-				
-
-
-
-
 		endif;
 	
 
