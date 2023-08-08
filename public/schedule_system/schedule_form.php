@@ -47,6 +47,38 @@
       <!-- /.row -->
     </section>
 
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Point Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form class="generic_form_trigger" data-url="schedule">
+      <input type="hidden" name="action" value="markDone">
+      <div class="modal-body" id="modalBody">
+        <!-- Point information will be displayed here -->
+      </div>
+      <div class="modal-footer">
+                <button type="submit" class="btn btn-success" >MARK AS DONE</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
     <div id="calendarModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content ">
@@ -177,24 +209,41 @@
       },
       eventClick: function(event, element, view) {
             //element.popover('hide');
-            $('#modalTitle').html(event.title);
-            $('#modalBody').html(event.description);
-            $('#eventUrl').attr('href', event.url);
-            $('#calendarModal #name').val(event.title);
-            $('#calendarModal #birhdate').val(event.dob);
-            $('#calendarModal #date_death').val(event.death_date);
-            $('#calendarModal #crypt_name').val(event.crypt_name);
-            $('#calendarModal #row_number').val(event.row_number);
-            $('#calendarModal #column_number').val(event.column_number);
-            $('#calendarModal #schedule_id').val(event.schedule_id);
+            // $('#modalTitle').html(event.title);
+            // $('#modalBody').html(event.description);
+            // $('#eventUrl').attr('href', event.url);
+            // $('#calendarModal #name').val(event.title);
+            // $('#calendarModal #birhdate').val(event.dob);
+            // $('#calendarModal #date_death').val(event.death_date);
+            // $('#calendarModal #crypt_name').val(event.crypt_name);
+            // $('#calendarModal #row_number').val(event.row_number);
+            // $('#calendarModal #column_number').val(event.column_number);
+            // $('#calendarModal #schedule_id').val(event.schedule_id);
+
+            $.ajax({
+                    type : 'post',
+                    url : 'schedule',
+                    data: {
+                        schedule_id: event.schedule_id, action: "modalSchedule"
+                    },
+                    success : function(data){
+                        $('#myModal #modalBody').html(data);
+                        // swal.close();
+                        $('#myModal').modal('show');
+                        // $('#calendarModal').modal();
+                        // $(".select2").select2();//Show fetched data from database
+                    }
+                });
 
 
-            $('#calendarModal').modal();
+           
         },
 
       //Random default events
       events    : [
-        <?php $schedule = query("select * from burial_schedule bs
+        <?php $schedule = query("select *,bs.burial_date as burial_date,
+                                bs.burial_time as burial_time
+                                from burial_schedule bs
                                   left join profile_list p
                                   on p.profile_id = bs.profile_id
                                   left join crypt_slot s
@@ -202,6 +251,8 @@
                                   left join crypt_list c
                                   on s.crypt_id = c.crypt_id
                                   where remarks = 'PENDING'");
+
+            // dump($schedule);
         foreach($schedule as $s):
         $date = explode('-',$s["burial_date"]);
         $day = (int)$date[2];

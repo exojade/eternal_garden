@@ -71,51 +71,15 @@ $('.coffin_crypt_form').submit(function(e) {
         swal({
             title: prompttitle,
             text: promptmessage,
-            html: "Some Text" +
-            "<br>" +
-            '<a href="#" data-id="'+my_id+'" class="SwalBtn1 btn-flat btn btn-primary">' + 'INDIGENT' + '</a>' +
-            '<a href="#" data-id="'+my_id+'" class="SwalBtn2 btn-flat btn btn-primary">' + 'ORDINARY' + '</a>',
             type: 'info',
-            showConfirmButton: false,
-      showCancelButton: false
+            showConfirmButton: true,
+            showCancelButton: true
           //   confirmButtonText: 'Ordinary',
           //   cancelButtonText: 'Indigent'
         }).then((result) => {
             if (result.value) {
-                swal({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
-            $.ajax({
-                type: 'post',
-                url: url,
-                data: $(this).serialize() + '&quincena=1',
-                success: function (results) {
-                var o = jQuery.parseJSON(results);
-                console.log(o);
-                if(o.result === "success") {
-                    swal.close();
-                 
-                    swal({title: "Submit success",
-                    text: o.message,
-                    type:"success"})
-                    .then(function () {
-                    //window.location.replace('./applicant.php?page=list');
-                    window.location.replace(o.link);
-                    });
-                }
-                else {
-                    swal({
-                    title: "Error!",
-                    text: o.message,
-                    type:"error"
-                    });
-                    console.log(results);
-                }
-                },
-                error: function(results) {
-                console.log(results);
-                swal("Error!", "Unexpected error occur!", "error");
-                }
-            });
-            // --- end of ajax
+                location.replace("profile?action=client_details&slot="+my_id+"");
+                swal.close();
             }
             else{
 

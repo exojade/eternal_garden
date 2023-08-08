@@ -1,6 +1,22 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
-		
+		if($_POST["action"] == "add_schedule"):
+			// dump($_POST);
+			$for_schedule = query("select * from burial_schedule where schedule_id = ?",$_POST["schedule_id"]);
+			$for_schedule = $for_schedule[0];
+			$deceased = query("select * from deceased_profile where slot_number = ? and burial_status = 'FOR SCHEDULING'", $for_schedule["slot_number"]);
+			query("update deceased_profile set burial_status = 'PENDING' where slot_number = ? and burial_status = 'FOR SCHEDULING'", $for_schedule["slot_number"]);
+			query("update burial_schedule set remarks = 'PENDING' where schedule_id = ?", $_POST["schedule_id"]);
+			// dump($deceased);
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on adding Data",
+				"link" => "pending_burial?action=list",
+				];
+				echo json_encode($res_arr); exit();
+			
+		endif;
     }
 	else {
 		$for_schedule = query("select *,bs.services_availed as services_availed from burial_schedule bs

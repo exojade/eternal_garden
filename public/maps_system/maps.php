@@ -51,9 +51,11 @@
 				echo($message);
 
 			elseif($crypt["crypt_type"] == "MAUSOLEUM"):
+				// dump($_POST);
+				$crypt_slot = query("select * from crypt_slot where crypt_id = ?", $_POST["slot_number"]);
 				$message = '
 				<h3 class="text-center">'.$crypt["crypt_name"].'</h3>
-				<div class="text-center"><a target="_blank" href="mausoleum?action=details&id='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
+				<div class="text-center"><a target="_blank" href="profile?action=client_details&slot='.$crypt_slot[0]["slot_id"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
 				';
 				echo($message);
 			endif;

@@ -115,8 +115,6 @@
                   <input required type="date" value="<?php echo(date("Y-m-d")); ?>" name="lease_date" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
-
-
               <?php if($slot["crypt_slot_type"] == "BONE"): ?>
 
 
@@ -135,7 +133,7 @@
                 
               <?php elseif($slot["crypt_slot_type"] == "MAUSOLEUM"): ?>
 
-              <?php elseif($slot["crypt_slot_type"] == "LAWN"): ?>\
+              <?php elseif($slot["crypt_slot_type"] == "LAWN"): ?>
 
               <div class="col-md-6">
                 <div class="form-group">
@@ -347,6 +345,11 @@
               <p class="text-muted text-center"><?php echo($client["client_address"]); ?></p>
               <p class="text-muted text-center"><?php echo($client["email_address"]); ?></p>
               <ul class="list-group list-group-unbordered">
+              <li class="list-group-item">
+                  <b>Name</b> <a class="pull-right"><?php
+                  // dump($slot);
+                  echo($slot["crypt_name"]); ?></a>
+                </li>
                 <li class="list-group-item">
                   <b>Crypt Type</b> <a class="pull-right"><?php echo($slot["crypt_slot_type"]); ?></a>
                 </li>

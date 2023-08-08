@@ -60,6 +60,22 @@
 			else;
 
 			elseif($_POST["crypt_slot_type"] == "MAUSOLEUM"):
+
+				$profile_id = create_uuid("PROF");
+			// $t = strtotime($_POST["lease_date"]);
+			// $lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+			$_POST["lease_date"] = "NO EXPIRY";
+			$lease_expired = "NO EXPIRY";
+			if (query("insert into profile_list 
+				(profile_id,client_name,email_address,client_address,client_contact,gender,id_presented,id_number,place_issued,slot_number
+				) 
+				VALUES(?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,$_POST["client_name"],$_POST["email_address"],$_POST["client_address"],$_POST["client_contact"],
+				$_POST["gender"],$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],$_POST["slot_number"]
+				) === false)
+				{
+					apologize("Sorry, that username has already been taken!");
+				}
 			
 			endif;
 
@@ -86,7 +102,7 @@
 					"result" => "success",
 					"title" => "Success",
 					"message" => "Success on adding Data",
-					"link" => "lawn?action=slot_details&slot=".$_POST["slot_number"],
+					"link" => "profile?action=client_details&slot=".$_POST["slot_number"],
 					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 					];
 					echo json_encode($res_arr); exit();
@@ -131,7 +147,7 @@
 					"result" => "success",
 					"title" => "Success",
 					"message" => "Success on adding Data",
-					"link" => "lawn?action=slot_details&slot=".$_POST["slot_number"],
+					"link" => "profile?action=client_details&slot=".$_POST["slot_number"],
 					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 					];
 					echo json_encode($res_arr); exit();
@@ -381,7 +397,7 @@
 
 			$slot = query("select * from crypt_slot as slot
 							left join crypt_list as crypt
-							on slot.slot_id = crypt.crypt_id
+							on slot.crypt_id = crypt.crypt_id
 							where slot.slot_id = ?", $_GET["slot"]);
 
 			$slot = $slot[0];

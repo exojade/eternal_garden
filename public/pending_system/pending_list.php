@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
+<link rel="stylesheet" href="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css">
 
 <style>
 .products-list {
@@ -22,66 +23,53 @@
       </h1>
     </section>
     <section class="content">
-
     <?php foreach($for_schedule as $fs):?>
-      <!-- <div class="modal fade" id="modalProfile_<?php echo($p["profile_id"]); ?>">
-          <div class="modal-dialog modal-lg">
+      <div class="modal fade" id="modalSchedule<?php echo($fs["schedule_id"]); ?>">
+          <div class="modal-dialog modal-sm">
             <div class="modal-content ">
               <div class="modal-header bg-primary">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title text-center">Profile Information</h3>
+                <h3 class="modal-title text-center">Add Schedule</h3>
               </div>
               <div class="modal-body">
 
-              <div class="form-group">
-              <label>Deceased Name</label>
-							<input type="text" readonly class="form-control" value="<?php echo($p["deceased_name"]); ?>">
-						</div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Date of Birth</label>
-                  <input type="text" readonly class="form-control" value="<?php  echo(date('F d, Y', strtotime($p["deceased_dob"]))); ?>">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Date of Death</label>
-                  <input type="text" readonly class="form-control" value="<?php echo(date('F d, Y', strtotime($p["deceased_date_death"]))); ?>">
-                </div>
-              </div>
-            </div>
+              <form class="generic_form_trigger" data-url="pending_burial">
+                <input type="hidden" name="action" value="add_schedule">
+                <input type="hidden" name="schedule_id" value="<?php echo($fs["schedule_id"]) ?>">
 
 
-            <div class="form-group">
-              <label>Crypt Name</label>
-							<input type="text" readonly class="form-control" value="<?php echo($p["crypt_name"]); ?>">
-						</div>
-            <div class="row">
-              <div class="col-md-6">
                 <div class="form-group">
-                  <label>Row</label>
-                  <input type="text" readonly class="form-control" value="<?php  echo($p["row_number"]); ?>">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Column</label>
-                  <input type="text" readonly class="form-control" value="<?php echo($p["column_number"]); ?>">
-                </div>
-              </div>
-            </div>
-            <a href="profile?action=details&id=<?php echo($p["slot_id"]); ?>" class="btn btn-block btn-primary">Open Crypt Details</a>
+                        <label>Burial Schedule Date *</label>
+                        <div class="input-group">
+                          <input name="deceased_burial_date" required type="date" class="form-control">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                
+                      <div class="bootstrap-timepicker">
+                      <div class="form-group">
+                        <label>Burial Time (optional)</label>
+                        <div class="input-group">
+                          <input name="deceased_burial_time" value="" type="text" class="form-control timepicker">
+                          <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline">Save changes</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+
+              </form>
+            
+
               </div>
             </div>
           </div>
-      </div> -->
+      </div>
 
     <?php endforeach; ?>
 
@@ -108,11 +96,7 @@
                                   on crypt.crypt_id = slot.crypt_id
                                   where slot.slot_id = ?
                                   ", $fs["slot_number"]);
-
                   $crypt = $crypt[0];
-                  // $client = query("select * from profile_list where ");
-                  // dump($crypt);
-                  
                   ?>
                 <tr>
                   <td>
@@ -157,6 +141,7 @@
 	<script src="AdminLTE/dist/js/demo.js"></script>
   <script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
   <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
+  <script src="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
   <?php require("public/coffin_crypt/coffin_crypt_js.php"); ?>
 
   <?php
@@ -170,4 +155,11 @@
    
   })
 </script>
+
+<script>
+$('.timepicker').timepicker({
+      showInputs: false,
+      autoUpdateInput: false,   
+    })
+  </script>
 

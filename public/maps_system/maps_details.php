@@ -238,7 +238,7 @@
                             $deceased = $Deceased[$row["slot_id"]];
                             $trim = str_replace('""', '', $row['coordinates']);
                             echo '{ "type": "Feature", "properties": { ';
-                                echo '"button": "<a target=\'_blank\' href=\'lawn?action=slot_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
+                                echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 echo '"Status": "OCCUPIED",';
                                 echo '"slot_number": "'.$row['slot_id'].'",';
                                 echo '"Name": "'.$row["client_name"].'",';
@@ -247,7 +247,7 @@
                             foreach($deceased as $d):
                                 $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
-                                echo '"button": "<a target=\'_blank\' href=\'lawn?action=slot_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
+                                echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 echo '"Status": "OCCUPIED",';
                                 echo '"slot_number": "'.$row['slot_id'].'",';
                                 echo '"Name": "'.$d["deceased_name"].'",';
@@ -257,7 +257,7 @@
                         else:
                             $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
-                                echo '"button": "<a target=\'_blank\' href=\'lawn?action=slot_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
+                                echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 if($row["active_status"] == "OCCUPIED"):
                                     echo '"Status": "OCCUPIED",';
                                     echo '"Name": "'.$row["client_name"].'",'; 

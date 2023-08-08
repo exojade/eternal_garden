@@ -70,15 +70,18 @@ endforeach;
 
 
       <div class="row">
-      <?php foreach($mausoleum as $m): 
-        
-        $occupied = query("select count(*) as count from crypt_slot
-        where crypt_id = ?", $m["crypt_id"]);
+      <?php
+      // dump($mausoleum);
+      foreach($mausoleum as $m): 
+        $crypt_slot = query("select * from crypt_slot where crypt_id = ?", $m["crypt_id"]);
+        // dump($crypt_slot);
+        $deceased_profile = query("select count(*) as count from deceased_profile
+        where slot_number = ?", $crypt_slot[0]["slot_id"]);
         // dump();
         
         ?>
         <div class="col-md-4">
-        <a href="mausoleum?action=details&id=<?php echo($m["crypt_id"]); ?>">
+        <a href="profile?action=client_details&slot=<?php echo($crypt_slot[0]["slot_id"]); ?>">
         <div class="box box-widget widget-user">
             <div class="widget-user-header bg-yellow-active">
               <h3 class="widget-user-username"><?php echo($m["crypt_name"]); ?></h3>
@@ -91,7 +94,7 @@ endforeach;
               <div class="row">
                 <div class="col-sm-12 border-right">
                   <div class="description-block">
-                    <h5 class="description-header"><?php echo($occupied[0]["count"]); ?></h5>
+                    <h5 class="description-header"><?php echo($deceased_profile[0]["count"]); ?></h5>
                     <span class="description-text">OCCUPIED</span>
                   </div>
                 </div>
