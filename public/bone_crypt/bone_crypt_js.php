@@ -147,7 +147,7 @@ $('.coffin_crypt_form').submit(function(e) {
           //   cancelButtonText: 'Indigent'
         }).then((result) => {
             if (result.value) {
-                window.open("profile?action=details&id="+my_id+"", "_blank");
+                window.open("profile?action=client_details&slot="+my_id+"", "_blank");
                 swal.close();
             // --- end of ajax
             }

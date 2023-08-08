@@ -129,7 +129,7 @@
                     <?php elseif($crypt_slots[$x]["active_status"] == "OCCUPIED"): ?>
                       <?php 
                         if($Occupied[$crypt_slots[$x]["slot_id"]]["count"] != 4): ?>
-                        <td><a href="profile?action=details&id=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-warning btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
+                        <td><a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-warning btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
                       <?php else: ?>
                         <td><a href="profile?action=details&id=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
                       <?php endif; ?>
