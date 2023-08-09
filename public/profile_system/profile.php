@@ -322,6 +322,7 @@
 				$status = "";
 				$burial_date = "";
 				$burial_time = "";
+				$services = "";
 				if(isset($_POST["services"]))
 				$services = serialize($_POST["services"]);
 

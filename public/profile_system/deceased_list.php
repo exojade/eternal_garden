@@ -27,15 +27,20 @@
               <table class="table table-bordered table-striped sample_datatable">
                 <thead>
                 <tr>
-                  <th>Action</th>
-                  <th>Deceased</th>
-                  <th>BirthDate</th>
-                  <th>Date of Death</th>
-                  <th>Age of Death</th>
-                  <th>Burial Information</th>
-                  <th>Crypt</th>
-                  <th>Slot</th>
-                  <th>Client</th>
+                  <th rowspan="2">Action</th>
+                  <th rowspan="2">Deceased</th>
+                  <th rowspan="2">BirthDate</th>
+                  <th rowspan="2">Date of Death</th>
+                  <th rowspan="2">Age of Death</th>
+                  <th colspan="2">Burial</th>
+                  <!-- <th>Burial Information</th> -->
+                  <th rowspan="2">Crypt</th>
+                  <th rowspan="2">Slot</th>
+                  <th rowspan="2">Client</th>
+                </tr>
+                <tr>
+                  <th>Information</th>
+                  <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,6 +52,14 @@
                   <td><?php echo($p["date_of_death"]); ?></td>
                   <td><?php echo($p["age_died"]); ?></td>
                   <td><?php echo($p["burial_date"] . " | " . $p["burial_time"]); ?></td>
+                  <?php if($p["burial_status"] == "NO BURIAL DATE" || $p["burial_status"] == "FOR SCHEDULING"): ?>
+                  <td><p class="text-red" ><?php echo($p["burial_status"]); ?></p></td>
+                  <?php elseif($p["burial_status"] == "PENDING"): ?>
+                    <td><p class="text-yellow" ><?php echo($p["burial_status"]); ?></p></td>
+                  <?php elseif($p["burial_status"] == "DONE"): ?>
+                    <td><p class="text-green"><?php echo($p["burial_status"]); ?></p></td>
+                  <?php endif; ?>
+                  
                   <td><?php echo($p["crypt_name"]); ?></td>
                   <td><?php echo($p["slot_number"]); ?></td>
                   <td><?php echo($p["client_firstname"] . " " . $p["client_middlename"] . " " . $p["client_lastname"] . " " . $p["client_suffix"]); ?></td>
