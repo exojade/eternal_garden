@@ -46,26 +46,73 @@
                   <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Register Client's Profile</h4>
               </div>
-              <form class="generic_form_trigger" data-url="profile">
+              <form class="generic_form_trigger" autocomplete="off" data-url="profile">
               <div class="modal-body">
                 <input type="hidden" name="action" value="add_client">
                 <input type="hidden" name="slot_number" value="<?php echo($_GET["slot"]) ?>">
                 <input type="hidden" name="crypt_slot_type" value="<?php echo($slot["crypt_slot_type"]) ?>">
-              <div class="row">
-              <div class="col-md-12">
+                <input type="hidden" name="province" id="true_province" value="">
+                <input type="hidden" name="city_mun" id="true_city_mun" value="">
+                <input type="hidden" name="barangay" id="true_barangay" value="">
+
+              
+              
+                <div class="row">
+              <div class="col-md-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Client Name</label>
-                  <input required type="text" name="client_name" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <label for="exampleInputEmail1">First Name *</label>
+                  <input required type="text" name="first_name" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
-
-              <div class="col-md-12">
+              <div class="col-md-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Client Address</label>
-                  <input required type="text" name="client_address" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <label for="exampleInputEmail1">Middle Name</label>
+                  <input required type="text" name="middle_name" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
-
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Last Name *</label>
+                  <input required type="text" name="last_name" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Suffix</label>
+                  <input required type="text" name="suffix" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+</div>
+<hr>
+<div class="row">
+              
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Province *</label>
+                  <select required class="form-control" id="province_select"></select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">City | Municipality *</label>
+                  <select required class="form-control" id="city_mun_select"></select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Barangay *</label>
+                  <select required class="form-control" id="barangay_select"></select>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Address Home *</label>
+                  <input required type="text" name="client_address" class="form-control" id="exampleInputEmail1" placeholder="Subdivision / Village / Purok (Complete Address)">
+                </div>
+              </div>
+</div>
+<hr>
+<div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Client Contact</label>
@@ -620,6 +667,45 @@
 <script src="AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
 <script src="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript" src="node_modules/philippine-location-json-for-geer/build/phil.min.js"></script>
+<script type="text/javascript">
+     console.log(Philippines.sort(Philippines.provinces,"A"));
+     
+     console.log(Philippines.getBarangayByMun("112315"));
+      var all_province = Philippines.sort(Philippines.provinces,"A");
+    html = "<option value='' disabled selected>Select Province</option>";
+    
+    for(var key in all_province) {
+      // console.log(all_province[key].name);
+        html += "<option value=" + all_province[key].prov_code  + ">" +all_province[key].name + "</option>"
+    }
+    document.getElementById("province_select").innerHTML = html;
+
+
+  $('#province_select').change(function(){
+    $('#true_province').val($( "#province_select option:selected" ).text());
+    city_mun = Philippines.getCityMunByProvince($(this).val(), 'A');
+    html = "<option value='' disabled selected>Select City / Municipality</option>";
+    for(var key in city_mun) {
+      // console.log(city_mun[key].name);
+        html += "<option value=" + city_mun[key].mun_code  + ">" +city_mun[key].name + "</option>"
+    }
+    document.getElementById("city_mun_select").innerHTML = html;
+});
+
+
+$('#city_mun_select').change(function(){
+    $('#true_city_mun').val($( "#city_mun_select option:selected" ).text());
+    barangay = Philippines.getBarangayByMun($(this).val(), 'A');
+    html = "<option value='' disabled selected>Select Barangay</option>";
+    for(var key in barangay) {
+      // console.log(city_mun[key].name);
+        html += "<option value=" + barangay[key].mun_code  + ">" +barangay[key].name + "</option>"
+    }
+    document.getElementById("barangay_select").innerHTML = html;
+});
+
+</script>
   <?php require("public/coffin_crypt/coffin_crypt_js.php"); ?>
 
   <?php

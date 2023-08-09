@@ -89,13 +89,13 @@
 
 
     <div class="box">
-            <!-- /.box-header -->
             <div class="box-body">
               <table class="table table-bordered table-striped sample_datatable">
                 <thead>
                 <tr>
                   <th>Action</th>
-                  <th>Deceased</th>
+                  <th>Client</th>
+                  <th>Address</th>
                   <th>Crypt</th>
                   <th>Slot</th>
                   <th>Client</th>

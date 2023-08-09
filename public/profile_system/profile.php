@@ -2,7 +2,7 @@
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "add_client"):
 
-			// dump($_POST);
+			dump($_POST);
 			if($_POST["crypt_slot_type"] == "LAWN"):
 			$profile_id = create_uuid("PROF");
 			$t = strtotime($_POST["lease_date"]);
@@ -307,15 +307,19 @@
     }
 	else {
 		
-		
+		$profile = query("select p.*, s.slot_id, c.crypt_name, s.slot_number, s.row_number, s.column_number from profile_list p
+		left join crypt_slot s
+		on s.slot_id = p.slot_number
+		left join crypt_list c
+		on c.crypt_id = s.crypt_id");
 		// dump($profile);
 		if($_GET["action"] == "client_list"){
-			
+
 			$profile = query("select p.*, s.slot_id, c.crypt_name, s.slot_number, s.row_number, s.column_number from profile_list p
-							left join crypt_slot s
-							on s.slot_id = p.slot_number
-							left join crypt_list c
-							on c.crypt_id = s.crypt_id");
+			left join crypt_slot s
+			on s.slot_id = p.slot_number
+			left join crypt_list c
+			on c.crypt_id = s.crypt_id");
 
 			render("public/profile_system/profile_list.php",
 			[
