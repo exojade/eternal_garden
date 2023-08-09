@@ -40,6 +40,9 @@
 				else if ($request == 'coffin_crypt')
 					require 'public/coffin_crypt/coffin_crypt.php';
 
+				else if ($request == 'reports')
+					require 'public/reports_system/reports.php';
+
 				else if ($request == 'bone_crypt')
 					require 'public/bone_crypt/bone_crypt.php';
 				else if ($request == 'mausoleum')

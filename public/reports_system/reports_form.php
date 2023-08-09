@@ -19,8 +19,8 @@
 
   <section class="content-header">
       <h1>
-        Dashboard
-        <small>System Monitoring</small>
+        Reports
+        <small>System</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="./"><i class="fa fa-dashboard"></i> HOMES</a></li>
@@ -28,79 +28,69 @@
       </ol>
     </section>
     <section class="content">
-      <?php 
-      
-      $bone = query("select count(*) as count from crypt_list where crypt_type = 'BONE'");
-      $bone = $bone[0]["count"];
+    <div class="box box-info">
+    <div class="box-header with-border">
+              <h3 class="box-title">Filter Here</h3>
+              <div class="box-tools pull-right">
+                
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              
+                </div>
 
-      $coffin = query("select count(*) as count from crypt_list where crypt_type = 'COFFIN'");
-      $coffin = $coffin[0]["count"];
-
-      $lawn = query("select count(*) as count from crypt_list where crypt_type = 'LAWN'");
-      $lawn = $lawn[0]["count"];
-
-      $mausoleum = query("select count(*) as count from crypt_list where crypt_type = 'MAUSOLEUM'");
-      $mausoleum = $mausoleum[0]["count"];
-
-
-
-
-      ?>
-
-    <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-aqua"><i class="fa fa-bone"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Bone Crypt</span>
-              <span class="info-box-number"><?php echo($bone); ?></span>
+                <div class="box-body">
+                <div class="row">
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>From Date:</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="date" class="form-control">
+                </div>
+                <!-- /.input group -->
+              </div>
+              </div>
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>To Date:</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="date" class="form-control">
+                </div>
+                <!-- /.input group -->
+              </div>
+              </div>
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>Filter:</label>
+                <button class="btn btn-primary btn-block">Filter</button>
+              </div>
+              </div>
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>Print:</label>
+                <a href="resources/sales_revenue.pdf" target="_blank" class="btn btn-success btn-block"><i class="fa fa-print"></i> Print</a>
+              </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-red"><i class="fa fa-building"></i></span>
 
-            <div class="info-box-content">
-              <span class="info-box-text">Coffin Crypt</span>
-              <span class="info-box-number"><?php echo($coffin); ?></span>
+                </div>
             </div>
-          </div>
-        </div>
-
-        <div class="clearfix visible-sm-block"></div>
-
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-green"><i class="fa fa-cross"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Lawn</span>
-              <span class="info-box-number"><?php echo($lawn); ?></span>
             </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box">
-            <span class="info-box-icon bg-yellow"><i class="fa fa-home"></i></span>
 
-            <div class="info-box-content">
-              <span class="info-box-text">Mausoleum</span>
-              <span class="info-box-number"><?php echo($mausoleum); ?></span>
-            </div>
-          </div>
-        </div>
-      </div>
 
 
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
         <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Burials for this Year <?php echo(date("Y")); ?></h3>
-
+              <h3 class="box-title">Burials Statistics</h3>
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>
@@ -109,17 +99,17 @@
             </div>
             <div class="box-body">
               <div class="chart">
-                <canvas id="lineChart" style="height:250px"></canvas>
+                <canvas id="lineChart" style="height:300px"></canvas>
               </div>
             </div>
             <!-- /.box-body -->
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-4">
         <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Statistics: Age Bracket | Male vs Female <?php echo(date("Y")); ?></h3>
+              <h3 class="box-title">Statistics: Age Bracket | Male vs Female</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -214,7 +204,12 @@ function find_deceased() {
 
 
     var areaChartData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      labels  : [
+        <?php for($i=1;$i<32;$i++):
+          echo("'".$i."',");
+        endfor;
+          ?>
+      ],
       datasets: [
         
         {
@@ -225,7 +220,14 @@ function find_deceased() {
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90, 70, 35, 80, 90, 100]
+          data                : [
+            <?php for($i=1;$i<32;$i++):
+          echo(rand(100,1000) .",");
+        endfor;
+          ?>
+            // 28, 48, 40, 19, 86, 27, 90, 70, 35, 80, 90, 100
+
+          ]
         }
       ]
     }

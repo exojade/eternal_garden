@@ -152,6 +152,7 @@
 <script src="AdminLTE/bower_components/moment/moment.js"></script>
 <script src="AdminLTE/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
 <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
+
   
   <?php
 	require("layouts/footer_end.php");
@@ -258,7 +259,7 @@
         $day = (int)$date[2];
         $month = (int)$date[1];
         $year = (int)$date[0];
-
+        $s["burial_time"] = date("H:i", strtotime($s["burial_time"]));
         $time = explode(':',$s["burial_time"]);
         // dump($time);
         $hour = (int)$time[0];
@@ -267,7 +268,7 @@
           {
             title          : '<?php echo($s["deceased_name"]); ?>',
             start          : new Date(<?php echo($year); ?>, <?php echo($month-1); ?>, <?php echo($day); ?>, <?php echo($hour); ?>, <?php echo($minute); ?>),
-            end            : new Date(<?php echo($year); ?>, <?php echo($month-1); ?>, <?php echo($day); ?>, <?php echo($hour); ?>, <?php echo($minute); ?>),
+            end            : new Date(<?php echo($year); ?>, <?php echo($month-1); ?>, <?php echo($day); ?>, <?php echo($hour+1); ?>, <?php echo($minute); ?>),
             // url            : 'index',
             backgroundColor: '#f56954', //red
             borderColor    : '#f56954', //red

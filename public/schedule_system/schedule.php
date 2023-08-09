@@ -4,8 +4,11 @@
 			// dump($_POST);
 			query("update burial_schedule set remarks = 'DONE' where schedule_id = ?", $_POST["schedule_id"]);
 			$schedule = query("select * from burial_schedule where schedule_id = ?", $_POST["schedule_id"]);
-			query("update deceased_profile set burial_status = 'DONE' where slot_number = ? and burial_status = 'PENDING'",
-					$schedule[0]["slot_number"]);
+			
+			query("update deceased_profile set burial_status = 'DONE', burial_date = ?, burial_time = ? where slot_number = ? and burial_status = 'PENDING'",
+			$schedule[0]["burial_date"],$schedule[0]["burial_time"], $schedule[0]["slot_number"] );
+
+			
 			$link = "schedule";
 			$res_arr = [
 				"result" => "success",

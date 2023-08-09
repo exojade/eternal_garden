@@ -307,14 +307,24 @@
     }
 	else {
 		
-		$profile = query("select p.*, s.slot_id, c.crypt_name, s.slot_number, s.row_number, s.column_number from profile_list p
+		
+		// dump($profile);
+		if($_GET["action"] == "client_list"){
+			
+			$profile = query("select p.*, s.slot_id, c.crypt_name, s.slot_number, s.row_number, s.column_number from profile_list p
 							left join crypt_slot s
 							on s.slot_id = p.slot_number
 							left join crypt_list c
 							on c.crypt_id = s.crypt_id");
-		// dump($profile);
-		if($_GET["action"] == "list"){
+
 			render("public/profile_system/profile_list.php",
+			[
+				"profile" => $profile,
+			]);
+		}
+
+		if($_GET["action"] == "deceased_list"){
+			render("public/profile_system/deceased_list.php",
 			[
 				"profile" => $profile,
 			]);
