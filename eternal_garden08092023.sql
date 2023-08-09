@@ -37,7 +37,9 @@ CREATE TABLE `burial_schedule` (
 
 insert  into `burial_schedule`(`profile_id`,`slot_number`,`burial_date`,`burial_time`,`remarks`,`schedule_id`,`services_availed`,`timestamp`,`date`,`time`) values 
 ('PROF-38836a17e8f06-230809','CRYPT_SLOT-eb34e2dc37606-230526','2023-08-13','03:30 PM','DONE','SCHED-7ea1d122f0dca-230809','a:2:{i:0;s:11:\"Chapel Only\";i:1;s:23:\"Tents and Chairs Rental\";}','1691566600','2023-08-09','03:36:40 pm'),
-('PROF-ac7cfde7c4b4c-230809','CRYPT_SLOT-22a5fb655ab7e-230527','2023-08-13','04:00 PM','DONE','SCHED-7386d5b346b39-230809','a:1:{i:0;s:23:\"Tents and Chairs Rental\";}','1691568002','2023-08-09','04:00:02 pm');
+('PROF-ac7cfde7c4b4c-230809','CRYPT_SLOT-22a5fb655ab7e-230527','2023-08-13','04:00 PM','DONE','SCHED-7386d5b346b39-230809','a:1:{i:0;s:23:\"Tents and Chairs Rental\";}','1691568002','2023-08-09','04:00:02 pm'),
+('PROF-38836a17e8f06-230809','CRYPT_SLOT-eb34e2dc37606-230526','2023-08-30','05:00 PM','DONE','SCHED-e2676d5957120-230809','a:1:{i:0;s:11:\"Chapel Only\";}','1691570230','2023-08-09','04:37:10 pm'),
+('PROF-ac7cfde7c4b4c-230809','CRYPT_SLOT-22a5fb655ab7e-230527','2023-08-13','04:30 PM','PENDING','SCHED-18b7113f79dda-230809','','1691570380','2023-08-09','04:39:40 pm');
 
 /*Table structure for table `crypt_list` */
 
@@ -6170,7 +6172,9 @@ CREATE TABLE `deceased_profile` (
 
 insert  into `deceased_profile`(`deceased_id`,`deceased_name`,`deceased_firstname`,`deceased_middlename`,`deceased_lastname`,`deceased_suffix`,`birthdate`,`date_of_death`,`age_died`,`religion`,`gender`,`burial_date`,`burial_time`,`slot_number`,`burial_status`,`profile_id`,`requirements`,`interment_type`) values 
 ('DEC-4ceab59e4cb55-230809','JUSTIN  BIEBER','JUSTIN','','BIEBER','','1994-01-01','2023-08-08',29,'ROMAN CATHOLIC','Male','2023-08-13','03:30 PM','CRYPT_SLOT-eb34e2dc37606-230526','DONE','PROF-38836a17e8f06-230809','a:1:{i:0;s:17:\"Death Certificate\";}','1st Interment'),
-('DEC-69191ab1a152b-230809','JASON  VILLEGASJR','JASON','','VILLEGAS','JR','1966-06-06','2023-06-06',57,'ROMAN CATHOLIC','Male','2023-08-13','04:00 PM','CRYPT_SLOT-22a5fb655ab7e-230527','DONE','PROF-ac7cfde7c4b4c-230809','a:1:{i:0;s:17:\"Death Certificate\";}','');
+('DEC-69191ab1a152b-230809','JASON  VILLEGASJR','JASON','','VILLEGAS','JR','1966-06-06','2023-06-06',57,'ROMAN CATHOLIC','Male','2023-08-13','04:00 PM','CRYPT_SLOT-22a5fb655ab7e-230527','DONE','PROF-ac7cfde7c4b4c-230809','a:1:{i:0;s:17:\"Death Certificate\";}',''),
+('DEC-42c644b508733-230809','CARDI  BACARDI','CARDI','','BACARDI','','1966-01-01','2023-08-01',57,'ROMAN CATHOLIC','Male','2023-08-30','05:00 PM','CRYPT_SLOT-eb34e2dc37606-230526','DONE','PROF-38836a17e8f06-230809','a:1:{i:0;s:17:\"Death Certificate\";}','2nd Interment'),
+('DEC-1fcb177911095-230809','RENELYN  DAIN','RENELYN','','DAIN','','1993-09-25','2023-08-02',29,'ROMAN CATHOLIC','Female','2023-08-13','04:30 PM','CRYPT_SLOT-22a5fb655ab7e-230527','PENDING','PROF-ac7cfde7c4b4c-230809','a:1:{i:0;s:17:\"Death Certificate\";}','');
 
 /*Table structure for table `pricing` */
 
@@ -6225,9 +6229,6 @@ CREATE TABLE `profile_list` (
   `requirements` text DEFAULT NULL COMMENT 'connected sa requirements table',
   `services_availed` text DEFAULT NULL COMMENT 'connected sa services table',
   `profile_type` varchar(100) DEFAULT NULL,
-  `burial_status` varchar(100) DEFAULT NULL,
-  `burial_date` varchar(100) DEFAULT NULL,
-  `burial_time` varchar(100) DEFAULT NULL,
   `occupant_type` enum('ORDINARY','INDIGENT') DEFAULT NULL,
   PRIMARY KEY (`profile_id`),
   KEY `requirements` (`requirements`(768)),
@@ -6236,9 +6237,9 @@ CREATE TABLE `profile_list` (
 
 /*Data for the table `profile_list` */
 
-insert  into `profile_list`(`profile_id`,`client_firstname`,`client_middlename`,`client_lastname`,`client_contact`,`client_suffix`,`email_address`,`gender`,`province`,`city_municipality`,`barangay`,`client_address`,`id_presented`,`id_number`,`place_issued`,`lease_date`,`date_expired`,`slot_number`,`lease_status`,`active_status`,`pricing_availed`,`requirements`,`services_availed`,`profile_type`,`burial_status`,`burial_date`,`burial_time`,`occupant_type`) values 
-('PROF-38836a17e8f06-230809','BRUNO','','MARS','09090990090','','mars.bruno@gmail.com','Male','DAVAO DEL NORTE','CITY OF PANABO','Cagangohan','NICEVILLE','PRC ID','010111','CEBU CITY','2023-08-09','2028-08-09','CRYPT_SLOT-eb34e2dc37606-230526','PRE NEED',NULL,NULL,'a:2:{i:0;s:24:\"Certificate of Residency\";i:1;s:8:\"Valid ID\";}',NULL,NULL,NULL,NULL,NULL,NULL),
-('PROF-ac7cfde7c4b4c-230809','FREDDIE','','KRUEGER','09019109109','','freddie@gmail.com','Male','DAVAO DEL NORTE','CITY OF PANABO','Gredu (Pob.)','NDC SUBD','Barangay ID','1010101','Barangay','2023-08-09','2028-08-09','CRYPT_SLOT-22a5fb655ab7e-230527',NULL,NULL,NULL,'a:2:{i:0;s:24:\"Certificate of Residency\";i:1;s:8:\"Valid ID\";}',NULL,NULL,NULL,NULL,NULL,'ORDINARY');
+insert  into `profile_list`(`profile_id`,`client_firstname`,`client_middlename`,`client_lastname`,`client_contact`,`client_suffix`,`email_address`,`gender`,`province`,`city_municipality`,`barangay`,`client_address`,`id_presented`,`id_number`,`place_issued`,`lease_date`,`date_expired`,`slot_number`,`lease_status`,`active_status`,`pricing_availed`,`requirements`,`services_availed`,`profile_type`,`occupant_type`) values 
+('PROF-38836a17e8f06-230809','BRUNO','','MARS','09090990090','','mars.bruno@gmail.com','Male','DAVAO DEL NORTE','CITY OF PANABO','Cagangohan','NICEVILLE','PRC ID','010111','CEBU CITY','2023-08-09','2028-08-09','CRYPT_SLOT-eb34e2dc37606-230526','PRE NEED',NULL,NULL,'a:2:{i:0;s:24:\"Certificate of Residency\";i:1;s:8:\"Valid ID\";}',NULL,NULL,NULL),
+('PROF-ac7cfde7c4b4c-230809','FREDDIE','','KRUEGER','09019109109','','freddie@gmail.com','Male','DAVAO DEL NORTE','CITY OF PANABO','Gredu (Pob.)','NDC SUBD','Barangay ID','1010101','Barangay','2023-08-09','2028-08-09','CRYPT_SLOT-22a5fb655ab7e-230527',NULL,NULL,NULL,'a:2:{i:0;s:24:\"Certificate of Residency\";i:1;s:8:\"Valid ID\";}',NULL,NULL,'ORDINARY');
 
 /*Table structure for table `requirements` */
 
@@ -6394,7 +6395,9 @@ insert  into `transaction_logs`(`transaction_id`,`slot_number`,`transaction_type
 ('LOGS-ccb81c7d1e751-230809','CRYPT_SLOT-eb34e2dc37606-230526','LEASE','BRUNO MARS availed LEASE from 2023-08-09 to 2028-08-09','1691565280','2023-08-09','03:14:40 pm',''),
 ('LOGS-ad055514bafdb-230809','CRYPT_SLOT-eb34e2dc37606-230526','DECEASED PROFILE','JUSTIN  BIEBER was added to this slot','1691566236','2023-08-09','03:30:36 pm',''),
 ('LOGS-7ef2546215fed-230809','CRYPT_SLOT-22a5fb655ab7e-230527','LEASE','FREDDIE KRUEGER availed LEASE from 2023-08-09 to 2028-08-09','1691567617','2023-08-09','03:53:37 pm',''),
-('LOGS-e28ef9b2e67ae-230809','CRYPT_SLOT-22a5fb655ab7e-230527','DECEASED PROFILE','JASON  VILLEGASJR was added to this slot','1691567723','2023-08-09','03:55:23 pm','');
+('LOGS-e28ef9b2e67ae-230809','CRYPT_SLOT-22a5fb655ab7e-230527','DECEASED PROFILE','JASON  VILLEGASJR was added to this slot','1691567723','2023-08-09','03:55:23 pm',''),
+('LOGS-61726b0a61fd2-230809','CRYPT_SLOT-eb34e2dc37606-230526','DECEASED PROFILE','CARDI  BACARDI was added to this slot','1691570218','2023-08-09','04:36:58 pm',''),
+('LOGS-2ac7a1e0d3e65-230809','CRYPT_SLOT-22a5fb655ab7e-230527','DECEASED PROFILE','RENELYN  DAIN was added to this slot','1691570306','2023-08-09','04:38:26 pm','');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
