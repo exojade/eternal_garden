@@ -228,7 +228,7 @@
 
 			$message=$message.'
 			</table>
-			<a target="_blank" href="lawn?action=slot_details&slot='.$_POST["slot_number"].'" class="btn btn-primary btn-flat">Open Information</a>
+			<a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn btn-primary btn-flat">Open Information</a>
 			';
 			echo($message);
 			else:
@@ -240,7 +240,7 @@
 				<h4 class="text-center">'.$crypt_slot[0]["slot_id"].'</h4>
 				<h4 class="text-center">'.$crypt_slot[0]["lawn_type"].'</h4>
 				<h4 class="text-center">Niche | Lawn Number: '.$crypt_slot[0]["slot_number"].'</h4>
-				<div class="text-center"><a target="_blank" href="lawn?action=slot_details&slot='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
+				<div class="text-center"><a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
 				';
 				echo($message);
 			endif;

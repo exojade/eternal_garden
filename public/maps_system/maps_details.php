@@ -203,27 +203,32 @@
 
 
 <?php
-
-
-
-
-
+$deceased_profile = query("select d.*, slot.crypt_id, slot.row_number, slot.column_number, slot.slot_number as crypt_number from deceased_profile d
+                            left join crypt_slot slot
+                            on slot.slot_id = d.slot_number
+");
+// dump($deceased_profile);
+$Deceased = [];
+$Deceased2 = [];
+foreach($deceased_profile as $d):
+    $Deceased[$d["slot_number"]][$d["deceased_id"]] = $d;
+    $Deceased2[$d["crypt_id"]][$d["deceased_id"]] = $d;
+endforeach;
+// dump($Deceased);
 
             if($_GET["filter"] == "ALL"){
-              $result = query("select slot.*,client.client_name from crypt_slot slot
+              $result = query("select slot.*,client.client_name, lease_date, date_expired from crypt_slot slot
                                 left join profile_list client
                                 on client.slot_number = slot.slot_id
                                 where crypt_slot_type = 'LAWN'");
             }
             else{
-              $result = query("select slot.*,client.client_name from crypt_slot slot
+              $result = query("select slot.*,client.client_name, lease_date, date_expired from crypt_slot slot
               left join profile_list client
               on client.slot_number = slot.slot_id
               where crypt_slot_type = 'LAWN'
               and lawn_type = ?", $_GET["filter"]);
             }
-        //    dump($result);
-            
         ?>
         <script>
             var json_Marker_3 = {
@@ -232,7 +237,6 @@
             "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
             "features": [
                 <?php
-              
                     foreach($result as $row){
                         if(isset($Deceased[$row["slot_id"]])):
                             $deceased = $Deceased[$row["slot_id"]];
@@ -241,7 +245,9 @@
                                 echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 echo '"Status": "OCCUPIED",';
                                 echo '"slot_number": "'.$row['slot_id'].'",';
+                                echo '"description": "<b>Lease:</b> '.$row["lease_date"].' - '.$row["date_expired"].'",';
                                 echo '"Name": "'.$row["client_name"].'",';
+                                echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
                             foreach($deceased as $d):
@@ -249,7 +255,9 @@
                                 echo '{ "type": "Feature", "properties": { ';
                                 echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 echo '"Status": "OCCUPIED",';
+                                echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b><br>Niche #: '.$row["slot_number"].'",';
                                 echo '"slot_number": "'.$row['slot_id'].'",';
+                                echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
                                 echo '"Name": "'.$d["deceased_name"].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
@@ -276,10 +284,26 @@
                             $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
                                 echo '"Status": "MAUSOLEUM",';
-                                echo '"Name": "'.$row["crypt_name"].'",'; 
+                                echo '"Name": "'.$row["crypt_name"].'",';
+                                echo '"link_url": "none",';
+                                echo '"description": "",'; 
                                 echo '"slot_number": "'.$row['crypt_id'].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                            if(isset($Deceased2[$row["crypt_id"]])):
+                                $deceased = $Deceased2[$row["crypt_id"]];
+                                foreach($deceased as $d):
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "MAUSOLEUM",';
+                                    echo '"Name": "'.$d["deceased_name"].'",';
+                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b><br>Mausoleum: '.$row["crypt_name"].'",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
                         endif;
                     endforeach;
                     foreach($bone as $row):
@@ -289,8 +313,25 @@
                             echo '"Status": "BONE",';
                             echo '"Name": "'.$row["crypt_name"].'",'; 
                             echo '"slot_number": "'.$row['crypt_id'].'",';
+                            echo '"link_url": "none",';
+                            echo '"description": "",';
                             echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
                             echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                            if(isset($Deceased2[$row["crypt_id"]])):
+                                $deceased = $Deceased2[$row["crypt_id"]];
+                                foreach($deceased as $d):
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "BONE",';
+                                    echo '"Name": "'.$d["deceased_name"].'",'; 
+                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b><br>Crypt: '.$row["crypt_name"].'<br>Row: '.$d["row_number"].' | Column: '.$d["column_number"].'<br>Crypt Number: '.$d["crypt_number"].'",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
+                        
                         endif;
                     endforeach;
                     foreach($coffin as $row):
@@ -298,10 +339,26 @@
                         $trim = str_replace('""', '', $row['coordinates']);
                             echo '{ "type": "Feature", "properties": { ';
                             echo '"Status": "COFFIN",';
-                            echo '"Name": "'.$row["crypt_name"].'",'; 
+                            echo '"Name": "'.$row["crypt_name"].'",';
+                            echo '"link_url": "none",';
+                            echo '"description": "",'; 
                             echo '"slot_number": "'.$row['crypt_id'].'",';
                             echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
                             echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                            if(isset($Deceased2[$row["crypt_id"]])):
+                                $deceased = $Deceased2[$row["crypt_id"]];
+                                foreach($deceased as $d):
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "COFFIN",';
+                                    echo '"Name": "'.$d["deceased_name"].'",'; 
+                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b><br>Crypt: '.$row["crypt_name"].'<br>Row: '.$d["row_number"].' | Column: '.$d["column_number"].'<br>Crypt Number: '.$d["crypt_number"].'",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
                         endif;
                     endforeach;
                     foreach($no_slot as $row):
@@ -600,22 +657,10 @@
                     },
                     success : function(data){
                         $('#myModal #modalBody').html(data);
-                        // swal.close();
                         $('#myModal').modal('show');
-                        // $(".select2").select2();//Show fetched data from database
                     }
                 });
-
                 }
-
-
-                
-
-
-
-                
-                // Open the modal
-                
             });
             setBounds();
              var searchControl = new L.Control.Search({
@@ -623,13 +668,15 @@
                 initial: false,
                 hideMarkerOnCollapse: false,
                 propertyName: 'Name'});
-            
                 searchControl.on('search:locationfound', function(e) {
                     // pop_Marker_3;
                     // alert("awit");
                 var feature = e.layer.feature;
                 var popupContent = '<h3>' + feature.properties.Name + '</h3>' +
-                                    '<p>' + feature.properties.description + '</p>';
+                                    '<p class="text-center">' + feature.properties.description + '</p>';
+                // console.log(feature.properties.link_url);
+                if(feature.properties.link_url != "none")
+                popupContent = popupContent + '<div class="text-center\"><a href="'+feature.properties.link_url+'" class="btn btn-primary btn-flat">Open Information</div>';
 
                 // Display the pop-up content
                 var popup = L.popup()
