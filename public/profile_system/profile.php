@@ -304,10 +304,23 @@
 				<h4 class="text-center">'.$crypt_slot[0]["lawn_type"].'</h4>
 				<h4 class="text-center">Niche | Lawn Number: '.$crypt_slot[0]["slot_number"].'</h4>
 				<div class="text-center"><a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
+				
+				<form method="post" action="profile">
+					<input type="hidden" name="action" value="convert_no_slot">
+					<input type="hidden" name="slot_number" value="'.$crypt_slot[0]["slot_id"].'">
+					<button class="btn btn-danger" type="submit">Make a No Slot</button>
+				</form>
+
+
 				';
 				echo($message);
 			endif;
 
+			elseif($_POST["action"] == "convert_no_slot"):
+				// dump($_POST);
+				query("update crypt_slot set crypt_slot_type = 'NO_SLOT', lawn_type=''
+						where slot_id = ?", $_POST["slot_number"]);
+				redirect("maps?filter=ALL");
 			elseif($_POST["action"] == "forward_cemetery"):
 				
 				$status = "";
