@@ -20,13 +20,13 @@
 				echo json_encode($res_arr); exit();
 		}
 		if($_POST["action"] == "modalSchedule"){
-		
+		// dump($_POST);
 
 			$schedule = query("select * from burial_schedule where schedule_id = ?", $_POST["schedule_id"]);
 			
 
 			$crypt_slot = query("select slot.*,
-			client.client_name,client.profile_id,client.client_address, 
+			concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name,client.profile_id,client.client_address, 
 			client.lease_date, client.date_expired,lease_status
 			 from crypt_slot slot
 								left join profile_list client

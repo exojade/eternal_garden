@@ -2,19 +2,33 @@
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "add_client"):
 
-			dump($_POST);
+			// dump($_POST);
+			$_POST["client_name"] = $_POST["first_name"] . " " . $_POST["last_name"];
 			if($_POST["crypt_slot_type"] == "LAWN"):
 			$profile_id = create_uuid("PROF");
 			$t = strtotime($_POST["lease_date"]);
 			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+			$requirements = "";
+			if(isset($_POST["requirements"]))
+			$requirements = serialize($_POST["requirements"]);
 			if (query("insert into profile_list 
-				(profile_id,client_name,email_address,client_address,client_contact,gender,id_presented,id_number,place_issued,
-					lease_date,date_expired,slot_number,lease_status
+				(
+					profile_id,
+					client_firstname,client_middlename,client_lastname,client_suffix,
+					client_contact,email_address,gender,
+					province,city_municipality,barangay,client_address,
+					id_presented,id_number,place_issued,
+					lease_date,date_expired,slot_number,lease_status,
+					requirements
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
-				$profile_id,$_POST["client_name"],$_POST["email_address"],$_POST["client_address"],$_POST["client_contact"],
-				$_POST["gender"],$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,
+				$_POST["first_name"],$_POST["middle_name"],$_POST["last_name"],$_POST["suffix"],
+				$_POST["client_contact"],$_POST["email_address"],$_POST["gender"],
+				$_POST["province"],$_POST["city_mun"],$_POST["barangay"],$_POST["client_address"],
+				$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
 				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["lease_status"],
+				$requirements
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
@@ -26,33 +40,64 @@
 			$profile_id = create_uuid("PROF");
 			$t = strtotime($_POST["lease_date"]);
 			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+
+			$requirements = "";
+			if(isset($_POST["requirements"]))
+			$requirements = serialize($_POST["requirements"]);
 			if (query("insert into profile_list 
-				(profile_id,client_name,email_address,client_address,client_contact,gender,id_presented,id_number,place_issued,
-					lease_date,date_expired,slot_number,occupant_type
+				(
+					profile_id,
+					client_firstname,client_middlename,client_lastname,client_suffix,
+					client_contact,email_address,gender,
+					province,city_municipality,barangay,client_address,
+					id_presented,id_number,place_issued,
+					lease_date,date_expired,slot_number,occupant_type,
+					requirements
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", 
-				$profile_id,$_POST["client_name"],$_POST["email_address"],$_POST["client_address"],$_POST["client_contact"],
-				$_POST["gender"],$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,
+				$_POST["first_name"],$_POST["middle_name"],$_POST["last_name"],$_POST["suffix"],
+				$_POST["client_contact"],$_POST["email_address"],$_POST["gender"],
+				$_POST["province"],$_POST["city_mun"],$_POST["barangay"],$_POST["client_address"],
+				$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
 				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["occupant_type"],
+				$requirements
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
 				}
-			else;
+				else;
+
+
+		
 				
 			elseif($_POST["crypt_slot_type"] == "BONE"):
 
 			$profile_id = create_uuid("PROF");
 			$t = strtotime($_POST["lease_date"]);
 			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+
+			$requirements = "";
+			if(isset($_POST["requirements"]))
+			$requirements = serialize($_POST["requirements"]);
 			if (query("insert into profile_list 
-				(profile_id,client_name,email_address,client_address,client_contact,gender,id_presented,id_number,place_issued,
-					lease_date,date_expired,slot_number
+				(
+					profile_id,
+					client_firstname,client_middlename,client_lastname,client_suffix,
+					client_contact,email_address,gender,
+					province,city_municipality,barangay,client_address,
+					id_presented,id_number,place_issued,
+					lease_date,date_expired,slot_number,
+					requirements
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
-				$profile_id,$_POST["client_name"],$_POST["email_address"],$_POST["client_address"],$_POST["client_contact"],
-				$_POST["gender"],$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
-				$_POST["lease_date"],$lease_expired,$_POST["slot_number"]
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,
+				$_POST["first_name"],$_POST["middle_name"],$_POST["last_name"],$_POST["suffix"],
+				$_POST["client_contact"],$_POST["email_address"],$_POST["gender"],
+				$_POST["province"],$_POST["city_mun"],$_POST["barangay"],$_POST["client_address"],
+				$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
+				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],
+				$requirements
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
@@ -66,25 +111,33 @@
 			// $lease_expired = date('Y-m-d', strtotime('+5 years', $t));
 			$_POST["lease_date"] = "NO EXPIRY";
 			$lease_expired = "NO EXPIRY";
+
+
+			$requirements = "";
+			if(isset($_POST["requirements"]))
+			$requirements = serialize($_POST["requirements"]);
 			if (query("insert into profile_list 
-				(profile_id,client_name,email_address,client_address,client_contact,gender,id_presented,id_number,place_issued,slot_number
+				(
+					profile_id,
+					client_firstname,client_middlename,client_lastname,client_suffix,
+					client_contact,email_address,gender,
+					province,city_municipality,barangay,client_address,
+					id_presented,id_number,place_issued,slot_number,
+					requirements
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?)", 
-				$profile_id,$_POST["client_name"],$_POST["email_address"],$_POST["client_address"],$_POST["client_contact"],
-				$_POST["gender"],$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],$_POST["slot_number"]
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,
+				$_POST["first_name"],$_POST["middle_name"],$_POST["last_name"],$_POST["suffix"],
+				$_POST["client_contact"],$_POST["email_address"],$_POST["gender"],
+				$_POST["province"],$_POST["city_mun"],$_POST["barangay"],$_POST["client_address"],
+				$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],$_POST["slot_number"],
+				$requirements
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
 				}
-			
 			endif;
 
-				
-
-
-
-
-			
 
 				$transaction_id = create_uuid("LOGS");
 				$message = $_POST["client_name"] . " availed LEASE from " . $_POST["lease_date"] . " to " . $lease_expired;
@@ -111,19 +164,29 @@
 			$datetime2 = new DateTime($_POST["date_of_death"]);
 			$interval = $datetime1->diff($datetime2);
 			$age = $interval->format('%y');
+
+			$requirements = "";
+			if(isset($_POST["requirements"]))
+			$requirements = serialize($_POST["requirements"]);
+
 			
 			if(!isset($_POST["interment_type"]))
 				$_POST["interment_type"] = "";
 
 			$deceased_id = create_uuid("DEC");
+			$_POST["deceased_name"] = $_POST["firstname"] . " " . $_POST["middlename"]. " " . $_POST["lastname"] . $_POST["suffix"];
 			if (query("insert into deceased_profile 
-				(deceased_id,deceased_name,birthdate,date_of_death,age_died,religion,gender,burial_date,
-					slot_number,burial_status,profile_id,interment_type
+				(deceased_id, deceased_name,
+				deceased_firstname,deceased_middlename,deceased_lastname,deceased_suffix,
+				birthdate,date_of_death,age_died,religion,gender,burial_date,
+					slot_number,burial_status,profile_id,interment_type,requirements
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", 
-				$deceased_id,$_POST["deceased_name"],$_POST["birthdate"],$_POST["date_of_death"],
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$deceased_id,$_POST["deceased_name"],$_POST["firstname"],$_POST["middlename"],$_POST["lastname"],
+				$_POST["suffix"],$_POST["birthdate"],$_POST["date_of_death"],
 				$age,$_POST["religion"],$_POST["gender"],"",
 				$_POST["slot_number"],"NO BURIAL DATE",$_POST["client_id"],$_POST["interment_type"],
+				$requirements
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
@@ -154,8 +217,8 @@
 
 		elseif($_POST["action"] == "modal_profile"):
 			// dump($_POST);
-			$crypt_slot = query("select slot.*,
-			client.client_name,client.profile_id,client.client_address, 
+			$crypt_slot = query("select slot.*, concat(client_firstname, ' ', client_middlename,
+			' ', client_lastname, ' ', client_suffix) as client_name,client.profile_id,client.client_address, 
 			client.lease_date, client.date_expired,lease_status
 			 from crypt_slot slot
 								left join profile_list client
@@ -246,11 +309,14 @@
 			endif;
 
 			elseif($_POST["action"] == "forward_cemetery"):
+				
 				$status = "";
 				$burial_date = "";
 				$burial_time = "";
 				if(isset($_POST["services"]))
 				$services = serialize($_POST["services"]);
+
+				// dump($services);
 				$client = query("select * from crypt_slot where slot_id = ?", $_POST["slot_number"]);
 				$client=$client[0];
 				$deceased = query("select * from deceased_profile where slot_number = ? and burial_status = 'NO BURIAL DATE'", $_POST["slot_number"]);
@@ -276,7 +342,6 @@
 					endif;
 				endif;
 
-				$services = "";
 				$schedule_id = create_uuid("SCHED");
 				if (query("insert into burial_schedule 
 				(profile_id,slot_number,remarks,schedule_id,services_availed,timestamp,date,time,burial_date,burial_time) 
@@ -315,12 +380,14 @@
 		// dump($profile);
 		if($_GET["action"] == "client_list"){
 
-			$profile = query("select p.*, s.slot_id, c.crypt_name, s.slot_number, s.row_number, s.column_number from profile_list p
+			$profile = query("select p.*, 
+			concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name,
+			s.slot_id, c.crypt_name, s.slot_number, s.row_number, s.column_number from profile_list p
 			left join crypt_slot s
 			on s.slot_id = p.slot_number
 			left join crypt_list c
 			on c.crypt_id = s.crypt_id");
-
+			// dump($_GET);
 			render("public/profile_system/profile_list.php",
 			[
 				"profile" => $profile,

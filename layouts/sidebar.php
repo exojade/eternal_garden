@@ -1,5 +1,8 @@
 <?php 
 $role = $_SESSION["eternal_garden"]["role"];
+
+$pending = query("select COUNT(*) as count from burial_schedule where remarks = 'FOR SCHEDULING'");
+$pend = $pending[0]["count"];
 ?>
 
 <aside class="main-sidebar">
@@ -29,7 +32,14 @@ $role = $_SESSION["eternal_garden"]["role"];
           <li><a href="profile?action=client_list"><i class="fa fa-users"></i> <span>Client Profile</span></a></li>
           <li><a href="profile?action=deceased_list"><i class="fa fa-users"></i> <span>Deceased Profile</span></a></li>
           <li><a href="users?action=list"><i class="fa fa-users"></i> <span>Users</span></a></li>
-          <li><a href="pending_burial?action=list"><i class="fa fa-exclamation-circle"></i> <span>Pending for Burial</span></a></li>
+          <?php if($pend != 0): ?>
+            <li><a href="pending_burial?action=list"><i class="fa fa-calendar"></i> <span>Pending for Burial</span>
+            <span class="pull-right-container">
+              <span class="label label-danger pull-right"><?php echo($pend); ?></span>
+            </span></a></li>
+          <?php else: ?>
+            <li><a href="pending_burial?action=list"><i class="fa fa-calendar"></i> <span>Pending for Burial</span></a></li>
+            <?php endif; ?>
           <?php
           $schedule = query("select COUNT(*) as count from burial_schedule where remarks = 'PENDING'");
           $sched = $schedule[0]["count"];
@@ -49,10 +59,8 @@ $role = $_SESSION["eternal_garden"]["role"];
       </ul>
 
       <?php elseif($role=="CEMETERY"): ?>
-
         <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-   
           <?php
           $schedule = query("select COUNT(*) as count from burial_schedule where remarks = 'PENDING'");
           $sched = $schedule[0]["count"];

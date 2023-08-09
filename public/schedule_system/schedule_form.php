@@ -243,7 +243,8 @@
       //Random default events
       events    : [
         <?php $schedule = query("select *,bs.burial_date as burial_date,
-                                bs.burial_time as burial_time
+                                bs.burial_time as burial_time,
+                                concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name
                                 from burial_schedule bs
                                   left join profile_list p
                                   on p.profile_id = bs.profile_id
@@ -266,18 +267,14 @@
         $minute = (int)$time[1];
         ?>
           {
-            title          : '<?php echo($s["deceased_name"]); ?>',
+            title          : '<?php echo($s["client_name"]); ?>',
             start          : new Date(<?php echo($year); ?>, <?php echo($month-1); ?>, <?php echo($day); ?>, <?php echo($hour); ?>, <?php echo($minute); ?>),
             end            : new Date(<?php echo($year); ?>, <?php echo($month-1); ?>, <?php echo($day); ?>, <?php echo($hour+1); ?>, <?php echo($minute); ?>),
             // url            : 'index',
             backgroundColor: '#f56954', //red
             borderColor    : '#f56954', //red
-            crypt_name    : '<?php echo($s["crypt_name"]); ?>', //red
             schedule_id    : '<?php echo($s["schedule_id"]); ?>', //red
-            row_number    : '<?php echo($s["row_number"]); ?>', //red
-            column_number    : '<?php echo($s["column_number"]); ?>', //red
-            dob    : '<?php echo(date('F d, Y', strtotime($s["deceased_dob"]))); ?>', //red
-            death_date    : '<?php echo(date('F d, Y', strtotime($s["deceased_date_death"]))); ?>', //red
+           
           },
         <?php endforeach; ?>
 

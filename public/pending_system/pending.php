@@ -5,8 +5,12 @@
 			$for_schedule = query("select * from burial_schedule where schedule_id = ?",$_POST["schedule_id"]);
 			$for_schedule = $for_schedule[0];
 			$deceased = query("select * from deceased_profile where slot_number = ? and burial_status = 'FOR SCHEDULING'", $for_schedule["slot_number"]);
-			query("update deceased_profile set burial_status = 'PENDING' where slot_number = ? and burial_status = 'FOR SCHEDULING'", $for_schedule["slot_number"]);
-			query("update burial_schedule set remarks = 'PENDING' where schedule_id = ?", $_POST["schedule_id"]);
+			query("update deceased_profile set burial_status = 'PENDING',
+					burial_date = ?, burial_time = ? where slot_number = ? and burial_status = 'FOR SCHEDULING'", 
+					$_POST["deceased_burial_date"], $_POST["deceased_burial_time"],$for_schedule["slot_number"]);
+			query("update burial_schedule set remarks = 'PENDING', 
+			burial_date=?, burial_time=? where schedule_id = ?", 
+			$_POST["deceased_burial_date"], $_POST["deceased_burial_time"],$_POST["schedule_id"]);
 			// dump($deceased);
 			$res_arr = [
 				"result" => "success",
@@ -19,7 +23,8 @@
 		endif;
     }
 	else {
-		$for_schedule = query("select *,bs.services_availed as services_availed from burial_schedule bs
+		$for_schedule = query("select *,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name,
+		bs.services_availed as services_availed from burial_schedule bs
 								left join profile_list profile
 								on bs.profile_id = profile.profile_id
 								where remarks = 'FOR SCHEDULING' order by date asc, time asc");

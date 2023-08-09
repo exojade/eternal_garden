@@ -67,7 +67,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Middle Name</label>
-                  <input required type="text" name="middle_name" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <input type="text" name="middle_name" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
               <div class="col-md-3">
@@ -79,7 +79,7 @@
               <div class="col-md-3">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Suffix</label>
-                  <input required type="text" name="suffix" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <input type="text" name="suffix" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
 </div>
@@ -137,7 +137,18 @@
                   </select>
                 </div>
               </div>
-
+</div>
+<hr>
+<div class="form-group">
+                <label>Requirements</label>
+                <select name="requirements[]" class="form-control select2" multiple="multiple" data-placeholder="Select Requirements Submitted"
+                        style="width: 100%;">
+                  <option value="Certificate of Residency">Certificate of Residency</option>
+                  <option value="Valid ID">Valid ID</option>
+                  <option value="2x2 Picture">2x2 Picture</option>
+                </select>
+              </div>
+<div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label for="exampleInputEmail1">ID Presented</label>
@@ -251,12 +262,31 @@
                 <input type="hidden" name="slot_number" value="<?php echo($_GET["slot"]) ?>">
                 <input type="hidden" name="client_id" value="<?php echo($client["profile_id"]) ?>">
               <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Deceased Name</label>
-                  <input required type="text" name="deceased_name" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <label for="exampleInputEmail1">First Name*</label>
+                  <input required type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Middle Name</label>
+                  <input  type="text" name="middlename" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Last Name*</label>
+                  <input required type="text" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Suffix</label>
+                  <input  type="text" name="suffix" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+
 
               <div class="col-md-6">
                 <div class="form-group">
@@ -288,6 +318,16 @@
                   <input required type="text" name="religion" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
+              <div class="col-md-12">
+              <div class="form-group">
+                <label>Requirements</label>
+                <select name="requirements[]" class="form-control select2" multiple data-placeholder="Select Requirements"
+                        style="width: 100%;">
+                  <option value="Death Certificate">Death Certificate</option>
+                </select>
+              </div>
+              </div>
+              
               <?php if($slot["crypt_slot_type"] == "LAWN"): ?>
                 <div class="col-md-12">
                 <div class="form-group">
@@ -388,9 +428,9 @@
           <div class="box box-primary">
             <div class="box-body box-profile">
               <img class="profile-user-img img-responsive img-circle" src="AdminLTE/dist/img/user4-128x128.jpg" alt="User profile picture">
-              <h3 class="profile-username text-center"><?php echo($client["client_name"]); ?></h3>
-              <p class="text-muted text-center"><?php echo($client["client_address"]); ?></p>
-              <p class="text-muted text-center"><?php echo($client["email_address"]); ?></p>
+              <h3 class="profile-username text-center"><?php echo($client["client_firstname"] . " " . $client["client_lastname"]); ?></h3>
+              <p class="text-muted text-center"><?php echo($client["client_address"] . ", " . $client["barangay"] . ", " . $client["city_municipality"]. ", " . $client["province"]); ?></p>
+              <p class="text-muted text-center"><?php echo($client["email_address"]); ?></p> 
               <ul class="list-group list-group-unbordered">
               <li class="list-group-item">
                   <b>Name</b> <a class="pull-right"><?php
@@ -703,6 +743,11 @@ $('#city_mun_select').change(function(){
         html += "<option value=" + barangay[key].mun_code  + ">" +barangay[key].name + "</option>"
     }
     document.getElementById("barangay_select").innerHTML = html;
+});
+
+$('#barangay_select').change(function(){
+    $('#true_barangay').val($( "#barangay_select option:selected" ).text());
+
 });
 
 </script>

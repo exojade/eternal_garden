@@ -203,7 +203,8 @@
 
 
 <?php
-$deceased_profile = query("select d.*, slot.crypt_id, slot.row_number, slot.column_number, slot.slot_number as crypt_number from deceased_profile d
+$deceased_profile = query("select d.*, slot.crypt_id, slot.row_number, slot.column_number, slot.slot_number as crypt_number 
+                            from deceased_profile d
                             left join crypt_slot slot
                             on slot.slot_id = d.slot_number
 ");
@@ -217,13 +218,13 @@ endforeach;
 // dump($Deceased);
 
             if($_GET["filter"] == "ALL"){
-              $result = query("select slot.*,client.client_name, lease_date, date_expired from crypt_slot slot
+              $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
                                 left join profile_list client
                                 on client.slot_number = slot.slot_id
                                 where crypt_slot_type = 'LAWN'");
             }
             else{
-              $result = query("select slot.*,client.client_name, lease_date, date_expired from crypt_slot slot
+              $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
               left join profile_list client
               on client.slot_number = slot.slot_id
               where crypt_slot_type = 'LAWN'

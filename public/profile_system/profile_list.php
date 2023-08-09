@@ -98,19 +98,29 @@
                   <th>Address</th>
                   <th>Crypt</th>
                   <th>Slot</th>
-                  <th>Client</th>
-                  <th>Fee</th>
+                  <th>Requirements</th>
+                  <th>Lease Date</th>
+                  <th>Lease Expiry</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach($profile as $p): ?>
                 <tr>
-                  <td><a data-toggle="modal" data-target="#modalProfile_<?php echo($p["profile_id"]); ?>" class="btn btn-primary">View</a></td>
-                  <td><?php echo($p["deceased_name"]); ?></td>
+                  <td><a href="profile?action=client_details&slot=<?php echo($p["slot_id"]); ?>" class="btn btn-primary">View</a></td>
+                  <td><?php echo($p["client_name"]); ?></td>
+                  <td><?php echo($p["client_address"].", " . $p["barangay"].",".$p["city_municipality"].",".$p["province"]); ?></td>
                   <td><?php echo($p["crypt_name"]); ?></td>
                   <td><?php echo($p["slot_number"]); ?></td>
-                  <td><?php echo($p["client_name"]); ?></td>
-                  <td><?php echo($p["total_fee"]); ?></td>
+                  <td><?php 
+                  $requirements="";
+                  if($p["requirements"] != "")
+                  $requirements = unserialize($p["requirements"]);
+                  foreach($requirements as $row):
+                    echo($row."<br>");
+                  endforeach;
+                  ?></td>
+                  <td><?php echo($p["lease_date"]); ?></td>
+                  <td><?php echo($p["date_expired"]); ?></td>
                 </tr>
                 <?php endforeach; ?>
                 </tbody>
