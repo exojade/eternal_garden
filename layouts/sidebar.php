@@ -17,7 +17,6 @@ $pend = $pending[0]["count"];
         </div>
       </div>
 
-
       <?php if($role == "ADMINISTRATOR"): ?>
         <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
