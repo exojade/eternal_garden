@@ -504,6 +504,7 @@
                     <th>Deceased Name</th>
                     <th>BirthDate</th>
                     <th>Date of Death</th>
+                    <th>Age Died</th>
                     <th>Burial Date</th>
                     <th>Burial Status</th>
                     <th>Remarks</th>
@@ -514,6 +515,7 @@
                             <td><?php echo($d["deceased_name"]); ?></td>
                             <td><?php echo($d["birthdate"]); ?></td>
                             <td><?php echo($d["date_of_death"]); ?></td>
+                            <td><?php echo($d["age_died"]); ?></td>
                             <td><?php echo($d["burial_date"]); ?></td>
                             <td><?php echo($d["burial_status"]); ?></td>
                             <td><?php echo($d["interment_type"]); ?></td>
