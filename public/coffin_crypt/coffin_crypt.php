@@ -4,10 +4,8 @@
 		if($_POST["action"] == "add_coffin_crypt"){
 			// dump($_POST);
 			$crypt_id = create_uuid("CRYPT");
-
 			$inserts = array();
         	$queryFormat = "('%s','%s','%s','%s','%s','%s','%s','%s')";
-
 			if (query("insert INTO crypt_list (crypt_id, crypt_name, crypt_type, crypt_rows, crypt_columns)
                         VALUES(?,?,?,?,?)", 
                         $crypt_id, $_POST["crypt_name"], "COFFIN", $_POST["crypt_rows"], $_POST["crypt_columns"]) === false){

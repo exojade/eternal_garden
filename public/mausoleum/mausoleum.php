@@ -4,9 +4,6 @@
 		if($_POST["action"] == "add_mausoleum"){
 			// dump($_POST);
 			$crypt_id = create_uuid("CRYPT");
-
-
-
 			if (query("insert INTO crypt_list (crypt_id, crypt_name, crypt_type)
                         VALUES(?,?,?)", 
                         $crypt_id, $_POST["crypt_name"], "MAUSOLEUM") === false){
@@ -19,6 +16,21 @@
                                 ];
                                 echo json_encode($res_arr); exit();
                         }
+
+			$crypt_slot_id = create_uuid("CRYPT_SLOT");
+			if (query("insert INTO crypt_slot (slot_id, crypt_id, active_status, crypt_slot_type)
+                        VALUES(?,?,?,?)", 
+                        $crypt_slot_id, $crypt_id, "VACANT", "MAUSOLEUM") === false){
+                            $res_arr = [
+                                "result" => "failed",
+                                "title" => "Failed",
+                                "message" => "Failed",
+                                // "link" => "appointment?action=list",
+                                // "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+                                ];
+                                echo json_encode($res_arr); exit();
+                        }
+
 		
 				$res_arr = [
 					"result" => "success",
