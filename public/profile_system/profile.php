@@ -310,19 +310,15 @@
 					<input type="hidden" name="slot_number" value="'.$crypt_slot[0]["slot_id"].'">
 					<button class="btn btn-danger" type="submit">Make a No Slot</button>
 				</form>
-
-
 				';
 				echo($message);
 			endif;
-
 			elseif($_POST["action"] == "convert_no_slot"):
 				// dump($_POST);
 				query("update crypt_slot set crypt_slot_type = 'NO_SLOT', lawn_type=''
 						where slot_id = ?", $_POST["slot_number"]);
 				redirect("maps?filter=ALL");
 			elseif($_POST["action"] == "forward_cemetery"):
-				
 				$status = "";
 				$burial_date = "";
 				$burial_time = "";

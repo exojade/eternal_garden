@@ -17,7 +17,7 @@
 
   <section class="content-header">
       <h1>
-        Profile
+        Deceased Profile
       <a class="btn btn-primary pull-right btn-flat" data-toggle="modal" data-target="#modal_add_crypt">Add Crypt</a>
       </h1>
     </section>
