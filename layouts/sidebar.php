@@ -27,7 +27,7 @@ $pend = $pending[0]["count"];
           <li><a href="coffin_crypt?action=list"><i class="fa fa-building"></i> <span>Coffin Crypt</span></a></li>
           <li><a href="bone_crypt?action=list"><i class="fa fa-bone"></i> <span>Bone Crypt</span></a></li>
           
-          <li><a href="lawn?action=list"><i class="fa fa-cross"></i> <span>Lawn</span></a></li>
+          <!-- <li><a href="lawn?action=list"><i class="fa fa-cross"></i> <span>Lawn</span></a></li> -->
           <li><a href="mausoleum?action=list"><i class="fa fa-home"></i> <span>Mausoleum</span></a></li>
           <li><a href="profile?action=client_list"><i class="fa fa-users"></i> <span>Client Profile</span></a></li>
           <li><a href="profile?action=deceased_list"><i class="fa fa-users"></i> <span>Deceased Profile</span></a></li>
@@ -87,7 +87,7 @@ $pend = $pending[0]["count"];
           <li><a href="index"><i class="fa fa-circle"></i> <span>Main</span></a></li>
           <li><a href="coffin_crypt?action=list"><i class="fa fa-building"></i> <span>Coffin Crypt</span></a></li>
           <li><a href="bone_crypt?action=list"><i class="fa fa-bone"></i> <span>Bone Crypt</span></a></li>
-          <li><a href="lawn?action=list"><i class="fa fa-cross"></i> <span>Lawn</span></a></li>
+          <!-- <li><a href="lawn?action=list"><i class="fa fa-cross"></i> <span>Lawn</span></a></li> -->
           <li><a href="mausoleum?action=list"><i class="fa fa-home"></i> <span>Mausoleum</span></a></li>
           <li><a href="profile?action=list"><i class="fa fa-users"></i> <span>Profile</span></a></li>
       </ul>
