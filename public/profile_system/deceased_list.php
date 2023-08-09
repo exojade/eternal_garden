@@ -18,76 +18,9 @@
   <section class="content-header">
       <h1>
         Deceased Profile
-      <a class="btn btn-primary pull-right btn-flat" data-toggle="modal" data-target="#modal_add_crypt">Add Crypt</a>
       </h1>
     </section>
     <section class="content">
-
-    <?php foreach($profile as $p):?>
-      <div class="modal fade" id="modalProfile_<?php echo($p["profile_id"]); ?>">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content ">
-              <div class="modal-header bg-primary">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title text-center">Profile Information</h3>
-              </div>
-              <div class="modal-body">
-
-              <div class="form-group">
-              <label>Deceased Name</label>
-							<input type="text" readonly class="form-control" value="<?php echo($p["deceased_name"]); ?>">
-						</div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Date of Birth</label>
-                  <input type="text" readonly class="form-control" value="<?php  echo(date('F d, Y', strtotime($p["deceased_dob"]))); ?>">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Date of Death</label>
-                  <input type="text" readonly class="form-control" value="<?php echo(date('F d, Y', strtotime($p["deceased_date_death"]))); ?>">
-                </div>
-              </div>
-            </div>
-
-
-            <div class="form-group">
-              <label>Crypt Name</label>
-							<input type="text" readonly class="form-control" value="<?php echo($p["crypt_name"]); ?>">
-						</div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Row</label>
-                  <input type="text" readonly class="form-control" value="<?php  echo($p["row_number"]); ?>">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Column</label>
-                  <input type="text" readonly class="form-control" value="<?php echo($p["column_number"]); ?>">
-                </div>
-              </div>
-            </div>
-            <a href="profile?action=details&id=<?php echo($p["slot_id"]); ?>" class="btn btn-block btn-primary">Open Crypt Details</a>
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-outline">Save changes</button>
-              </div>
-            </div>
-          </div>
-      </div>
-
-    <?php endforeach; ?>
-
-
-
-
     <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
@@ -96,21 +29,28 @@
                 <tr>
                   <th>Action</th>
                   <th>Deceased</th>
+                  <th>BirthDate</th>
+                  <th>Date of Death</th>
+                  <th>Age of Death</th>
+                  <th>Burial Information</th>
                   <th>Crypt</th>
                   <th>Slot</th>
                   <th>Client</th>
-                  <th>Fee</th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach($profile as $p): ?>
+                <?php foreach($deceased_profile as $p): ?>
                 <tr>
-                  <td><a data-toggle="modal" data-target="#modalProfile_<?php echo($p["profile_id"]); ?>" class="btn btn-primary">View</a></td>
-                  <td><?php echo($p["deceased_name"]); ?></td>
+                  <td><a href="profile?action=client_details&slot=<?php echo($p["slot_id"]); ?>" class="btn btn-primary">View</a></td>
+                  <td><?php echo($p["deceased_firstname"] . " " . $p["deceased_middlename"] . " " . $p["deceased_lastname"] . " " . $p["deceased_suffix"]); ?></td>
+                  <td><?php echo($p["birthdate"]); ?></td>
+                  <td><?php echo($p["date_of_death"]); ?></td>
+                  <td><?php echo($p["age_died"]); ?></td>
+                  <td><?php echo($p["burial_date"] . " | " . $p["burial_time"]); ?></td>
                   <td><?php echo($p["crypt_name"]); ?></td>
                   <td><?php echo($p["slot_number"]); ?></td>
-                  <td><?php echo($p["client_name"]); ?></td>
-                  <td><?php echo($p["total_fee"]); ?></td>
+                  <td><?php echo($p["client_firstname"] . " " . $p["client_middlename"] . " " . $p["client_lastname"] . " " . $p["client_suffix"]); ?></td>
+                  
                 </tr>
                 <?php endforeach; ?>
                 </tbody>

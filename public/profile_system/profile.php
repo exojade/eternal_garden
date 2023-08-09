@@ -404,9 +404,22 @@
 		}
 
 		if($_GET["action"] == "deceased_list"){
+
+			$deceased_profile = query("
+			select * from deceased_profile d
+			left join profile_list p
+			on d.profile_id = p.profile_id
+			left join crypt_slot cs
+			on cs.slot_id = d.slot_number
+			left join crypt_list as c
+			on c.crypt_id = cs.crypt_id
+			order by d.burial_date desc, d.burial_time desc
+			");
+
+
 			render("public/profile_system/deceased_list.php",
 			[
-				"profile" => $profile,
+				"deceased_profile" => $deceased_profile,
 			]);
 		}
 
