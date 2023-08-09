@@ -407,7 +407,7 @@
 		if($_GET["action"] == "deceased_list"){
 
 			$deceased_profile = query("
-			select * from deceased_profile d
+			select *,d.gender as gender from deceased_profile d
 			left join profile_list p
 			on d.profile_id = p.profile_id
 			left join crypt_slot cs

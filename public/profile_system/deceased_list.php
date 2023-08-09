@@ -30,6 +30,7 @@
                   <th rowspan="2">Action</th>
                   <th rowspan="2">Deceased</th>
                   <th rowspan="2">BirthDate</th>
+                  <th rowspan="2">Gender</th>
                   <th rowspan="2">Date of Death</th>
                   <th rowspan="2">Age of Death</th>
                   <th colspan="2">Burial</th>
@@ -49,6 +50,7 @@
                   <td><a href="profile?action=client_details&slot=<?php echo($p["slot_id"]); ?>" class="btn btn-primary">View</a></td>
                   <td><?php echo($p["deceased_firstname"] . " " . $p["deceased_middlename"] . " " . $p["deceased_lastname"] . " " . $p["deceased_suffix"]); ?></td>
                   <td><?php echo($p["birthdate"]); ?></td>
+                  <td><?php echo($p["gender"]); ?></td>
                   <td><?php echo($p["date_of_death"]); ?></td>
                   <td><?php echo($p["age_died"]); ?></td>
                   <td><?php echo($p["burial_date"] . " | " . $p["burial_time"]); ?></td>
