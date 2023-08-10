@@ -164,27 +164,16 @@
 				';
 				echo($message);
 			endif;
-
-			
-				
-				
 		endif;
-
-
-		
-		
-		
     }
 	else {
-	
-			$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
+
+			if($_GET["action"] == "map_details"):
+				$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
 			$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
 			$bone = query("select * from crypt_list where crypt_type = 'BONE'");
 			$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
-
 			$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
-
-
 			render("public/maps_system/maps_details.php",
 			[
 				"lawn" => $lawn,
@@ -193,6 +182,24 @@
 				"bone" => $bone,
 				"no_slot" => $no_slot,
 			]);
-	
+
+			elseif($_GET["action"] == "public_map"):
+				$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
+			$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
+			$bone = query("select * from crypt_list where crypt_type = 'BONE'");
+			$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
+			$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
+			renderview("public/maps_system/public_map.php",
+			[
+				"lawn" => $lawn,
+				"coffin" => $coffin,
+				"mausoleum" => $mausoleum,
+				"bone" => $bone,
+				"no_slot" => $no_slot,
+			]);
+
+			endif;
+
+			
 	}
 ?>

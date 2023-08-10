@@ -296,6 +296,7 @@
     }
 
     function renderview($template, $values = []) {
+        extract($values);
         require("$template");
     }
 	

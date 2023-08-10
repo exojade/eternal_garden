@@ -285,10 +285,7 @@
 						$message = $message . '<td>'.$d["gender"].'</td>';
 						$message = $message . '<td>'.$d["religion"].'</td>';
 					$message = $message . '</tr>';
-
 				endforeach;
-
-
 			$message=$message.'
 			</table>
 			<a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn btn-primary btn-flat">Open Information</a>

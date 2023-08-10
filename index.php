@@ -14,7 +14,7 @@
 		$request = explode('/',$request);
 		$request = $request[1];
 		
-		$countering = array("login", "register", "print");
+		$countering = array("login", "register", "print", "maps", "profile");
 		
 		if (!in_array($request, $countering)){
 			if(empty($_SESSION["eternal_garden"]["userid"]) && empty($_SESSION["eternal_garden"]["application"])){
@@ -79,6 +79,12 @@
 
 			else if ($request == 'print')
 					require 'public/print_system/print.php';
+
+			else if ($request == 'maps')
+					require 'public/maps_system/maps.php';
+
+			else if ($request == 'profile')
+					require 'public/profile_system/profile.php';
 		}
 		
 		
