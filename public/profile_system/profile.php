@@ -286,10 +286,13 @@
 						$message = $message . '<td>'.$d["religion"].'</td>';
 					$message = $message . '</tr>';
 				endforeach;
-			$message=$message.'
-			</table>
-			<a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn btn-primary btn-flat">Open Information</a>
-			';
+			if(!isset($_POST["public"])):
+				$message=$message.'
+				</table>
+				<a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn btn-primary btn-flat">Open Information</a>
+				';
+			endif;
+			
 			echo($message);
 			else:
 
@@ -299,14 +302,20 @@
 				<h3 class="text-center">THIS LAWN IS STILL VACANT</h3>
 				<h4 class="text-center">'.$crypt_slot[0]["lawn_type"].'</h4>
 				<h4 class="text-center">Niche | Lawn Number: '.$crypt_slot[0]["slot_number"].'</h4>
-				<div class="text-center"><a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
-				<br>
-				<form method="post" action="profile" class="text-center">
-					<input type="hidden" name="action" value="convert_no_slot">
-					<input type="hidden" name="slot_number" value="'.$crypt_slot[0]["slot_id"].'">
-					<button class="btn btn-danger" type="submit">Make a No Slot</button>
-				</form>
 				';
+
+				if(!isset($_POST["public"])):
+					$message = $message . '
+					<div class="text-center"><a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
+					<br>
+					<form method="post" action="profile" class="text-center">
+						<input type="hidden" name="action" value="convert_no_slot">
+						<input type="hidden" name="slot_number" value="'.$crypt_slot[0]["slot_id"].'">
+						<button class="btn btn-danger" type="submit">Make a No Slot</button>
+					</form>
+					';
+				endif;
+				
 				echo($message);
 			endif;
 			elseif($_POST["action"] == "convert_no_slot"):

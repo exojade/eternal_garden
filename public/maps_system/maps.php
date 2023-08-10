@@ -81,10 +81,11 @@
           </div>
 				';
 
-
+				if(!isset($_POST["public"])):
 				$message = $message . '
 				<div class="text-center"><a target="_blank" href="coffin_crypt?action=details&id='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
 				';
+				endif;
 				echo($message);
 
 			elseif($crypt["crypt_type"] == "BONE"):
@@ -124,10 +125,11 @@
           </div>
 				';
 
-
+				if(!isset($_POST["public"])):
 				$message = $message . '
 				<div class="text-center"><a target="_blank" href="bone_crypt?action=details&id='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
 				';
+				endif;
 				echo($message);
 
 			elseif($crypt["crypt_type"] == "MAUSOLEUM"):
@@ -158,10 +160,11 @@
 			  </div>
 				';
 				
-				
+				if(!isset($_POST["public"])):
 				$message = $message.'
 				<div class="text-center"><a target="_blank" href="profile?action=client_details&slot='.$crypt_slot[0]["slot_id"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
 				';
+				endif;
 				echo($message);
 			endif;
 		endif;

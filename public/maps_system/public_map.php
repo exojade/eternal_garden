@@ -1,3 +1,5 @@
+<?php $public = "public"; ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -692,7 +694,8 @@ endforeach;
                     type : 'post',
                     url : 'maps',
                     data: {
-                        slot_number: properties.slot_number, action: "modal_crypt_profile"
+                        slot_number: properties.slot_number, action: "modal_crypt_profile",
+                        public: "public"
                     },
                     success : function(data){
                         $('#myModal #modalBody').html(data);
@@ -709,7 +712,8 @@ endforeach;
                     type : 'post',
                     url : 'profile',
                     data: {
-                        slot_number: properties.slot_number, action: "modal_profile"
+                        slot_number: properties.slot_number, action: "modal_profile",
+                        public: "public"
                     },
                     success : function(data){
                         $('#myModal #modalBody').html(data);
@@ -731,8 +735,10 @@ endforeach;
                 var popupContent = '<h3>' + feature.properties.Name + '</h3>' +
                                     '<p class="text-center">' + feature.properties.description + '</p>';
                 // console.log(feature.properties.link_url);
-                if(feature.properties.link_url != "none")
-                popupContent = popupContent + '<div class="text-center\"><a href="'+feature.properties.link_url+'" class="btn btn-primary btn-flat">Open Information</div>';
+                
+             
+                
+                
 
                 // Display the pop-up content
                 var popup = L.popup()
