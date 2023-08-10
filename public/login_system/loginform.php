@@ -111,7 +111,7 @@ background-image: url('resources/eternal_bg.jpg');
 
    <br>
    <br>
-    <a href="register" class="text-center">Register here</a>
+    <a href="maps?action=public_map&filter=ALL" class="text-center">Public View Map</a>
 
   </div>
   <!-- /.login-box-body -->
