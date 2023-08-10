@@ -2,7 +2,7 @@
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "filter_lawn"){
 			// dump($_POST);
-			$link = "maps?filter=".$_POST["filter"]."";
+			$link = "maps?action=map_details&crypt_type=LAWN&filter=".$_POST["filter"]."";
 			// dump($link);
 			$res_arr = [
 				"result" => "success",
@@ -170,13 +170,23 @@
 		endif;
     }
 	else {
-
 			if($_GET["action"] == "map_details"):
-				$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
-			$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
-			$bone = query("select * from crypt_list where crypt_type = 'BONE'");
-			$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
-			$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
+				$mausoleum = [];
+				$coffin = [];
+				$bone = [];
+				$lawn = [];
+				$no_slot = [];
+
+				if($_GET["crypt_type"] == "COFFIN"):
+					$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
+				elseif($_GET["crypt_type"] == "BONE"):
+					$bone = query("select * from crypt_list where crypt_type = 'BONE'");
+				elseif($_GET["crypt_type"] == "LAWN"):
+					$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
+					$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
+				elseif($_GET["crypt_type"] == "MAUSOLEUM"):
+					$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
+				endif;
 			render("public/maps_system/maps_details.php",
 			[
 				"lawn" => $lawn,
@@ -185,9 +195,8 @@
 				"bone" => $bone,
 				"no_slot" => $no_slot,
 			]);
-
 			elseif($_GET["action"] == "public_map"):
-				$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
+			$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
 			$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
 			$bone = query("select * from crypt_list where crypt_type = 'BONE'");
 			$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");

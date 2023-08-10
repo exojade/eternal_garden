@@ -36,6 +36,9 @@
 				else if ($request == 'maps')
 					require 'public/maps_system/maps.php';
 
+				else if ($request == 'burial_space')
+					require 'public/burial_space_system/burial_space.php';
+
 
 				else if ($request == 'coffin_crypt')
 					require 'public/coffin_crypt/coffin_crypt.php';

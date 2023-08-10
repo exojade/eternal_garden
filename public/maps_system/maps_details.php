@@ -124,19 +124,22 @@
 </div>
     <div class="row">
                     <div class="col-sm-6">
-                    <h3>Legend:</h3>
-                        <p><i class="fa fa-square text-vacant"></i> Vacant</p>
-                        <p><i class="fa fa-square text-occupied"></i> Occupied</p>
-                        <p><i class="fa fa-square text-coffin"></i> Coffin Crypt</p>
-                        <p><i class="fa fa-square text-mausoleum"></i> Mausoleum</p>
-                        <p><i class="fa fa-square text-bone"></i> Bone Crypt</p>
-                        <p><i class="fa fa-square text-no_slot"></i> No Slot</p>
+                        <div style="margin-top:7px;">
+                        <span><i class="fa fa-square text-vacant"></i> Vacant</span>
+                        <span><i class="fa fa-square text-occupied"></i> Occupied</span>
+                        <span><i class="fa fa-square text-coffin"></i> Coffin Crypt</span>
+                        <span><i class="fa fa-square text-mausoleum"></i> Mausoleum</span>
+                        <span><i class="fa fa-square text-bone"></i> Bone Crypt</span>
+                        <span><i class="fa fa-square text-no_slot"></i> No Slot</span>
+                    </div>
                     </div>
                     <div class="col-sm-6">
-                      <form class="generic_form" data-url="maps">
+                        <div class="row">
+                            <div class="col-md-8">
+                            <form class="generic_form" data-url="maps">
                         <input type="hidden" name="action" value="filter_lawn">
                         <input type="hidden" name="id" value="<?php echo($_GET["id"]); ?>">
-                        <label>Filter</label>
+                      
                         <select class="form-control" name="filter">
                            <option value="<?php echo($_GET["filter"]); ?>"><?php echo($_GET["filter"]); ?></option>
                            <option value="ALL">ALL</option>
@@ -150,10 +153,16 @@
                            <option value="CORNER">CORNER</option>
                            <option></option>
                         </select>
-                        <button class="btn btn-primary" type="submit">Filter</button>
-                      </form>
+                            </div>
+                            <div class="col-md-4">
+                                     <button class="btn btn-primary btn-block btn-flat" type="submit">Filter</button>
+                                     </form>
+                            </div>
+                        </div>
+                      
                     </div>
                 </div>
+                <br>
     <div id="map" style="border: 1px solid black; width: 99%; height: 600px;">
                                 <div id="loading">
                                     <img id="loading-image" class="mx-auto" src="gravekeeper/Preloader_3.gif" alt="Loading..." />
@@ -217,19 +226,22 @@ foreach($deceased_profile as $d):
 endforeach;
 // dump($Deceased);
 
-            if($_GET["filter"] == "ALL"){
-              $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
-                                left join profile_list client
-                                on client.slot_number = slot.slot_id
-                                where crypt_slot_type = 'LAWN'");
-            }
-            else{
-              $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
-              left join profile_list client
-              on client.slot_number = slot.slot_id
-              where crypt_slot_type = 'LAWN'
-              and lawn_type = ?", $_GET["filter"]);
-            }
+$result=[];
+            if($_GET["crypt_type"] == "LAWN"):
+                if($_GET["filter"] == "ALL"){
+                $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
+                                    left join profile_list client
+                                    on client.slot_number = slot.slot_id
+                                    where crypt_slot_type = 'LAWN'");
+                }
+                else{
+                $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
+                left join profile_list client
+                on client.slot_number = slot.slot_id
+                where crypt_slot_type = 'LAWN'
+                and lawn_type = ?", $_GET["filter"]);
+                }
+            endif;
         ?>
         <script>
             var json_Marker_3 = {
