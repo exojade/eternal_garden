@@ -1,7 +1,6 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "add_client"):
-
 			// dump($_POST);
 			$_POST["client_name"] = $_POST["first_name"] . " " . $_POST["last_name"];
 			if($_POST["crypt_slot_type"] == "LAWN"):
@@ -471,7 +470,6 @@
 			}
 
 			else{
-
 				$profiles = query("select * from profile_list p
 								left join crypt_slot s
 								on s.slot_id = p.slot_number
@@ -481,21 +479,12 @@
 								on t.transaction_id = p.current_transaction_id
 								where p.slot_number = ?", $_GET["id"]);
 								// dump($profiles);
-			
 			render("public/profile_system/profile_details.php",
 			[
 				"profiles" => $profiles,
 			]);
-
 			}
-
-
-			
-			
-			
 		}
-
-
 		if($_GET["action"] == "client_details"){
 			$client = query("select * from profile_list where slot_number = ?", $_GET["slot"]);
 			if(!empty($client)):
@@ -508,16 +497,9 @@
 							left join crypt_list as crypt
 							on slot.crypt_id = crypt.crypt_id
 							where slot.slot_id = ?", $_GET["slot"]);
-
 			$slot = $slot[0];
-
-
-			// $lawn_lots = query("select * from crypt_slot where crypt_id = ?", $_GET["slot"]);
-			// dump($crypt_slots);
 			render("public/profile_system/client_details.php",
 			[
-				// "lawn" => $lawn,
-				// "lawn_lots" => $lawn_lots,
 				"client" => $client,
 				"deceased" => $deceased,
 				"slot" => $slot,

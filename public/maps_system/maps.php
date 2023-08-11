@@ -176,17 +176,48 @@
 				$bone = [];
 				$lawn = [];
 				$no_slot = [];
+				$Clients = [];
+				$Crypt_slot = [];
+				
+				$clients = query("select concat(
+									client_firstname, ' ', 
+									client_middlename, ' ',
+									client_lastname, ' ',
+									client_suffix, ' '
+									) as client_name, profile_id from profile_list");
+				foreach($clients as $c):
+					$Clients[$c["profile_id"]] = $c;
+				endforeach;
 
 				if($_GET["crypt_type"] == "COFFIN"):
-					$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
+					$coffin = query("
+						select * from crypt_list where crypt_type = 'COFFIN'
+					");
+					$crypt_slot = query("select * from crypt_slot where crypt_slot_type = ?", $_GET["crypt_type"]);
+					foreach($crypt_slot as $c):
+						if($c["occupied_by"] != "")
+							$Crypt_slot[$c["crypt_id"]][$c["occupied_by"]] = $c;
+					endforeach;
 				elseif($_GET["crypt_type"] == "BONE"):
 					$bone = query("select * from crypt_list where crypt_type = 'BONE'");
+					$crypt_slot = query("select * from crypt_slot where crypt_slot_type = ?", $_GET["crypt_type"]);
+					foreach($crypt_slot as $c):
+						if($c["occupied_by"] != "")
+							$Crypt_slot[$c["crypt_id"]][$c["occupied_by"]] = $c;
+					endforeach;
 				elseif($_GET["crypt_type"] == "LAWN"):
 					$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
 					$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
 				elseif($_GET["crypt_type"] == "MAUSOLEUM"):
 					$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
+					$crypt_slot = query("select * from crypt_slot where crypt_slot_type = ?", $_GET["crypt_type"]);
+					foreach($crypt_slot as $c):
+						if($c["occupied_by"] != "")
+							$Crypt_slot[$c["crypt_id"]][$c["occupied_by"]] = $c;
+					endforeach;
 				endif;
+
+				// dump($Clients);
 			render("public/maps_system/maps_details.php",
 			[
 				"lawn" => $lawn,
@@ -194,6 +225,8 @@
 				"mausoleum" => $mausoleum,
 				"bone" => $bone,
 				"no_slot" => $no_slot,
+				"Clients" => $Clients,
+				"Crypt_slot" => $Crypt_slot,
 			]);
 			elseif($_GET["action"] == "public_map"):
 			$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
