@@ -202,6 +202,8 @@
   <script src="gravekeeper/webmap/js/labels.js"></script>
   <script src="gravekeeper/webmap/js/leaflet-search.js"></script>
   <script src="gravekeeper/webmap/data/CemeteryCircumference_1.js"></script>
+  <script src="gravekeeper/webmap/data/CemeteryCoffinCryptCircumference.js"></script>
+  <script src="gravekeeper/webmap/data/CemeteryBoneCryptCircumference.js"></script>
   <script src="gravekeeper/webmap/data/road_2.js"></script>
   <script>
         $(window).on('load', function () {
@@ -437,12 +439,13 @@ $result=[];
 
         <script>
             var map = L.map('map', {
-                zoomControl:true, maxZoom:21, minZoom:20
+                zoomControl:true, maxZoom:21, minZoom:19
             }).fitBounds([[6.913597497117801,122.13930750978687],[6.914359146460475,122.14088332323063]]);
+        // }).fitBounds([[7.31848,125.66304],[7.31848,125.66304]]);
             var hash = new L.Hash(map);
             map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
             var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-            L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+            L.control.locate({locateOptions: {maxZoom: 21}}).addTo(map);
             var bounds_group = new L.featureGroup([]);
             function setBounds() {
             }
@@ -456,7 +459,7 @@ $result=[];
                 minZoom: 19,
                 maxZoom: 21,
                 minNativeZoom: 0,
-                maxNativeZoom: 19
+                maxNativeZoom: 21
             });
             layer_GoogleSatellite_0;
             map.addLayer(layer_GoogleSatellite_0);
@@ -501,6 +504,81 @@ $result=[];
             });
             bounds_group.addLayer(layer_CemeteryCircumference_1);
             map.addLayer(layer_CemeteryCircumference_1);
+
+
+
+            function style_CemeteryCoffinCryptCircumference() {
+                return {
+                    pane: 'pane_CemeteryCoffinCryptCircumference',
+                    opacity: 1,
+                    color: 'rgba(35,35,35,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.0, 
+                    fill: true,
+                    fillOpacity: .6,
+                    // fillColor: 'rgba(114,155,111,1.0)',
+                    fillColor: '#858796',
+                    // fillColor: '#53CC9D',
+                    interactive: true,
+                }
+            }
+            map.createPane('pane_CemeteryCoffinCryptCircumference');
+            map.getPane('pane_CemeteryCoffinCryptCircumference').style.zIndex = 401;
+            map.getPane('pane_CemeteryCoffinCryptCircumference').style['mix-blend-mode'] = 'normal';
+            var layer_CemeteryCoffinCryptCircumference = new L.geoJson(json_CemeteryCoffinCryptCircumference, {
+                attribution: '',
+                interactive: true,
+                dataVar: 'json_CemeteryCoffinCryptCircumference',
+                layerName: 'layer_CemeteryCoffinCryptCircumference',
+                pane: 'pane_CemeteryCoffinCryptCircumference',
+                // onEachFeature: pop_CemeteryCoffinCryptCircumference,
+                style: style_CemeteryCoffinCryptCircumference,
+            });
+            bounds_group.addLayer(layer_CemeteryCoffinCryptCircumference);
+            map.addLayer(layer_CemeteryCoffinCryptCircumference);
+
+
+
+            function style_CemeteryBoneCryptCircumference() {
+                return {
+                    pane: 'pane_CemeteryBoneCryptCircumference',
+                    opacity: 1,
+                    color: 'rgba(35,35,35,1.0)',
+                    dashArray: '',
+                    lineCap: 'butt',
+                    lineJoin: 'miter',
+                    weight: 1.0, 
+                    fill: true,
+                    fillOpacity: .6,
+                    // fillColor: 'rgba(114,155,111,1.0)',
+                    fillColor: '#858796',
+                    // fillColor: '#53CC9D',
+                    interactive: true,
+                }
+            }
+            map.createPane('pane_CemeteryBoneCryptCircumference');
+            map.getPane('pane_CemeteryBoneCryptCircumference').style.zIndex = 401;
+            map.getPane('pane_CemeteryBoneCryptCircumference').style['mix-blend-mode'] = 'normal';
+            var layer_CemeteryBoneCryptCircumference = new L.geoJson(json_CemeteryBoneCryptCircumference, {
+                attribution: '',
+                interactive: true,
+                dataVar: 'json_CemeteryBoneCryptCircumference',
+                layerName: 'layer_CemeteryBoneCryptCircumference',
+                pane: 'pane_CemeteryBoneCryptCircumference',
+                // onEachFeature: pop_CemeteryCoffinCryptCircumference,
+                style: style_CemeteryBoneCryptCircumference,
+            });
+            bounds_group.addLayer(layer_CemeteryBoneCryptCircumference);
+            map.addLayer(layer_CemeteryBoneCryptCircumference);
+
+
+
+
+
+
+
             function pop_road_2(feature, layer) {
                 var popupContent = '<table>\
                         <tr>\
