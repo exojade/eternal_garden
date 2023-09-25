@@ -24,7 +24,7 @@
 				"result" => "success",
 				"title" => "Success",
 				"message" => "Success on adding Data",
-				"link" => $link,
+				"link" => "refresh",
 				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 				];
 				echo json_encode($res_arr); exit();
@@ -168,6 +168,42 @@
 				echo($message);
 			endif;
 		endif;
+
+		if($_POST["action"] == "add_lot"):
+			$crypt_id = "CRYPT-796caa375ef68-230525";
+			$slot_id = create_uuid("CRYPT_SLOT");
+			$coordinates = $_POST["longitude"] . ", " . $_POST["latitude"];
+			if (query("insert INTO crypt_slot 
+				(slot_id,crypt_id,active_status,coordinates,lawn_type,crypt_slot_type) 
+				VALUES(?,?,?,?,?,?)", 
+				$slot_id,$crypt_id,"VACANT",$coordinates, $_POST["lawn_type"], "LAWN") === false)
+				{
+					
+				}
+				$res_arr = [
+					"result" => "success",
+					"title" => "Success",
+					"message" => "Success on adding Data",
+					"link" => "refresh",
+					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+					];
+					echo json_encode($res_arr); exit();
+		endif;
+
+		if($_POST["action"] == "remove_slot"):
+			// dump($_POST);
+
+			query("delete from crypt_slot where slot_id = ?", $_POST["slot_id"]);
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on adding Data",
+				"link" => "refresh",
+				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+				];
+				echo json_encode($res_arr); exit();
+		endif;
+
     }
 	else {
 			if($_GET["action"] == "map_details"):

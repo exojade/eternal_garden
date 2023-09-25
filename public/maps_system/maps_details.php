@@ -72,9 +72,54 @@
   <section class="content-header">
       <h1>
         Map Details
+        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal-add_lot" style="float:right;">Add Lot</a>
       </h1>
     </section>
     <section class="content">
+
+
+<div class="modal fade" id="modal-add_lot" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Add Modal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+      <form class="generic_form_trigger" data-url="maps">
+        <input type="hidden" name="action" value="add_lot">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Latitude</label>
+            <input required name="latitude" type="text" class="form-control" id="exampleInputEmail1" placeholder="---">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Longitude</label>
+            <input required name="longitude" type="text" class="form-control" id="exampleInputEmail1" placeholder="---">
+        </div>
+        <?php 
+        $lawn_type = query("select lawn_type from crypt_slot group by lawn_type");
+        // dump($lawn_type);
+        ?>
+
+                <div class="form-group">
+                  <label>Lawn Type</label>
+                  <select class="form-control" name="lawn_type">
+                    <option selected disabled value="">Please Select Lawn Type</option>
+                   <?php foreach($lawn_type as $row): ?>
+                        <option value="<?php echo($row["lawn_type"]); ?>"><?php echo($row["lawn_type"]); ?></option>
+                   <?php endforeach; ?>
+                  </select>
+                </div>
+
+
+        <button type="submit" class="btn btn-primary btn-flat">Submit</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -118,6 +163,14 @@
       <button type="submit" class="btn btn-primary btn-flat">Submit</button>
         <!-- Point information will be displayed here -->
     </form>
+
+    <hr>
+    <form class="generic_form_trigger text-center" data-url="maps">
+        <input type="hidden" name="action" value="remove_slot">
+        <input type="hidden" name="slot_id" id="slot_id">
+        <button type="submit" class="btn btn-danger btn-flat">Delete Slot</button>
+    </form>
+
       </div>
     </div>
   </div>
@@ -572,13 +625,6 @@ $result=[];
             });
             bounds_group.addLayer(layer_CemeteryBoneCryptCircumference);
             map.addLayer(layer_CemeteryBoneCryptCircumference);
-
-
-
-
-
-
-
             function pop_road_2(feature, layer) {
                 var popupContent = '<table>\
                         <tr>\

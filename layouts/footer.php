@@ -274,7 +274,10 @@
                     text: o.message,
                     type:"success"})
                     .then(function () {
-                    window.location.replace(o.link);
+                      if(o.link == "refresh")
+                        window.location.reload();
+                      else
+                        window.location.replace(o.link);
                     });
                 }
                 else {

@@ -321,7 +321,7 @@
 				// dump($_POST);
 				query("update crypt_slot set crypt_slot_type = 'NO_SLOT', lawn_type=''
 						where slot_id = ?", $_POST["slot_number"]);
-				redirect("maps?filter=ALL");
+				redirect("maps?action=map_details&crypt_type=LAWN&filter=ALL#20/7.32046/125.66204");
 			elseif($_POST["action"] == "forward_cemetery"):
 				$status = "";
 				$burial_date = "";
