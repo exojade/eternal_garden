@@ -28,6 +28,7 @@
 								left join profile_list profile
 								on bs.profile_id = profile.profile_id
 								where remarks = 'FOR SCHEDULING' order by date asc, time asc");
+								// dump($for_schedule);
 		if($_GET["action"] == "list"){
 			render("public/pending_system/pending_list.php",
 			[
