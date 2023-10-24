@@ -15,10 +15,16 @@
 		}
 
 		if($_POST["action"] == "assign_crypt"):
-			// dump($_POST);
+			
 			$coordinates = query("select * from crypt_slot where slot_id = ?", $_POST["slot_id"]);
+
+
+			$crypt = query("select * from crypt_list where crypt_id = ?", $_POST["crypt"]);
+
+			// dump($crypt);
+			// dump($coordinates);
 			query("update crypt_list set coordinates = ? where crypt_id = ?", $coordinates[0]["coordinates"],$_POST["crypt"]);
-			query("update crypt_slot set crypt_slot_type = 'TAKEN' where slot_id = ?",$_POST["slot_id"]);
+			query("update crypt_slot set crypt_slot_type = ? where slot_id = ?",$crypt[0]["crypt_type"],$_POST["slot_id"]);
 			$link = "maps?filter=ALL";
 			$res_arr = [
 				"result" => "success",
@@ -29,6 +35,44 @@
 				];
 				echo json_encode($res_arr); exit();
 		endif;
+
+		if($_POST["action"] == "upload_lots"):
+        $inserts = array();
+        $queryFormat = "('%s','%s','%s','%s','%s','%s','%s','%s')";
+        $fileName = $_FILES["logzips"]["tmp_name"];
+        if ($_FILES["logzips"]["size"] > 0) {
+            $file = fopen($fileName, "r");
+            $i = 0;
+            while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
+                // dump($column[0]);
+				
+
+					$crypt_id = "CRYPT-796caa375ef68-230525";
+                    $slot_id = create_uuid("CRYPT_SLOT");
+					$coordinates = $column[1] . ", " . $column[0];
+                    
+                    $inserts[] = sprintf( 
+                        $queryFormat, $slot_id, $crypt_id, "VACANT", "", $i, $coordinates, "", "LAWN");
+            $i++;
+            }
+            $query = implode( ",", $inserts );
+                $query_string = "insert into crypt_slot
+                (slot_id, crypt_id, active_status,occupied_by,slot_number,coordinates,lawn_type, crypt_slot_type) 
+                VALUES " . $query;
+                // dump($query_string);
+                query($query_string);
+                $res_arr = [
+                    "message" => "Successfully Uploaded and converted to RAW Attendance Data",
+                    "status" => "success",
+                    "link" => "refresh",
+                    ];
+                    echo json_encode($res_arr); exit();
+                }
+
+
+
+
+			endif;
 
 
 		if($_POST["action"] == "modal_crypt_profile"):

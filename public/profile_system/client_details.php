@@ -41,7 +41,7 @@
     <div class="modal fade" id="modal_add_client">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header bg-primary">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Register Client's Profile</h4>
@@ -50,7 +50,7 @@
               <div class="modal-body">
                 <input type="hidden" name="action" value="add_client">
                 <input type="hidden" name="slot_number" value="<?php echo($_GET["slot"]) ?>">
-                <input type="hidden" name="crypt_slot_type" value="<?php echo($slot["crypt_slot_type"]) ?>">
+                <input type="hidden" name="crypt_slot_type" value="<?php echo($slot["crypt_type"]) ?>">
                 <input type="hidden" name="province" id="true_province" value="">
                 <input type="hidden" name="city_mun" id="true_city_mun" value="">
                 <input type="hidden" name="barangay" id="true_barangay" value="">
@@ -139,7 +139,36 @@
               </div>
 </div>
 <hr>
-<div class="form-group">
+
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="exampleInputFile">Certificate of Indigency (optional)</label>
+                      <input name="certificate_indigency" type="file" id="exampleInputFile">
+                      <p class="help-block">Upload document here!</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="exampleInputFile">Valid ID *</label>
+                      <input name="valid_id" required type="file" id="exampleInputFile">
+                      <p class="help-block">Upload document here!</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                      <label for="exampleInputFile">2 x 2 ID *</label>
+                      <input name="picture" required type="file" id="exampleInputFile">
+                      <p class="help-block">Upload document here!</p>
+                  </div>
+                </div>
+
+              </div>
+              
+<hr>
+
+
+<!-- <div class="form-group">
                 <label>Requirements</label>
                 <select name="requirements[]" class="form-control select2" multiple="multiple" data-placeholder="Select Requirements Submitted"
                         style="width: 100%;">
@@ -147,7 +176,7 @@
                   <option value="Valid ID">Valid ID</option>
                   <option value="2x2 Picture">2x2 Picture</option>
                 </select>
-              </div>
+              </div> -->
 <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
@@ -173,10 +202,10 @@
                   <input required type="date" value="<?php echo(date("Y-m-d")); ?>" name="lease_date" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
-              <?php if($slot["crypt_slot_type"] == "BONE"): ?>
+              <?php if($slot["crypt_type"] == "BONE"): ?>
 
 
-              <?php elseif($slot["crypt_slot_type"] == "COFFIN"): ?>
+              <?php elseif($slot["crypt_type"] == "COFFIN"): ?>
 
               <div class="col-md-6">
                 <div class="form-group">
@@ -189,9 +218,9 @@
                 </div>
               </div>
                 
-              <?php elseif($slot["crypt_slot_type"] == "MAUSOLEUM"): ?>
+              <?php elseif($slot["crypt_type"] == "MAUSOLEUM"): ?>
 
-              <?php elseif($slot["crypt_slot_type"] == "LAWN"): ?>
+              <?php elseif($slot["crypt_type"] == "LAWN"): ?>
 
               <div class="col-md-6">
                 <div class="form-group">

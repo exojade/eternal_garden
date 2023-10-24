@@ -239,64 +239,123 @@
 
 
 
-  $('.generic_form_trigger').submit(function(e) {
-
+    $(document).on('submit', '.generic_form_trigger', function(e) {
+    e.preventDefault(); // Prevent the default form submission
 
     var form = $(this)[0];
     var formData = new FormData(form);
-      var promptmessage = 'This form will be submitted. Are you sure you want to continue?';
-      var prompttitle = 'Data submission';
-      e.preventDefault();
-      var url = $(this).data('url');
-      
-        swal({
-            title: prompttitle,
-            text: promptmessage,
-            type: 'info',
-            showCancelButton: true,
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.value) {
-                swal({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+    var promptmessage = 'This form will be submitted. Are you sure you want to continue?';
+    var prompttitle = 'Data submission';
+    var url = $(this).data('url');
+
+    swal({
+        title: prompttitle,
+        text: promptmessage,
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value) {
+            swal({ title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false });
             $.ajax({
                 type: 'post',
                 url: url,
                 processData: false,
                 contentType: false,
                 data: formData,
-                success: function (results) {
-                var o = jQuery.parseJSON(results);
-                console.log(o);
-                if(o.result === "success") {
-                    swal.close();
-                    swal({title: "Submit success",
-                    text: o.message,
-                    type:"success"})
-                    .then(function () {
-                      if(o.link == "refresh")
-                        window.location.reload();
-                      else
-                        window.location.replace(o.link);
-                    });
-                }
-                else {
-                    swal({
-                    title: "Error!",
-                    text: o.message,
-                    type:"error"
-                    });
-                    console.log(results);
-                }
+                success: function(results) {
+                    var o = jQuery.parseJSON(results);
+                    console.log(o);
+                    if (o.result === "success") {
+                        swal.close();
+                        swal({
+                            title: "Submit success",
+                            text: o.message,
+                            type: "success"
+                        }).then(function () {
+                            if (o.link == "refresh")
+                                window.location.reload();
+                            else
+                                window.location.replace(o.link);
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: o.message,
+                            type: "error"
+                        });
+                        console.log(results);
+                    }
                 },
                 error: function(results) {
-                console.log(results);
-                swal("Error!", "Unexpected error occur!", "error");
+                    console.log(results);
+                    swal("Error!", "Unexpected error occur!", "error");
                 }
             });
-            }
-        });
+        }
     });
+});
+
+
+  // $('.generic_form_trigger').submit(function(e) {
+
+
+  //   var form = $(this)[0];
+  //   var formData = new FormData(form);
+  //     var promptmessage = 'This form will be submitted. Are you sure you want to continue?';
+  //     var prompttitle = 'Data submission';
+  //     e.preventDefault();
+  //     var url = $(this).data('url');
+      
+  //       swal({
+  //           title: prompttitle,
+  //           text: promptmessage,
+  //           type: 'info',
+  //           showCancelButton: true,
+  //           confirmButtonText: 'Yes',
+  //           cancelButtonText: 'Cancel'
+  //       }).then((result) => {
+  //           if (result.value) {
+  //               swal({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+  //           $.ajax({
+  //               type: 'post',
+  //               url: url,
+  //               processData: false,
+  //               contentType: false,
+  //               data: formData,
+  //               success: function (results) {
+  //               var o = jQuery.parseJSON(results);
+  //               console.log(o);
+  //               if(o.result === "success") {
+  //                   swal.close();
+  //                   swal({title: "Submit success",
+  //                   text: o.message,
+  //                   type:"success"})
+  //                   .then(function () {
+  //                     if(o.link == "refresh")
+  //                       window.location.reload();
+  //                     else
+  //                       window.location.replace(o.link);
+  //                   });
+  //               }
+  //               else {
+  //                   swal({
+  //                   title: "Error!",
+  //                   text: o.message,
+  //                   type:"error"
+  //                   });
+  //                   console.log(results);
+  //               }
+  //               },
+  //               error: function(results) {
+  //               console.log(results);
+  //               swal("Error!", "Unexpected error occur!", "error");
+  //               }
+  //           });
+  //           }
+  //       });
+  //   });
 </script>
 <!-- Bootstrap 3.3.7 -->
 

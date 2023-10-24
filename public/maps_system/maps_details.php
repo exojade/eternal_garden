@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
+<link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="AdminLTE/dist/css/AdminLTE.min.css">
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 <link rel="stylesheet" href="gravekeeper/assets/fonts/simple-line-icons.min.css">
@@ -73,9 +75,34 @@
       <h1>
         Map Details
         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal-add_lot" style="float:right;">Add Lot</a>
-      </h1>
+        <button  type="button" class="btn btn-primary btn-flat" style="float:right;" data-toggle="modal" data-target="#modal-primary">Upload DTRAS</button>  
+    </h1>
     </section>
     <section class="content">
+
+
+    <div class="modal fade" id="modal-primary">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <h3 class="modal-title text-center">Upload CSV</h3>
+              </div>
+              <div class="modal-body">
+
+              <form role="form" class="generic_form_trigger" data-url="maps">
+                <input type="hidden" name="action" value="upload_lots">
+                <div class="form-group">
+                  <label for="exampleInputFile">Upload Zip Only</label>
+                  <input required accept=".csv" type="file" name="logzips" multiple="multiple" id="exampleInputFile">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+              </form>
+            </div>
+          </div>
+      </div>
 
 
 <div class="modal fade" id="modal-add_lot" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -125,12 +152,11 @@
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalLabel">Point Information</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+    <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Lawn Information</h4>
+              </div>
       <div class="modal-body" id="modalBody">
         <!-- Point information will be displayed here -->
       </div>
@@ -147,14 +173,14 @@
         </button>
       </div>
       <div class="modal-body" id="modalBody">
-      <form class="generic_form" data-url="maps">
+      <form class="generic_form_trigger" data-url="maps">
       <input type="hidden" name="action" value="assign_crypt">
       <input type="hidden" name="slot_id" id="slot_id">
       <?php $crypts = query("select * from crypt_list where crypt_type != 'LAWN' and coordinates is null or coordinates = ''"); ?>
 
       <div class="form-group">
         <label>Select Crypt</label>
-        <select class="form-control" name="crypt">
+        <select style="width: 100%;" class="form-control select2" name="crypt">
             <?php foreach($crypts as $c): ?>
                 <option value="<?php echo($c["crypt_id"]); ?>"><?php echo($c["crypt_name"] . " | " . $c["crypt_type"]); ?></option>
             <?php endforeach; ?>
@@ -236,6 +262,7 @@
 	<script src="AdminLTE/dist/js/demo.js"></script>
   <script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
   <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
+  <script src="AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
 
 
   <!-- <script src="gravekeeper/assets/js/jquery.min.js"></script> -->
@@ -492,7 +519,7 @@ $result=[];
 
         <script>
             var map = L.map('map', {
-                zoomControl:true, maxZoom:21, minZoom:19
+                zoomControl:true, maxZoom:21, minZoom:10
             }).fitBounds([[6.913597497117801,122.13930750978687],[6.914359146460475,122.14088332323063]]);
         // }).fitBounds([[7.31848,125.66304],[7.31848,125.66304]]);
             var hash = new L.Hash(map);
@@ -509,13 +536,39 @@ $result=[];
                 pane: 'pane_GoogleSatellite_0',
                 opacity: 1.0,
                 attribution: '',
-                minZoom: 19,
+                minZoom: 10,
                 maxZoom: 21,
                 minNativeZoom: 0,
                 maxNativeZoom: 21
             });
             layer_GoogleSatellite_0;
             map.addLayer(layer_GoogleSatellite_0);
+
+
+            
+
+            map.on('click', function (e) {
+    // Check if the clicked element is not a marker
+    // if (e.originalEvent.target.classList.contains('leaflet-interactive')) {
+    //     return; // Clicked on a marker, do nothing
+    // }
+
+    var latlng = e.latlng; // Get the clicked latitude and longitude
+    var popup = L.popup()
+        .setLatLng(latlng)
+        .setContent("Latitude: " + latlng.lat + "<br>Longitude: " + latlng.lng)
+        .openOn(map);
+});
+
+// var gridLayer = L.tileLayer('grid/{z}/{x}/{y}.png', {
+//     tms: true,
+//     noWrap: true,
+//     minZoom: 0,
+//     maxZoom: 18
+// });
+
+// gridLayer.addTo(map);
+
             function pop_CemeteryCircumference_1(feature, layer) {
                 var popupContent = '<table>\
                         <tr>\
@@ -906,6 +959,7 @@ $result=[];
 <script>
   $(function () {
     $('.sample_datatable').DataTable()
+    $('.select2').select2()
    
   })
 </script>

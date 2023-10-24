@@ -1,15 +1,14 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "add_client"):
-			// dump($_POST);
+			// dump($_FILES);
 			$_POST["client_name"] = $_POST["first_name"] . " " . $_POST["last_name"];
 			if($_POST["crypt_slot_type"] == "LAWN"):
 			$profile_id = create_uuid("PROF");
 			$t = strtotime($_POST["lease_date"]);
 			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
 			$requirements = "";
-			if(isset($_POST["requirements"]))
-			$requirements = serialize($_POST["requirements"]);
+			
 			if (query("insert into profile_list 
 				(
 					profile_id,
@@ -18,31 +17,28 @@
 					province,city_municipality,barangay,client_address,
 					id_presented,id_number,place_issued,
 					lease_date,date_expired,slot_number,lease_status,
-					requirements
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
 				$profile_id,
 				$_POST["first_name"],$_POST["middle_name"],$_POST["last_name"],$_POST["suffix"],
 				$_POST["client_contact"],$_POST["email_address"],$_POST["gender"],
 				$_POST["province"],$_POST["city_mun"],$_POST["barangay"],$_POST["client_address"],
 				$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
 				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["lease_status"],
-				$requirements
-				) === false)
-				{
+				
+				) === false):
 					apologize("Sorry, that username has already been taken!");
-				}
-			else;
+				endif;
+
+
+		
 
 			elseif($_POST["crypt_slot_type"] == "COFFIN"):
 
 			$profile_id = create_uuid("PROF");
 			$t = strtotime($_POST["lease_date"]);
 			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
-
-			$requirements = "";
-			if(isset($_POST["requirements"]))
-			$requirements = serialize($_POST["requirements"]);
+			// dump($lease_expired);
 			if (query("insert into profile_list 
 				(
 					profile_id,
@@ -50,17 +46,15 @@
 					client_contact,email_address,gender,
 					province,city_municipality,barangay,client_address,
 					id_presented,id_number,place_issued,
-					lease_date,date_expired,slot_number,occupant_type,
-					requirements
+					lease_date,date_expired,slot_number,occupant_type
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
 				$profile_id,
 				$_POST["first_name"],$_POST["middle_name"],$_POST["last_name"],$_POST["suffix"],
 				$_POST["client_contact"],$_POST["email_address"],$_POST["gender"],
 				$_POST["province"],$_POST["city_mun"],$_POST["barangay"],$_POST["client_address"],
 				$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
-				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["occupant_type"],
-				$requirements
+				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["occupant_type"]
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
@@ -75,6 +69,7 @@
 			$profile_id = create_uuid("PROF");
 			$t = strtotime($_POST["lease_date"]);
 			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+			
 
 			$requirements = "";
 			if(isset($_POST["requirements"]))
@@ -135,6 +130,49 @@
 				{
 					apologize("Sorry, that username has already been taken!");
 				}
+			endif;
+
+			$fullname = strtoupper($_POST["last_name"] . "_" . $_POST["first_name"] . "_" . $_POST["middle_name"] . "_" . $_POST["suffix"]);
+			$fullname = str_replace(' ', '_', $fullname);
+			$target_pdf = "uploads/" . $fullname."/";
+			if (!file_exists($target_pdf )) {
+				mkdir($target_pdf , 0777, true);
+			}
+
+			if($_FILES["certificate_indigency"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["certificate_indigency"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "INDIGENCY" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['certificate_indigency']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set certificate_indigency = '".$target."'
+					where profile_id = '".$profile_id."'");
+			endif;
+
+			if($_FILES["valid_id"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["valid_id"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "ID" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['valid_id']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set valid_id = '".$target."'
+					where profile_id = '".$profile_id."'");
+			endif;
+
+			if($_FILES["picture"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["picture"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "PICTURE" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['picture']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set picture = '".$target."'
+					where profile_id = '".$profile_id."'");
 			endif;
 
 
@@ -291,7 +329,6 @@
 				<a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn btn-primary btn-flat">Open Information</a>
 				';
 			endif;
-			
 			echo($message);
 			else:
 
@@ -305,23 +342,50 @@
 
 				if(!isset($_POST["public"])):
 					$message = $message . '
-					<div class="text-center"><a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
-					<br>
-					<form method="post" action="profile" class="text-center">
+					<form class="generic_form_trigger" data-url="profile">
 						<input type="hidden" name="action" value="convert_no_slot">
-						<input type="hidden" name="slot_number" value="'.$crypt_slot[0]["slot_id"].'">
-						<button class="btn btn-danger" type="submit">Make a No Slot</button>
+						<input type="hidden" name="slot_number" value="'.$crypt_slot[0]["slot_id"].'">';
+						if($crypt_slot[0]["lawn_type"] != ""):
+							$message = $message . '<a target="_blank" href="profile?action=client_details&slot='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a>';
+						endif;
+						$message = $message . '
+						<button class="btn btn-danger btn-flat" type="submit">Make a No Slot</button>
 					</form>
+					<hr>
+					<h4>Update Lawn Lot (only applicable if dont have client yet)</h4>
+					<form class="generic_form_trigger" data-url="profile" class="text-center">
+					<input type="hidden" name="action" value="update_lawn">
+					<input type="hidden" name="crypt_slot_id" value="'.$crypt_slot[0]["slot_id"].'">
+					<div class="form-group">
+						<label>Lawn Type</label>
+						<select name="lawn_type" class="form-control select2" style="width: 100%;">
+						<option selected value="'.$crypt_slot[0]["lawn_type"].'" disabled>'.$crypt_slot[0]["lawn_type"].'</option>
+						';
+						$lawn_types = query("select * from pricing_lawn");
+						foreach($lawn_types as $row):
+							$message = $message . '<option value="'.$row["name"].'">'.$row["name"]. ' | PreNeed: '. $row["pre_need"] .' | ATNEED: ' . $row["at_need"] . '</option>';
+						endforeach;
+						$message = $message . '
+						</select>
+					</div>
+
+					<button type="submit">Submit</button>
+					</div>
 					';
 				endif;
-				
 				echo($message);
 			endif;
 			elseif($_POST["action"] == "convert_no_slot"):
 				// dump($_POST);
 				query("update crypt_slot set crypt_slot_type = 'NO_SLOT', lawn_type=''
 						where slot_id = ?", $_POST["slot_number"]);
-				redirect("maps?action=map_details&crypt_type=LAWN&filter=ALL#20/7.32046/125.66204");
+						$res_arr = [
+							"result" => "success",
+							"title" => "Success",
+							"message" => "Success on adding Data",
+							"link" => "refresh",
+							];
+							echo json_encode($res_arr); exit();
 			elseif($_POST["action"] == "forward_cemetery"):
 				$status = "";
 				$burial_date = "";
@@ -374,8 +438,22 @@
 					"link" => "profile?action=client_details&slot=".$_POST["slot_number"],
 					];
 					echo json_encode($res_arr); exit();
+
+		elseif($_POST["action"] == "update_lawn"):
+			// dump($_POST);
+			query("update crypt_slot set lawn_type = ? where slot_id = ?", $_POST["lawn_type"] , $_POST["crypt_slot_id"]);
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on adding Data",
+				"link" => "refresh",
+				];
+				echo json_encode($res_arr); exit();
+		
 		endif;
 	
+
+		
 
 		
 
@@ -493,11 +571,12 @@
 			$deceased = "";
 			endif;
 
-			$slot = query("select * from crypt_slot as slot
+			$slot = query("select  * from crypt_slot as slot
 							left join crypt_list as crypt
 							on slot.crypt_id = crypt.crypt_id
 							where slot.slot_id = ?", $_GET["slot"]);
 			$slot = $slot[0];
+			// dump($slot);
 			render("public/profile_system/client_details.php",
 			[
 				"client" => $client,

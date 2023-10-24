@@ -25,6 +25,8 @@
 <link rel="stylesheet" href="gravekeeper/webmap/css/leaflet-search.css">
 <link rel="stylesheet" href="gravekeeper/assets/css/home.css">
 
+<link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
+
 <style>
 .text-bone {
     color: #D33724!important;
@@ -43,6 +45,17 @@
 .text-mausoleum {
     color: #F7DBA7!important;
 }
+
+.custom-label {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 14px;
+    color: #333;
+    z-index: 1000; /* Ensure it's above other map elements */
+}
+
 
 
     #loading {
@@ -133,7 +146,48 @@ background-image: url('resources/eternal_bg.jpg');
 <div class="layer">
 
 
+<div class="modal fade" id="modal-add_lot" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Add Modal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+      <form class="generic_form_trigger" data-url="maps">
+        <input type="hidden" name="action" value="add_lot">
+        <div class="form-group">
+    <label for="latitudeInput">Latitude</label>
+    <input required name="latitude" type="text" class="form-control" id="latitudeInput" placeholder="---">
+</div>
+<div class="form-group">
+    <label for="longitudeInput">Longitude</label>
+    <input required name="longitude" type="text" class="form-control" id="longitudeInput" placeholder="---">
+</div>
+        <?php 
+        $lawn_type = query("select lawn_type from crypt_slot group by lawn_type");
+        // dump($lawn_type);
+        ?>
 
+                <div class="form-group">
+                  <label>Lawn Type</label>
+                  <select class="form-control" name="lawn_type">
+                    <option selected disabled value="">Please Select Lawn Type</option>
+                   <?php foreach($lawn_type as $row): ?>
+                        <option value="<?php echo($row["lawn_type"]); ?>"><?php echo($row["lawn_type"]); ?></option>
+                   <?php endforeach; ?>
+                  </select>
+                </div>
+
+
+        <button type="submit" class="btn btn-primary btn-flat">Submit</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -437,12 +491,12 @@ endforeach;
 
         <script>
             var map = L.map('map', {
-                zoomControl:true, maxZoom:21, minZoom:20
-            }).fitBounds([[6.913597497117801,122.13930750978687],[6.914359146460475,122.14088332323063]]);
+                zoomControl:true, maxZoom:25, minZoom:19
+            }).fitBounds([[7.318064, 125.662665]]);
             var hash = new L.Hash(map);
             map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
             var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-            L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+            L.control.locate({locateOptions: {maxZoom: 25}}).addTo(map);
             var bounds_group = new L.featureGroup([]);
             function setBounds() {
             }
@@ -453,13 +507,41 @@ endforeach;
                 pane: 'pane_GoogleSatellite_0',
                 opacity: 1.0,
                 attribution: '',
-                minZoom: 19,
-                maxZoom: 21,
+                minZoom: 10,
+                maxZoom: 25,
                 minNativeZoom: 0,
-                maxNativeZoom: 19
+                maxNativeZoom: 25
             });
             layer_GoogleSatellite_0;
             map.addLayer(layer_GoogleSatellite_0);
+
+//             map.on('click', function (e) {
+//     // Check if the clicked element is not a marker
+//     if (e.originalEvent.target.classList.contains('leaflet-interactive')) {
+//         return; // Clicked on a marker, do nothing
+//     }
+
+//     var latlng = e.latlng; // Get the clicked latitude and longitude
+
+//     // Set the latitude and longitude values in the modal input fields
+//     document.getElementById('latitudeInput').value = latlng.lat;
+//     document.getElementById('longitudeInput').value = latlng.lng;
+
+//     // Open the modal
+//     $('#modal-add_lot').modal('show');
+// });
+
+            // map.removeLayer(layer_GoogleSatellite_0);
+
+            // var standardMapLayer = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94LWdsLWpzIiwiYSI6ImNram9ybGI1ajExYjQyeGxlemppb2pwYjIifQ.LGy5UGNIsXUZdYMvfYRiAQ', {
+            //     maxZoom: 25,  // Adjust the maxZoom as needed
+            //     attribution: '© Mapbox',
+            // }).addTo(map);
+
+            // // Set the view to the center and an appropriate zoom level
+            // map.setView([7.3180037, 125.6630402], 18);
+
+
             function pop_CemeteryCircumference_1(feature, layer) {
                 var popupContent = '<table>\
                         <tr>\
@@ -557,7 +639,7 @@ endforeach;
                     case 'OCCUPIED':
                         return {
                     pane: 'pane_Marker_3',
-                    radius: 8.0,
+                    radius: 5.0,
                     opacity: 1,
                     color: '#C57B57',
                     dashArray: '',
@@ -576,7 +658,7 @@ endforeach;
                     case 'VACANT':
                         return {
                     pane: 'pane_Marker_3',
-                    radius: 8.0,
+                    radius: 5.0,
                     opacity: 1,
                     color: 'rgba(61,128,53,1.0)',
                     dashArray: '',
@@ -594,7 +676,7 @@ endforeach;
                     case 'NO_SLOT':
                     return {
                         pane: 'pane_Marker_3',
-                        radius: 8.0,
+                        radius: 5.0,
                         opacity: 1,
                         color: '#111D13',
                         dashArray: '',
@@ -611,18 +693,19 @@ endforeach;
                     case 'COFFIN':
                     return {
                         pane: 'pane_Marker_3',
-                        radius: 8.0,
+                        pane: 'pane_Marker_3',
+                        radius: 6.0,
                         opacity: 1,
                         color: '#00A7D0',
                         dashArray: '',
                         lineCap: 'butt',
                         lineJoin: 'miter',
-                        weight: 2.0,
+                        weight: 16.0,
                         fill: true,
                         fillOpacity: 1,
                         // rgb(24, 22, 22)
                         fillColor: '#00A7D0',
-                        interactive: true,
+                        interactive: true,    // Adjust the height to match your requirements
                     }
                     break;
                     case 'MAUSOLEUM':
@@ -645,13 +728,13 @@ endforeach;
                     case 'BONE':
                     return {
                         pane: 'pane_Marker_3',
-                        radius: 8.0,
+                        radius: 6.0,
                         opacity: 1,
                         color: '#D33724',
                         dashArray: '',
                         lineCap: 'butt',
                         lineJoin: 'miter',
-                        weight: 2.0,
+                        weight: 16.0,
                         fill: true,
                         fillOpacity: 1,
                         // rgb(24, 22, 22)
@@ -675,7 +758,44 @@ endforeach;
                         feature: feature,
                         variables: {}
                     };
-                    return L.circleMarker(latlng, style_Marker_3_0(feature));
+
+                    // console.log(feature.properties);
+                    console.log(latlng);
+                    
+                    
+                    if(feature.properties["Status"] == "COFFIN" || feature.properties["Status"] == "BONE"){
+
+//                         var marker = L.marker([latlng.lat, latlng.lng]).addTo(map);
+
+// // Define the label as an HTML element
+// var label = L.divIcon({
+//     className: 'custom-label',
+//     html: 'Your Label Text',
+// });
+
+// // Add the label to the marker
+// marker.setIcon(label);
+
+
+
+        var top = [latlng.lat - 0.00009, latlng.lng]; // Top corner
+        var bottom = [latlng.lat + 0.00009, latlng.lng]; // Bottom corner
+
+        // Create a rectangle marker by connecting the top and bottom coordinates
+        var rectangle = L.polygon([top, bottom, bottom, top], style_Marker_3_0(feature));
+
+        return rectangle;
+
+                    }
+
+                    else{
+                        return L.circleMarker(latlng, style_Marker_3_0(feature));
+                    }
+
+                   
+
+
+                    
                 },
             });
             bounds_group.addLayer(layer_Marker_3);
@@ -735,6 +855,44 @@ endforeach;
                 var popupContent = '<h3>' + feature.properties.Name + '</h3>' +
                                     '<p class="text-center">' + feature.properties.description + '</p>';
                 // console.log(feature.properties.link_url);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
                 
              
                 
@@ -770,7 +928,64 @@ endforeach;
                 resetLabels([layer_Marker_3]);
             });
 
+            $('.generic_form_trigger').submit(function(e) {
 
+
+var form = $(this)[0];
+var formData = new FormData(form);
+  var promptmessage = 'This form will be submitted. Are you sure you want to continue?';
+  var prompttitle = 'Data submission';
+  e.preventDefault();
+  var url = $(this).data('url');
+  
+    swal({
+        title: prompttitle,
+        text: promptmessage,
+        type: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.value) {
+            swal({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
+        $.ajax({
+            type: 'post',
+            url: url,
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (results) {
+            var o = jQuery.parseJSON(results);
+            console.log(o);
+            if(o.result === "success") {
+                swal.close();
+                swal({title: "Submit success",
+                text: o.message,
+                type:"success"})
+                .then(function () {
+                  if(o.link == "refresh")
+                    window.location.reload();
+                  else
+                    window.location.replace(o.link);
+                });
+            }
+            else {
+                swal({
+                title: "Error!",
+                text: o.message,
+                type:"error"
+                });
+                console.log(results);
+            }
+            },
+            error: function(results) {
+            console.log(results);
+            swal("Error!", "Unexpected error occur!", "error");
+            }
+        });
+        }
+    });
+});
 
 
 
