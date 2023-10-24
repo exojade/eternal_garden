@@ -196,16 +196,18 @@
                   <input required type="text" name="place_issued" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
+          
+              <?php if($slot["crypt_type"] == "BONE"): ?>
+
+
+              <?php elseif($slot["crypt_type"] == "COFFIN"): ?>
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Lease Date</label>
                   <input required type="date" value="<?php echo(date("Y-m-d")); ?>" name="lease_date" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
-              <?php if($slot["crypt_type"] == "BONE"): ?>
-
-
-              <?php elseif($slot["crypt_type"] == "COFFIN"): ?>
 
               <div class="col-md-6">
                 <div class="form-group">
@@ -221,6 +223,18 @@
               <?php elseif($slot["crypt_type"] == "MAUSOLEUM"): ?>
 
               <?php elseif($slot["crypt_type"] == "LAWN"): ?>
+              
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Residency</label>
+                  <select required class="form-control" name="residency">
+                    <option value="" selected disabled>Please select residency status</option>
+                    <option value="PANABO">Resident of Panabo</option>
+                    <option value="OUTSIDE">Residing outside Panabo</option>
+                  </select>
+                </div>
+              </div>
+
 
               <div class="col-md-6">
                 <div class="form-group">
@@ -518,194 +532,83 @@
         </div>
         <!-- /.col -->
         <div class="col-md-9">
-          <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#activity" data-toggle="tab">Deceased Information</a></li>
-              <li><a href="#timeline" data-toggle="tab">Transaction Logs</a></li>
-            </ul>
-            <div class="tab-content">
-              <div class="active tab-pane" id="activity">
-                <a href="#" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal_add_deceased">Add Deceased Profile</a>
-                <br>
-                <br>
-               <table class="table table-borderd table-striped">
-                <thead>
-                    <th>Deceased Name</th>
-                    <th>BirthDate</th>
-                    <th>Date of Death</th>
-                    <th>Age Died</th>
-                    <th>Burial Date</th>
-                    <th>Burial Status</th>
-                    <th>Remarks</th>
-                </thead>
-                <tbody>
-                    <?php foreach($deceased as $d): ?>
-                        <tr>
-                            <td><?php echo($d["deceased_name"]); ?></td>
-                            <td><?php echo($d["birthdate"]); ?></td>
-                            <td><?php echo($d["date_of_death"]); ?></td>
-                            <td><?php echo($d["age_died"]); ?></td>
-                            <td><?php echo($d["burial_date"]); ?></td>
-                            <td><?php echo($d["burial_status"]); ?></td>
-                            <td><?php echo($d["interment_type"]); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-               </table>
-                  <?php
-                  $forward = query("select * from deceased_profile where slot_number = ? and burial_status = 'NO BURIAL DATE'", $_GET["slot"]);
-                  if(!empty($forward)):
-                  ?>
-                  <a href="#" data-toggle="modal" data-target="#modal_forward" class="btn btn-primary btn-flat">Forward to Cemetery for Burial Scheduling</a>
-                  <?php endif; ?>
+
+        <?php if($slot["crypt_type"] == "LAWN"): ?>
+          <?php if($client["transaction_id"] == ""): ?>
+            <div class="alert alert-warning alert-dismissible">
+                <h4><i class="icon fa fa-warning"></i> Alert!</h4>
+                As per the specified requirement, prior to adding a deceased individual to a lawn lot, 
+                the client is obligated to make the necessary payment for the lot. This prerequisite is in place to ensure that 
+                all financial obligations associated with the acquisition of the lawn lot have been duly fulfilled before any further actions are taken.
+            </div>
+
+            <?php $price_lawn = query("select * from pricing_lawn where name = ?", $slot["lawn_type"]); ?>
+            <?php $price = ($client["lease_status"] == "PRE NEED") ? $price_lawn[0]["pre_need"] : $price_lawn[0]["at_need"]; 
+                  $price = ($client["residency"] == "PANABO") ? $price : $price * 2; 
+            ?>
+
+            <div class="row">
+              <div class="col-md-12">
+              <div class="box box-primary">
+                <div class="box-header with-border ">
+                  <h3 class="box-title">Pay Lawn Bills</h3>
+                </div>
+                <div class="box-body">
+                <table class="table table-striped">
+            <thead>
+            <tr>
+              <th>Product</th>
+              <th>Lawn Type</th>
+              <th>Residency</th>
+              <th>Lease Type</th>
+              <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><?php echo($price_lawn[0]["type"]); ?></td>
+                <td><?php echo($price_lawn[0]["name"]); ?></td>
+                <td><?php echo($client["residency"]); ?></td>
+                <td><?php echo($client["lease_status"]); ?></td>
+                <td><?php echo(to_peso($price)); ?></td>
+              </tr>
+           
+            </tbody>
+          </table>
+          <tfoot>
+            <br>
+            <form class="generic_form_trigger" data-url="profile">
+              <input type="hidden" name="action" value="lawn_bill">
+              <input type="hidden" name="client" value="<?php echo($client["profile_id"]); ?>">
+              <button class="btn btn-primary">Pay Bill</button>
+            </form>
+            
+
+          </tfoot>
+                </div>
               </div>
-              <div class="tab-pane" id="timeline">
-                <ul class="timeline timeline-inverse">
-                  <li class="time-label">
-                        <span class="bg-red">
-                          10 Feb. 2014
-                        </span>
-                  </li>
-                  <li>
-                    <i class="fa fa-envelope bg-blue"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-
-                      <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                      <div class="timeline-body">
-                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                        quora plaxo ideeli hulu weebly balihoo...
-                      </div>
-                      <div class="timeline-footer">
-                        <a class="btn btn-primary btn-xs">Read more</a>
-                        <a class="btn btn-danger btn-xs">Delete</a>
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-user bg-aqua"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                      <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
-                      </h3>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-comments bg-yellow"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-
-                      <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                      <div class="timeline-body">
-                        Take me to your leader!
-                        Switzerland is small and neutral!
-                        We are more like Germany, ambitious and misunderstood!
-                      </div>
-                      <div class="timeline-footer">
-                        <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline time label -->
-                  <li class="time-label">
-                        <span class="bg-green">
-                          3 Jan. 2014
-                        </span>
-                  </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-camera bg-purple"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-
-                      <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                      <div class="timeline-body">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <li>
-                    <i class="fa fa-clock-o bg-gray"></i>
-                  </li>
-                </ul>
-              </div>
-              <!-- /.tab-pane -->
-
-              <div class="tab-pane" id="settings">
-                <form class="form-horizontal">
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputName" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputName" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
-
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-danger">Submit</button>
-                    </div>
-                  </div>
-                </form>
               </div>
             </div>
-          </div>
+
+
+
+
+          <?php else: ?>
+            <?php require("client_table.php"); ?>
+          <?php endif; ?>
+        <?php else: ?>
+          <?php require("client_table.php"); ?>
+        <?php endif; ?>
+
+
+
+
+
+
+
+
+
+          
         </div>
       </div>
 

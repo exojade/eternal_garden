@@ -4,9 +4,12 @@
 			// dump($_FILES);
 			$_POST["client_name"] = $_POST["first_name"] . " " . $_POST["last_name"];
 			if($_POST["crypt_slot_type"] == "LAWN"):
+			// dump($_POST);
 			$profile_id = create_uuid("PROF");
-			$t = strtotime($_POST["lease_date"]);
-			$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+			$_POST["lease_date"] = "";
+			// $t = strtotime($_POST["lease_date"]);
+			// $lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+			$lease_expired = "";
 			$requirements = "";
 			
 			if (query("insert into profile_list 
@@ -16,15 +19,15 @@
 					client_contact,email_address,gender,
 					province,city_municipality,barangay,client_address,
 					id_presented,id_number,place_issued,
-					lease_date,date_expired,slot_number,lease_status,
+					lease_date,date_expired,slot_number,lease_status,residency
 				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
 				$profile_id,
 				$_POST["first_name"],$_POST["middle_name"],$_POST["last_name"],$_POST["suffix"],
 				$_POST["client_contact"],$_POST["email_address"],$_POST["gender"],
 				$_POST["province"],$_POST["city_mun"],$_POST["barangay"],$_POST["client_address"],
 				$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],
-				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["lease_status"],
+				$_POST["lease_date"],$lease_expired,$_POST["slot_number"],$_POST["lease_status"],$_POST["residency"]
 				
 				) === false):
 					apologize("Sorry, that username has already been taken!");
@@ -440,7 +443,6 @@
 					echo json_encode($res_arr); exit();
 
 		elseif($_POST["action"] == "update_lawn"):
-			// dump($_POST);
 			query("update crypt_slot set lawn_type = ? where slot_id = ?", $_POST["lawn_type"] , $_POST["crypt_slot_id"]);
 			$res_arr = [
 				"result" => "success",
@@ -449,7 +451,13 @@
 				"link" => "refresh",
 				];
 				echo json_encode($res_arr); exit();
-		
+
+		elseif($_POST["action"] == "lawn_bill"):
+			dump($_POST);
+			$transaction_id = create_uuid("TRANSACTION");
+
+
+
 		endif;
 	
 
