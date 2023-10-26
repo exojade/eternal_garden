@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
 <link rel="stylesheet" href="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css">
+<link rel="stylesheet" href="AdminLTE/plugins/iCheck/all.css">
 <link rel="stylesheet" href="AdminLTE/dist/css/AdminLTE.min.css">
 <style>
 .products-list {
@@ -214,7 +215,7 @@
                   <label for="exampleInputEmail1">Occupant Type</label>
                   <select required class="form-control" name="occupant_type">
                     <option value="" selected disabled>Please select occupant type</option>
-                    <option value="ORDINARY">ORDINARY</option>
+                    <option value="NON INDIGENT">NON INDIGENT</option>
                     <option value="INDIGENT">INDIGENT</option>
                   </select>
                 </div>
@@ -291,180 +292,14 @@
         <?php $client = $client[0]; ?>
 
 
-        <div class="modal fade" id="modal_add_deceased">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Deceased Profile</h4>
-              </div>
-              <form class="generic_form_trigger" data-url="profile">
-              <div class="modal-body">
-                <input type="hidden" name="action" value="add_deceased">
-                <input type="hidden" name="slot_number" value="<?php echo($_GET["slot"]) ?>">
-                <input type="hidden" name="client_id" value="<?php echo($client["profile_id"]) ?>">
-              <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">First Name*</label>
-                  <input required type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="---">
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Middle Name</label>
-                  <input  type="text" name="middlename" class="form-control" id="exampleInputEmail1" placeholder="---">
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Last Name*</label>
-                  <input required type="text" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="---">
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Suffix</label>
-                  <input  type="text" name="suffix" class="form-control" id="exampleInputEmail1" placeholder="---">
-                </div>
-              </div>
-
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Date of Birth</label>
-                  <input required type="date" name="birthdate" class="form-control" id="exampleInputEmail1" placeholder="---">
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Date of Death</label>
-                  <input required type="date" name="date_of_death" class="form-control" id="exampleInputEmail1" placeholder="---">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Gender</label>
-                  <select required class="form-control" name="gender">
-                  <option value="" selected disabled>Please select gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Religion</label>
-                  <input required type="text" name="religion" class="form-control" id="exampleInputEmail1" placeholder="---">
-                </div>
-              </div>
-              <div class="col-md-12">
-              <div class="form-group">
-                <label>Requirements</label>
-                <select name="requirements[]" class="form-control select2" multiple data-placeholder="Select Requirements"
-                        style="width: 100%;">
-                  <option value="Death Certificate">Death Certificate</option>
-                </select>
-              </div>
-              </div>
-              
-              <?php if($slot["crypt_slot_type"] == "LAWN"): ?>
-                <div class="col-md-12">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Interment Type</label>
-                  <select required class="form-control" name="interment_type">
-                  <option value="" selected disabled>Please select interment</option>
-                    <option value="1st Interment">1st Interment</option>
-                    <option value="2nd Interment">2nd Interment</option>
-                  </select>
-                </div>
-              </div>
-
-              <?php endif; ?>
-
-              
-            </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-              </div>
-            </form>
-            </div>
-          </div>
-        </div>
+      
 
 
 
 
 
 
-        <div class="modal fade" id="modal_forward">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-primary">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title text-center">Forward for Burial Scheduling</h4>
-              </div>
-              <form class="generic_form_trigger" data-url="profile">
-              <div class="modal-body">
-                <input type="hidden" name="action" value="forward_cemetery">
-                <input type="hidden" name="slot_number" value="<?php echo($_GET["slot"]) ?>">
-              <div class="form-group">
-                <label>Interment Services to be availed (optional)</label>
-                <select name="services[]" class="form-control select2" multiple data-placeholder="Select Interment Service"
-                        style="width: 100%;">
-                  <option value="Chapel Only">Chapel Only</option>
-                  <option value="Chapel with Sound System">Chapel with Sound System</option>
-                  <option value="Tents and Chairs Rental">Tents and Chairs Rental</option>
-                </select>
-              </div>
-              <div class="row">
-                  <div class="col-md-6">
-
-                  <div class="bootstrap-timepicker">
-                      <div class="form-group">
-                        <label>Burial Schedule Date (optional)</label>
-                        <div class="input-group">
-                          <input name="deceased_burial_date" type="date" class="form-control">
-                          <div class="input-group-addon">
-                            <i class="fa fa-clock-o"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  
-                  </div>
-                  <div class="col-md-6">
-                    <div class="bootstrap-timepicker">
-                      <div class="form-group">
-                        <label>Burial Time (optional)</label>
-                        <div class="input-group">
-                          <input name="deceased_burial_time" value="" type="text" class="form-control timepicker">
-                          <div class="input-group-addon">
-                            <i class="fa fa-clock-o"></i>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-
-              
-
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </div>
-            </form>
-            </div>
-          </div>
-        </div>
+       
         <div class="row">
         <div class="col-md-3">
           <!-- Profile Image -->
@@ -632,6 +467,7 @@
   
   <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js'></script> -->
 <script src="AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="AdminLTE/plugins/iCheck/icheck.min.js"></script>
 <script src="AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 <script src="AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
@@ -694,7 +530,9 @@ $('#barangay_select').change(function(){
 
 <script>
   $(function () {
-    $('.sample_datatable').DataTable()
+    $('.sample_datatable').DataTable({
+  "ordering": false
+});
     $('.select2').select2()
   })
 </script>
@@ -706,4 +544,89 @@ $('.timepicker').timepicker({
     })
     $('.timepicker').val("");
   
+
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+      checkboxClass: 'icheckbox_minimal-blue',
+      radioClass   : 'iradio_minimal-blue'
+    })
   </script>
+
+
+
+
+<script>
+$(document).ready(function() {
+    // Automatically check checkboxes with class "coffin_price"
+    // $('input.coffin_price').prop('checked', true);
+
+    // Add a change event listener to all checkboxes with the name "certification_amount" and "services"
+    $('input.coffin_price,input#lapida ,input[type="checkbox"][name="service[]"]').on('change', function() {
+        updateTotalCost();
+    });
+
+    // Trigger the change event for all initially checked checkboxes
+    $('input.coffin_price:checked,input#lapida input[type="checkbox"][name="service[]"]:checked').trigger('change');
+
+    function updateTotalCost() {
+     
+      var totalCost = 0;
+
+
+      <?php if($slot["crypt_type"] == "BONE"): ?>
+        var selectedOption = $('#pricingOption option:selected');
+        $('#lapida').data('cost', selectedOption.data('lapida_amount'));
+        totalCost += parseInt(selectedOption.data('amount')) + parseInt(selectedOption.data('certification'));
+      <?php endif; ?>
+
+
+
+
+        var selectedServices = $('input.coffin_price:checked,input#lapida:checked, input[type="checkbox"][name="service[]"]:checked');
+      
+        selectedServices.each(function() {
+            totalCost += parseInt($(this).data('cost'));
+        });
+        // console.log(selectedOption);
+        $('#total_cost').val(totalCost);
+    }
+
+
+
+
+
+
+    // Initial setup
+    // updatePricingOptions();
+
+    // Handle changes in the select box
+    $('#pricingOption').on('change', updateTotalCost);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php if($slot["crypt_type"]): ?>
+  $(document).ready(function() {
+    // Function to generate checkboxes and update total amount
+    
+});
+<?php endif; ?>
+
+</script>
+
+<scropt
+
+
+
+
+
+
