@@ -20,6 +20,14 @@
         return($number);
     }
 
+    function to_amount($number) {
+        if ($number !== "") {
+            return number_format($number, 0, '', ',');
+        } else {
+            return $number;
+        }
+    }
+
     function add_log($activity, $user){
 
         $log_id = create_uuid("LOG");

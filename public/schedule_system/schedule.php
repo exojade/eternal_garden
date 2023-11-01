@@ -131,6 +131,11 @@
     }
 	else {
 
+		$burial_schedule = query("select * from burial_schedule where 
+							
+		
+		remarks = 'FOR SCHEDULING'");
+
 		render("public/schedule_system/schedule_form.php",[]);
 	}
 ?>

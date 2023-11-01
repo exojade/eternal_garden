@@ -61,6 +61,18 @@
       </div>
       </a>
 
+      <a href="common_area?action=list">
+      <div class="col-md-6">
+          <div class="info-box">
+            <span class="info-box-icon bg-black"><i class="fa fa-cross"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">COMMON AREA</span>
+              <span class="info-box-number">90<small>%</small></span>
+            </div>
+          </div>
+      </div>
+      </a>
+
     </div>
     
     

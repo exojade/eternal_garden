@@ -34,9 +34,10 @@
         <!-- /.col -->
         <div class="col-md-7">
           <div class="box box-primary">
-            <div class="box-body no-padding">
-              <!-- THE CALENDAR -->
-              <div id="calendar"></div>
+            <div class="box-body ">
+              <table>
+
+              </table>
             </div>
             <!-- /.box-body -->
           </div>

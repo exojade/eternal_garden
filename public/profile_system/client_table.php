@@ -6,7 +6,12 @@
 .disable-click {
     pointer-events: none;
   }
+
+
+  
   </style>
+
+
 <div class="modal fade" id="modal_add_deceased">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -116,6 +121,119 @@
                 <button type="submit" class="btn btn-primary">Save changes</button>
               </div>
             </form>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="modal fade" id="modal_details">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Deceased Profile</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="fetched_data"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="modal fade" id="modal_transfer">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">List of For Transfer Profiles</h4>
+              </div>
+              <div class="modal-body">
+                <?php 
+                
+                $transfer = query("
+                select *, s.slot_number as slot_number from crypt_slot s left join crypt_list c
+                on c.crypt_id = s.crypt_id
+                left join profile_list p
+                on s.occupied_by = p.profile_id
+                where s.active_status = 'OCCUPIED'
+                and s.slot_id != ?", $slot["slot_id"]); 
+                
+                $common = query("select * from crypt_list where crypt_type = 'COMMON'");
+                
+                ?>
+                <table class="table table-bordered sample_datatable">
+                  <thead>
+                    <th></th>
+                    <th>Client</th>
+                    <th>Crypt Type</th>
+                    
+                  </thead>
+
+                <?php foreach($common as $row): ?>
+                  <tr>
+                  <td>
+                      <form class="generic_form_trigger" data-url="profile">
+                        <input type="hidden" name="action" value="transfer">
+                        <input type="hidden" name="deceased_id" id="deceased_id">
+                        <input type="hidden" name="crypt_type" value="<?php echo($row["crypt_type"]); ?>">
+                        <input type="hidden" name="crypt_id" value="<?php echo($row["crypt_id"]); ?>">
+                        <button class="btn btn-danger btn-xs btn-block" type="submit"><i class="fa fa-fw fa-exchange"></i></button>
+                      </form>
+                    </td>
+                    <td><?php echo($row["crypt_type"]); ?></td>
+                    <td><?php echo("COMMON AREA"); ?></td>
+
+                  </tr>
+
+                <?php endforeach; ?>
+
+
+                <?php foreach($transfer as $row): ?>
+                  <tr>
+          <?php
+          $remarks = "";
+          if($row["crypt_type"] == "BONE"):
+            $remarks = $row["crypt_type"] . " | " . $row["crypt_name"] . " | Row: " . $row["row_number"] . " | Column: " . $row["column_number"] . " | Slot: " . $row["slot_number"];
+          elseif($row["crypt_type"] == "COFFIN"):
+            $remarks = $row["crypt_type"] . " | " . $row["crypt_name"] . " | Row: " . $row["row_number"] . " | Column: " . $row["column_number"] . " | Slot: " . $row["slot_number"];
+          elseif($row["crypt_type"] == "LAWN"):
+            $remarks = $row["crypt_type"] . " | " . $row["lawn_type"];
+          endif;
+          ?>
+                    <td>
+                      <form class="generic_form_trigger" data-url="profile">
+                        <input type="hidden" name="action" value="transfer">
+                        <input type="hidden" name="deceased_id" id="deceased_id">
+                        <input type="hidden" name="slot_id" value="<?php echo($row["slot_id"]); ?>">
+                        <input type="hidden" name="crypt_type" value="<?php echo($row["crypt_type"]); ?>">
+                        <button class="btn btn-danger btn-xs btn-block" type="submit"><i class="fa fa-fw fa-exchange"></i></button>
+                      </form>
+                    </td>
+                    <td><?php echo($row["client_firstname"] . " " . $row["client_lastname"]); ?></td>
+                    <td><?php echo($remarks); ?></td>
+               
+                  </tr>
+
+                <?php endforeach; ?>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
@@ -268,6 +386,70 @@
 
 
 
+     
+
+
+<?php 
+if($slot["crypt_type"] == "COFFIN"):
+$lease_date = $client["lease_date"];
+$date_expired = $client["date_expired"];
+$current_date = date("Y-m-d");
+
+$lease_start = new DateTime($lease_date);
+$lease_end = new DateTime($date_expired);
+$duration = $lease_start->diff($lease_end)->days;
+$days_passed = $lease_start->diff(new DateTime($current_date))->days;
+$progress_percentage = ($days_passed / $duration) * 100;
+$days_left = $duration - $days_passed;
+// dump($progress_percentage);
+
+$progress_percentage = 100 - $progress_percentage;
+if($progress_percentage <= 0)
+$progress_percentage = 0;
+
+
+?>
+<div class="box">
+<div class="box-header with-border bg-primary" style="color:#fff;">
+              <h3 class="box-title">Lease Status</h3>
+            </div>
+  <div class="box-body">
+
+  
+    <?php if($progress_percentage == 0): ?>
+      <div class="alert alert-danger alert-dismissible">
+                <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                This Coffin Crypt is already expired.
+              </div>
+    <?php endif; ?>
+    <p><b>Days left</b>: <?php echo(to_amount($days_left)); ?> days</p>
+ <div class="progress progress-sm active">
+                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="<?php echo($progress_percentage); ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo($progress_percentage); ?>%">
+                  <span class="sr-only">20% Complete</span>
+                </div>
+              </div>
+              </div>
+              </div>
+<?php endif; ?>
+
+<?php $burial_schedule = query("select * from burial_schedule where profile_id = ? and remarks = 'POSTPONED'", $client["profile_id"]); ?>
+  <?php if(!empty($burial_schedule)): ?>
+      <div class="alert alert-warning alert-dismissible">
+                <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+                Burial Schedule is postponed
+                <form class="generic_form_trigger" data-url="profile" 
+                  data-message="Lifting postponement will notify the cemetery scheduler. Do you want to continue?" 
+                  data-title="Lift Postponement" style="display:inline;">
+                  <input type="hidden" name="action" value="continue">
+                  <input type="hidden" name="profile_id" value="<?php echo($client["profile_id"]); ?>">
+                  <input type="hidden" name="slot_id" value="<?php echo($slot["slot_id"]); ?>">
+                  <br>
+                  <br>
+                  <button type="submit" class="btn btn-primary btn-flat">Lift Postponement</button>
+                  </form>
+              </div>
+    <?php endif; ?>
+
 
 <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
@@ -276,14 +458,15 @@
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="activity">
-                <a href="#" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal_add_deceased">Add Deceased Profile</a>
+                <a href="#" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal_add_deceased">Add New Deceased Profile</a>
                 <br>
                 <br>
-               <table class="table table-borderd table-striped sample_datatable">
+               <table class="table table-bordered sample_datatable">
                 <thead>
+                    <th>Transfer</th>
                     <th>Deceased Name</th>
-                    <th>BirthDate</th>
-                    <th>Date of Death</th>
+                    <th>Birth</th>
+                    <th>Death</th>
                     <th>Age Died</th>
                     <th>Burial Date</th>
                     <th>Burial Status</th>
@@ -292,6 +475,9 @@
                 <tbody>
                     <?php foreach($deceased as $d): ?>
                         <tr>
+                            <td>
+                            <a href="#" data-id="<?php echo($d["deceased_id"]); ?>" data-toggle="modal" data-target="#modal_transfer" class="btn btn-danger btn-xs btn-block open_transfer_modal"><i class="fa fa-fw fa-exchange"></i></a>
+                            </td>
                             <td><?php echo($d["deceased_name"]); ?></td>
                             <td><?php echo($d["birthdate"]); ?></td>
                             <td><?php echo($d["date_of_death"]); ?></td>
@@ -307,153 +493,73 @@
                   $forward = query("select * from deceased_profile where slot_number = ? and burial_status = 'NO BURIAL DATE'", $_GET["slot"]);
                   if(!empty($forward)):
                   ?>
-                  <a href="#" data-toggle="modal" data-target="#modal_forward" class="btn btn-primary btn-flat">Forward to Cemetery for Burial Scheduling</a>
+                  <a href="#" data-toggle="modal" data-target="#modal_forward" class="btn btn-primary btn-flat">Pay Bill and Forward to Burial Scheduler</a>
                   <?php endif; ?>
+
+                  <?php 
+                  $burial_schedule = query("select * from burial_schedule where profile_id = ? and remarks not in ('DONE', 'POSTPONED')", $client["profile_id"]); 
+                  if(!empty($burial_schedule)):
+                  ?>
+                  <form class="generic_form_trigger" data-url="profile" 
+                  data-message="Cancellation of Burial will cost: 500.00 and this slot will be vacant after submission. Do you want to continue?" 
+                  data-title="Cancellation of Burial" style="display:inline;">
+                  <input type="hidden" name="action" value="cancellation">
+                  <input type="hidden" name="profile_id" value="<?php echo($client["profile_id"]); ?>">
+                  <input type="hidden" name="slot_id" value="<?php echo($slot["slot_id"]); ?>">
+                  <button type="submit" class="btn btn-danger btn-flat">Cancel Burial</button>
+                  </form>
+                  <form class="generic_form_trigger" data-url="profile" 
+                  data-message="Postponement of Burial will cost: 500.00 and will be subject to rescheduling of burial. Do you want to continue?" 
+                  data-title="Postponement of Burial" style="display:inline;">
+                  <input type="hidden" name="action" value="postponement">
+                  <input type="hidden" name="profile_id" value="<?php echo($client["profile_id"]); ?>">
+                  <input type="hidden" name="slot_id" value="<?php echo($slot["slot_id"]); ?>">
+                  <button type="submit" class="btn btn-warning btn-flat">Postpone Burial</button>
+                  </form>
+                  <?php endif; ?>
+
               </div>
               <div class="tab-pane" id="timeline">
-                <ul class="timeline timeline-inverse">
-                  <li class="time-label">
-                        <span class="bg-red">
-                          10 Feb. 2014
-                        </span>
-                  </li>
-                  <li>
-                    <i class="fa fa-envelope bg-blue"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-
-                      <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                      <div class="timeline-body">
-                        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                        weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                        jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                        quora plaxo ideeli hulu weebly balihoo...
-                      </div>
-                      <div class="timeline-footer">
-                        <a class="btn btn-primary btn-xs">Read more</a>
-                        <a class="btn btn-danger btn-xs">Delete</a>
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-user bg-aqua"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                      <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
-                      </h3>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-comments bg-yellow"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-
-                      <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                      <div class="timeline-body">
-                        Take me to your leader!
-                        Switzerland is small and neutral!
-                        We are more like Germany, ambitious and misunderstood!
-                      </div>
-                      <div class="timeline-footer">
-                        <a class="btn btn-warning btn-flat btn-xs">View comment</a>
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline time label -->
-                  <li class="time-label">
-                        <span class="bg-green">
-                          3 Jan. 2014
-                        </span>
-                  </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-camera bg-purple"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-
-                      <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                      <div class="timeline-body">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                        <img src="http://placehold.it/150x100" alt="..." class="margin">
-                      </div>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <li>
-                    <i class="fa fa-clock-o bg-gray"></i>
-                  </li>
-                </ul>
-              </div>
-              <!-- /.tab-pane -->
-
-              <div class="tab-pane" id="settings">
-                <form class="form-horizontal">
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputName" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputName" placeholder="Name">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
-
-                    <div class="col-sm-10">
-                      <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button type="submit" class="btn btn-danger">Submit</button>
-                    </div>
-                  </div>
-                </form>
+                <?php 
+                $transaction = query("select *,t.transaction_id as transaction_id from transaction t
+                left join profile_list p
+                on t.profile_id = p.profile_id where slot_id = ?
+                order by timestamp desc
+                ", $slot["slot_id"]);
+                
+                $Deceased_transaction = [];
+                $deceased_transaction = query("select * from deceased_transaction");
+                foreach($deceased_transaction as $row):
+                  $Deceased_transaction[$row["transaction_id"]] = $row;
+                endforeach;
+                // dump($Deceased_transaction);
+                ?>
+                <div class="table-responsive">
+                <table class="table table-bordered table-striped sample_datatable">
+                  <thead>
+                    <th width="10%">Details</th>
+                    <th>Date</th>
+                    <th>Client</th>
+                    <th>Fee</th>
+                    <th width="30%">Remarks</th>
+                  </thead>
+                  <tbody>
+                    <?php foreach($transaction as $row): ?>
+                      <tr>
+                        <td><a href="#" data-toggle="modal" data-target="#modal_details" data-id="<?php echo($row["transaction_id"]); ?>" class="open_transaction_modal btn btn-xs btn-primary btn-block">SEE DETAILS</a></td>
+                        <td><?php echo($row["date"]); ?></td>
+                        <td><?php echo($row["client_firstname"] . " " . $row["client_lastname"]); ?><br>
+                            <?php if(isset($Deceased_transaction[$row["transaction_id"]])): ?>
+                              
+                            <?php endif; ?>
+                      </td>
+                        <td><?php echo(to_peso($row["total_fee"])); ?></td>
+                        <td><?php echo($row["logs"]); ?></td>
+                      </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+               </div>
               </div>
             </div>
           </div>

@@ -192,11 +192,9 @@ background-image: url('resources/eternal_bg.jpg');
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalLabel">Point Information</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title" id="modalLabel">LOCATION INFORMATION</h5>
+    
       </div>
       <div class="modal-body" id="modalBody">
         <!-- Point information will be displayed here -->
@@ -304,19 +302,17 @@ background-image: url('resources/eternal_bg.jpg');
   <script src="gravekeeper/webmap/js/leaflet-search.js"></script>
   <script src="gravekeeper/webmap/data/CemeteryCircumference_1.js"></script>
   <script src="gravekeeper/webmap/data/road_2.js"></script>
-
   <script>
         $(window).on('load', function () {
             $('#loading').hide();
         }) 
-    </script>
-
-
+  </script>
 <?php
 $deceased_profile = query("select d.*, slot.crypt_id, slot.row_number, slot.column_number, slot.slot_number as crypt_number 
                             from deceased_profile d
                             left join crypt_slot slot
                             on slot.slot_id = d.slot_number
+                            where  d.active_status IS NULL OR d.active_status != 'FOR TRANSFER';
 ");
 // dump($deceased_profile);
 $Deceased = [];
@@ -473,6 +469,37 @@ endforeach;
                             endif;
                         endif;
                     endforeach;
+
+                    foreach($common as $row):
+                        if($row["coordinates"] != ""):
+                        $trim = str_replace('""', '', $row['coordinates']);
+                            echo '{ "type": "Feature", "properties": { ';
+                            echo '"Status": "COMMON",';
+                            echo '"Name": "'.$row["crypt_name"].'",';
+                            echo '"link_url": "none",';
+                            echo '"description": "",'; 
+                            echo '"slot_number": "'.$row['crypt_id'].'",';
+                            echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                            echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                            if(isset($Deceased2[$row["crypt_id"]])):
+                                $deceased = $Deceased2[$row["crypt_id"]];
+                                foreach($deceased as $d):
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "COMMON",';
+                                    echo '"Name": "'.$d["deceased_name"].'",'; 
+                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b>",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
+                        endif;
+                    endforeach;
+
+
+
                     foreach($no_slot as $row):
                         if($row["coordinates"] != ""):
                         $trim = str_replace('""', '', $row['coordinates']);
@@ -490,13 +517,14 @@ endforeach;
         </script>
 
         <script>
-            var map = L.map('map', {
-                zoomControl:true, maxZoom:25, minZoom:19
+             var map = L.map('map', {
+                zoomControl:true, maxZoom:20, minZoom:19
             }).fitBounds([[7.318064, 125.662665]]);
+        // }).fitBounds([[7.31848,125.66304],[7.31848,125.66304]]);
             var hash = new L.Hash(map);
             map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
             var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-            L.control.locate({locateOptions: {maxZoom: 25}}).addTo(map);
+            L.control.locate({locateOptions: {maxZoom: 22}}).addTo(map);
             var bounds_group = new L.featureGroup([]);
             function setBounds() {
             }
@@ -508,9 +536,9 @@ endforeach;
                 opacity: 1.0,
                 attribution: '',
                 minZoom: 10,
-                maxZoom: 25,
+                maxZoom: 22,
                 minNativeZoom: 0,
-                maxNativeZoom: 25
+                maxNativeZoom: 22
             });
             layer_GoogleSatellite_0;
             map.addLayer(layer_GoogleSatellite_0);
@@ -690,6 +718,23 @@ endforeach;
                         interactive: true,
                     }
                     break;
+                    case 'COMMON':
+                    return {
+                        pane: 'pane_Marker_3',
+                        radius: 10.0,
+                        opacity: 1,
+                        color: '#fff',
+                        dashArray: '',
+                        lineCap: 'butt',
+                        lineJoin: 'miter',
+                        weight: 2.0,
+                        fill: true,
+                        fillOpacity: 1,
+                        // rgb(24, 22, 22)
+                        fillColor: '#fff',
+                        interactive: true,
+                    }
+                    break;
                     case 'COFFIN':
                     return {
                         pane: 'pane_Marker_3',
@@ -711,7 +756,7 @@ endforeach;
                     case 'MAUSOLEUM':
                     return {
                         pane: 'pane_Marker_3',
-                        radius: 8.0,
+                        radius: 5.0,
                         opacity: 1,
                         color: '#F7DBA7',
                         dashArray: '',
@@ -803,13 +848,11 @@ endforeach;
 
             layer_Marker_3.on('click', function(e) {
                 var properties = e.layer.feature.properties;
-                // alert(properties.Status );
                 if(properties.Status == 'NO_SLOT'){
                     $('#assignCrypt_modal #slot_id').val(properties.slot_number);
                     $('#assignCrypt_modal').modal('show');
                 }
                 else if(properties.Status != 'VACANT' && properties.Status != 'OCCUPIED'){
-                
                     $.ajax({
                     type : 'post',
                     url : 'maps',

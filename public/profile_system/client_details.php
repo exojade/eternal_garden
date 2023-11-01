@@ -31,6 +31,11 @@
     <section class="content-header">
       <h1>
         Details
+        <form class="generic_form_trigger" data-url="profile" style="display:inline;float: right;">
+          <input type="hidden" name="action" value="vacate">
+          <input type="hidden" name="slot_id" value="<?php echo($_GET["slot"]) ?>">
+          <button class="btn btn-danger btn-flat">Vacate</button>
+        </form>
       
       </h1>
     </section>
@@ -278,7 +283,7 @@
 
 
 
-    <?php if(empty($client)): ?>
+    <?php if($slot["active_status"] == "VACANT"): ?>
               <div class="alert alert-warning alert-dismissible">
          
                 <h4><i class="icon fa fa-ban"></i> Alert!</h4>
@@ -316,7 +321,7 @@
                   echo($slot["crypt_name"]); ?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Crypt Type</b> <a class="pull-right"><?php echo($slot["crypt_slot_type"]); ?></a>
+                  <b>Crypt Type</b> <a class="pull-right"><?php echo($slot["crypt_type"]); ?></a>
                 </li>
                 <li class="list-group-item">
                   <b>Slot / Lawn #</b> <a class="pull-right"><?php echo($slot["slot_number"]); ?></a>
@@ -531,8 +536,12 @@ $('#barangay_select').change(function(){
 <script>
   $(function () {
     $('.sample_datatable').DataTable({
-  "ordering": false
+  "ordering": false,
+  autoWidth: false,
 });
+
+
+
     $('.select2').select2()
   })
 </script>
@@ -556,15 +565,10 @@ $('.timepicker').timepicker({
 
 <script>
 $(document).ready(function() {
-    // Automatically check checkboxes with class "coffin_price"
-    // $('input.coffin_price').prop('checked', true);
-
-    // Add a change event listener to all checkboxes with the name "certification_amount" and "services"
     $('input.coffin_price,input#lapida ,input[type="checkbox"][name="service[]"]').on('change', function() {
         updateTotalCost();
     });
 
-    // Trigger the change event for all initially checked checkboxes
     $('input.coffin_price:checked,input#lapida input[type="checkbox"][name="service[]"]:checked').trigger('change');
 
     function updateTotalCost() {
@@ -578,48 +582,51 @@ $(document).ready(function() {
         totalCost += parseInt(selectedOption.data('amount')) + parseInt(selectedOption.data('certification'));
       <?php endif; ?>
 
-
-
-
         var selectedServices = $('input.coffin_price:checked,input#lapida:checked, input[type="checkbox"][name="service[]"]:checked');
-      
         selectedServices.each(function() {
             totalCost += parseInt($(this).data('cost'));
         });
-        // console.log(selectedOption);
         $('#total_cost').val(totalCost);
     }
-
-
-
-
-
-
-    // Initial setup
-    // updatePricingOptions();
-
-    // Handle changes in the select box
     $('#pricingOption').on('change', updateTotalCost);
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-<?php if($slot["crypt_type"]): ?>
-  $(document).ready(function() {
-    // Function to generate checkboxes and update total amount
-    
+$(document).on("click", ".open_transfer_modal", function () {
+     var myBookId = $(this).data('id');
+     $("#modal_transfer .modal-body #deceased_id").val( myBookId );
+     // As pointed out in comments, 
+     // it is unnecessary to have to manually call the modal.
+     // $('#addBookDialog').modal('show');
 });
-<?php endif; ?>
+
+
+$(document).on("click", ".open_transaction_modal", function () {
+     var transaction_id = $(this).data('id');
+     $.ajax({
+        type : 'post',
+        url : 'profile',
+        data: {
+            transaction_id: transaction_id, action: "modal_details"
+        },
+        success : function(data){
+            $('#modal_details .fetched_data').html(data);
+            // swal.close();
+            $('#modal_details').modal('show');
+            // $(".select2").select2();//Show fetched data from database
+        }
+      });
+     
+     // As pointed out in comments, 
+     // it is unnecessary to have to manually call the modal.
+     // $('#addBookDialog').modal('show');
+});
+
+
+
+
+
+
 
 </script>
 

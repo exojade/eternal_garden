@@ -65,7 +65,6 @@ $pend = $pending[0]["count"];
           $schedule = query("select COUNT(*) as count from burial_schedule where remarks = 'PENDING'");
           $sched = $schedule[0]["count"];
           ?>
-
           <?php if($sched != 0): ?>
             <li><a href="schedule"><i class="fa fa-calendar"></i> <span>Schedule</span>
             <span class="pull-right-container">
@@ -79,9 +78,7 @@ $pend = $pending[0]["count"];
               <span class="label label-danger pull-right">5</span>
             </span></a></li>
       </ul>
-
       <?php elseif($role=="CEEMDO"): ?>
-
         <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
           <li><a href="index"><i class="fa fa-circle"></i> <span>Main</span></a></li>

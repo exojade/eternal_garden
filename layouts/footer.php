@@ -244,8 +244,19 @@
 
     var form = $(this)[0];
     var formData = new FormData(form);
-    var promptmessage = 'This form will be submitted. Are you sure you want to continue?';
-    var prompttitle = 'Data submission';
+    var promptmessage = "";
+    var prompttitle = "";
+    if(typeof($(this).data('title')) != "undefined" ) {
+      promptmessage = $(this).data('message');
+      prompttitle = $(this).data('title');
+    }
+    else{
+      promptmessage = 'This form will be submitted. Are you sure you want to continue?';
+      prompttitle = 'Data submission';
+    }
+
+
+    
     var url = $(this).data('url');
 
     swal({

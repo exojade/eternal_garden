@@ -2,6 +2,7 @@
     require("includes/config.php");
     require("includes/uuid.php");
     require("includes/checkhit.php");
+	require("PHPMailer/PHPMailerAutoload.php");
 	
 	ini_set('max_execution_time', '300');
 		
@@ -42,6 +43,8 @@
 
 				else if ($request == 'coffin_crypt')
 					require 'public/coffin_crypt/coffin_crypt.php';
+				else if ($request == 'common_area')
+					require 'public/common_area/common_area.php';
 
 				else if ($request == 'reports')
 					require 'public/reports_system/reports.php';

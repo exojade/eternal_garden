@@ -520,8 +520,8 @@ $result=[];
         <script>
             var map = L.map('map', {
                 zoomControl:true, maxZoom:21, minZoom:10
-            }).fitBounds([[6.913597497117801,122.13930750978687],[6.914359146460475,122.14088332323063]]);
-        // }).fitBounds([[7.31848,125.66304],[7.31848,125.66304]]);
+            //}).fitBounds([[6.913597497117801,122.13930750978687],[6.914359146460475,122.14088332323063]]);
+         }).fitBounds([[7.31848,125.66304],[7.31848,125.66304]]);
             var hash = new L.Hash(map);
             map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
             var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
