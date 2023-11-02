@@ -27,6 +27,11 @@
   <![endif]-->
 
   <!-- Google Font -->
+  <style>
+body {
+font-size:120% !important;
+}
+    </style>
 
 </head>
 <body class="hold-transition skin-green sidebar-mini fixed">

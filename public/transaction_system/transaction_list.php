@@ -122,7 +122,7 @@
 <script>
   var datatable = 
             $('.transaction-datatable').DataTable({
-                "pageLength": 100,
+                "pageLength": 10,
                 language: {
                     searchPlaceholder: "Enter Filter"
                 },
