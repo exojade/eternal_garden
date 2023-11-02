@@ -20,11 +20,11 @@ $pend = $pending[0]["count"];
       <?php if($role == "ADMINISTRATOR"): ?>
         <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-          <li><a href="index"><i class="fa fa-circle"></i> <span>Main</span></a></li>
+          <li><a href="index"><i class="fa fa-home"></i> <span>Main</span></a></li>
           <!-- <li><a href="maps?filter=ALL"><i class="fa fa-map"></i> <span>Map</span></a></li> -->
           <li><a href="maps?action=map_editor"><i class="fa fa-map"></i> <span>Map Editor</span></a></li>
           <li><a href="transaction?action=list"><i class="fa fa-file"></i> <span>Transaction</a></li>
-          <li><a href="transaction?action=list"><i class="fa fa-dollar"></i> <span>Sales</a></li>
+          <li><a href="sales?action=list"><i class="fa fa-dollar"></i> <span>Sales</a></li>
           <li><a href="burial_space?action=list"><i class="fa fa-cross"></i> <span>Burial Space</span></a></li>
           <!-- <li><a href="coffin_crypt?action=list"><i class="fa fa-building"></i> <span>Coffin Crypt</span></a></li> -->
           <!-- <li><a href="bone_crypt?action=list"><i class="fa fa-bone"></i> <span>Bone Crypt</span></a></li> -->

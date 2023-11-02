@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
 <link rel="stylesheet" href="AdminLTE/dist/css/AdminLTE.min.css">
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 <link rel="stylesheet" href="gravekeeper/assets/fonts/simple-line-icons.min.css">
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css"> -->
 <link rel="stylesheet" href="gravekeeper/assets/css/smoothproducts.css">
@@ -260,6 +259,17 @@ $result=[];
                                     left join profile_list client
                                     on client.slot_number = slot.slot_id
                                     where crypt_slot_type = 'LAWN'");
+        $client = query("select * from profile_list");
+        $Clients = [];
+        foreach($client as $row):
+            $Clients[$row["profile_id"]] = $row;
+        endforeach;
+
+        $crypt_slot = query("select * from crypt_slot");
+					foreach($crypt_slot as $c):
+						if($c["occupied_by"] != "")
+							$Crypt_slot[$c["crypt_id"]][$c["occupied_by"]] = $c;
+					endforeach;
               
         ?>
         <script>
@@ -385,10 +395,11 @@ $result=[];
                             if(isset($Crypt_slot[$row["crypt_id"]])):
                                 $crypt_slot = $Crypt_slot[$row["crypt_id"]];
                                 foreach($crypt_slot as $cs):
+                                    // dump($Clients[$cs["occupied_by"]]);
                                     $trim = str_replace('""', '', $row['coordinates']);
                                     echo '{ "type": "Feature", "properties": { ';
                                     echo '"Status": "BONE",';
-                                    echo '"Name": "'.$Clients[$cs["occupied_by"]]["client_name"].' [CLIENT]",';
+                                    echo '"Name": "'.$Clients[$cs["occupied_by"]]["client_firstname"] . " " . $Clients[$cs["occupied_by"]]["client_lastname"].' [CLIENT]",';
                                     echo '"description": "[CLIENT]<br>Crypt: '.$row["crypt_name"].'<br>Row: '.$cs["row_number"].' | Column: '.$cs["column_number"].'<br>Crypt Number: '.$cs["slot_number"].'",';
                                     echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
                                     echo '"slot_number": "'.$row['crypt_id'].'",';
@@ -424,14 +435,15 @@ $result=[];
                                     echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
                                 endforeach;
                             endif;
-
+                            
                             if(isset($Crypt_slot[$row["crypt_id"]])):
                                 $crypt_slot = $Crypt_slot[$row["crypt_id"]];
                                 foreach($crypt_slot as $cs):
+                                    // dump($Clients[$cs["occupied_by"]]["client_firstname"]);
                                     $trim = str_replace('""', '', $row['coordinates']);
                                     echo '{ "type": "Feature", "properties": { ';
                                     echo '"Status": "COFFIN",';
-                                    echo '"Name": "'.$Clients[$cs["occupied_by"]]["client_name"].' [CLIENT]",';
+                                    echo '"Name": "'.$Clients[$cs["occupied_by"]]["client_firstname"] . " " . $Clients[$cs["occupied_by"]]["client_firstname"].' [CLIENT]",';
                                     echo '"description": "[CLIENT]<br>Crypt: '.$row["crypt_name"].'<br>Row: '.$cs["row_number"].' | Column: '.$cs["column_number"].'<br>Crypt Number: '.$cs["slot_number"].'",';
                                     echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
                                     echo '"slot_number": "'.$row['crypt_id'].'",';
@@ -731,7 +743,7 @@ $('#modal-add_lot').modal('show');
                     pane: 'pane_Marker_3',
                     radius: 5.0,
                     opacity: 1,
-                    color: '#C57B57',
+                    color: '#9E6246',
                     dashArray: '',
                     lineCap: 'butt',
                     lineJoin: 'miter',
@@ -785,11 +797,11 @@ $('#modal-add_lot').modal('show');
                         pane: 'pane_Marker_3',
                         radius: 10.0,
                         opacity: 1,
-                        color: '#fff',
+                        color: '#000',
                         dashArray: '',
                         lineCap: 'butt',
                         lineJoin: 'miter',
-                        weight: 2.0,
+                        weight: 3.0,
                         fill: true,
                         fillOpacity: 1,
                         // rgb(24, 22, 22)
@@ -801,7 +813,7 @@ $('#modal-add_lot').modal('show');
                     return {
                         pane: 'pane_Marker_3',
                         pane: 'pane_Marker_3',
-                        radius: 6.0,
+                        radius: 20.0,
                         opacity: 1,
                         color: '#00A7D0',
                         dashArray: '',

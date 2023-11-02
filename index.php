@@ -65,6 +65,9 @@
 
 				else if ($request == 'transaction')
 					require 'public/transaction_system/transaction.php';
+
+				else if ($request == 'sales')
+					require 'public/sales_system/sales.php';
 				else if ($request == 'logout')
 					require 'logout.php';
 
