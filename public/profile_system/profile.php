@@ -785,6 +785,30 @@
 					{
 						apologize("Sorry, that username has already been taken!");
 					}
+					else;
+
+
+					$transaction_id = create_uuid("TRANSACTION");
+					$logs = "This person has been transferred to common area.";
+					if (query("insert into transaction 
+					(transaction_id,date,time,logs,timestamp,slot_id,transaction_type) 
+					VALUES(?,?,?,?,?,?,?)", 
+					$transaction_id,date("Y-m-d"),date("H:i:s"),$logs,time(),$crypt_slot_id, "TRANSFER COMMON"
+					) === false)
+					{
+						apologize("Sorry, that username has already been taken!");
+					}
+					else;
+
+					if (query("insert into deceased_transaction 
+					(transaction_id,deceased_id) 
+					VALUES(?,?)", 
+					$transaction_id,$_POST["deceased_id"]
+					) === false)
+					{
+						apologize("Sorry, that username has already been taken!");
+					}
+					else;
 
 					query("update deceased_profile set slot_number = ?, profile_id = null
 							where deceased_id = ?", $crypt_slot_id, $_POST["deceased_id"]);
