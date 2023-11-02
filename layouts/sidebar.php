@@ -22,7 +22,7 @@ $pend = $pending[0]["count"];
         <li class="header">MAIN NAVIGATION</li>
           <li><a href="index"><i class="fa fa-circle"></i> <span>Main</span></a></li>
           <!-- <li><a href="maps?filter=ALL"><i class="fa fa-map"></i> <span>Map</span></a></li> -->
-          <li><a href="reports"><i class="fa fa-bar-chart"></i> <span>Reports</span></a></li>
+          <li><a href="maps?action=map_editor"><i class="fa fa-map"></i> <span>Map Editor</span></a></li>
           <li><a href="transaction?action=list"><i class="fa fa-file"></i> <span>Transaction</a></li>
           <li><a href="transaction?action=list"><i class="fa fa-dollar"></i> <span>Sales</a></li>
           <li><a href="burial_space?action=list"><i class="fa fa-cross"></i> <span>Burial Space</span></a></li>

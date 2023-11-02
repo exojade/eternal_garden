@@ -360,6 +360,25 @@
 				"no_slot" => $no_slot,
 			]);
 
+
+
+			elseif($_GET["action"] == "map_editor"):
+				$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
+				$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
+				$bone = query("select * from crypt_list where crypt_type = 'BONE'");
+				$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
+				$common = query("select * from crypt_list where crypt_type = 'COMMON'");
+				$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
+				render("public/maps_system/map_editor.php",
+				[
+					"lawn" => $lawn,
+					"coffin" => $coffin,
+					"mausoleum" => $mausoleum,
+					"bone" => $bone,
+					"common" => $common,
+					"no_slot" => $no_slot,
+				]);
+
 			endif;
 
 			

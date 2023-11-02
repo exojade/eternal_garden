@@ -74,35 +74,11 @@
   <section class="content-header">
       <h1>
         Map Details
-        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal-add_lot" style="float:right;">Add Lot</a>
-        <button  type="button" class="btn btn-primary btn-flat" style="float:right;" data-toggle="modal" data-target="#modal-primary">Upload DTRAS</button>  
     </h1>
     </section>
     <section class="content">
 
 
-    <div class="modal fade" id="modal-primary">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-primary">
-                <h3 class="modal-title text-center">Upload CSV</h3>
-              </div>
-              <div class="modal-body">
-
-              <form role="form" class="generic_form_trigger" data-url="maps">
-                <input type="hidden" name="action" value="upload_lots">
-                <div class="form-group">
-                  <label for="exampleInputFile">Upload Zip Only</label>
-                  <input required accept=".csv" type="file" name="logzips" multiple="multiple" id="exampleInputFile">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Save changes</button>
-              </div>
-              </form>
-            </div>
-          </div>
-      </div>
 
 
 <div class="modal fade" id="modal-add_lot" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
@@ -119,11 +95,11 @@
         <input type="hidden" name="action" value="add_lot">
         <div class="form-group">
             <label for="exampleInputEmail1">Latitude</label>
-            <input required name="latitude" type="text" class="form-control" id="exampleInputEmail1" placeholder="---">
+            <input required name="latitude" type="text" class="form-control" id="latitudeInput" placeholder="---">
         </div>
         <div class="form-group">
             <label for="exampleInputEmail1">Longitude</label>
-            <input required name="longitude" type="text" class="form-control" id="exampleInputEmail1" placeholder="---">
+            <input required name="longitude" type="text" class="form-control" id="longitudeInput" placeholder="---">
         </div>
         <?php 
         $lawn_type = query("select lawn_type from crypt_slot group by lawn_type");
@@ -212,34 +188,7 @@
                         <span><i class="fa fa-square text-no_slot"></i> No Slot</span>
                     </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="row">
-                            <div class="col-md-8">
-                            <form class="generic_form" data-url="maps">
-                        <input type="hidden" name="action" value="filter_lawn">
-                        <input type="hidden" name="id" value="<?php echo($_GET["id"]); ?>">
-                      
-                        <select class="form-control" name="filter">
-                           <option value="<?php echo($_GET["filter"]); ?>"><?php echo($_GET["filter"]); ?></option>
-                           <option value="ALL">ALL</option>
-                           <option value="SUPER_PRIME_A">SUPER_PRIME_A</option>
-                           <option value="SUPER_PRIME_B">SUPER_PRIME_B</option>
-                           <option value="SUPER_PRIME_C">SUPER_PRIME_C</option>
-                           <option value="PRIME_A">PRIME_A</option>
-                           <option value="PRIME_B">PRIME_B</option>
-                           <option value="PRIME_C">PRIME_C</option>
-                           <option value="REGULAR">REGULAR</option>
-                           <option value="CORNER">CORNER</option>
-                           <option></option>
-                        </select>
-                            </div>
-                            <div class="col-md-4">
-                                     <button class="btn btn-primary btn-block btn-flat" type="submit">Filter</button>
-                                     </form>
-                            </div>
-                        </div>
-                      
-                    </div>
+                    
                 </div>
                 <br>
     <div id="map" style="border: 1px solid black; width: 99%; height: 600px;">
@@ -306,21 +255,12 @@ endforeach;
 // dump($Deceased);
 
 $result=[];
-            if($_GET["crypt_type"] == "LAWN"):
-                if($_GET["filter"] == "ALL"){
+  
                 $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
                                     left join profile_list client
                                     on client.slot_number = slot.slot_id
                                     where crypt_slot_type = 'LAWN'");
-                }
-                else{
-                $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
-                left join profile_list client
-                on client.slot_number = slot.slot_id
-                where crypt_slot_type = 'LAWN'
-                and lawn_type = ?", $_GET["filter"]);
-                }
-            endif;
+              
         ?>
         <script>
             var json_Marker_3 = {
@@ -512,6 +452,33 @@ $result=[];
                             echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
                         endif;
                     endforeach;
+                    foreach($common as $row):
+                        if($row["coordinates"] != ""):
+                        $trim = str_replace('""', '', $row['coordinates']);
+                            echo '{ "type": "Feature", "properties": { ';
+                            echo '"Status": "COMMON",';
+                            echo '"Name": "'.$row["crypt_name"].'",';
+                            echo '"link_url": "none",';
+                            echo '"description": "",'; 
+                            echo '"slot_number": "'.$row['crypt_id'].'",';
+                            echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                            echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                            if(isset($Deceased2[$row["crypt_id"]])):
+                                $deceased = $Deceased2[$row["crypt_id"]];
+                                foreach($deceased as $d):
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "COMMON",';
+                                    echo '"Name": "'.$d["deceased_name"].'",'; 
+                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b>",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
+                        endif;
+                    endforeach;
                 ?>
             ]
             }
@@ -519,7 +486,7 @@ $result=[];
 
         <script>
             var map = L.map('map', {
-                zoomControl:true, maxZoom:21, minZoom:10
+                zoomControl:true, maxZoom:21, minZoom:18
             //}).fitBounds([[6.913597497117801,122.13930750978687],[6.914359146460475,122.14088332323063]]);
          }).fitBounds([[7.31848,125.66304],[7.31848,125.66304]]);
             var hash = new L.Hash(map);
@@ -527,6 +494,7 @@ $result=[];
             var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
             L.control.locate({locateOptions: {maxZoom: 21}}).addTo(map);
             var bounds_group = new L.featureGroup([]);
+            map.setView([7.31848, 125.66304], 19);
             function setBounds() {
             }
             map.createPane('pane_GoogleSatellite_0');
@@ -552,16 +520,39 @@ $result=[];
     // if (e.originalEvent.target.classList.contains('leaflet-interactive')) {
     //     return; // Clicked on a marker, do nothing
     // }
+    if (e.originalEvent.target.classList.contains('leaflet-interactive')) {
+        var targetElement = e.originalEvent.target;
+        var fillColor = targetElement.getAttribute('fill');
+        if(fillColor == '#858796'){
+            var latlng = e.latlng; // Get the clicked latitude and longitude
+
+document.getElementById('latitudeInput').value = latlng.lat;
+document.getElementById('longitudeInput').value = latlng.lng;
+
+// Open the modal
+$('#modal-add_lot').modal('show');
+        }
+        else{
+         return;
+        }
+        
 
 
-    
-    
-
+         // Clicked on a marker, do nothing
+    }
     var latlng = e.latlng; // Get the clicked latitude and longitude
-    var popup = L.popup()
-        .setLatLng(latlng)
-        .setContent("Latitude: " + latlng.lat + "<br>Longitude: " + latlng.lng)
-        .openOn(map);
+
+    document.getElementById('latitudeInput').value = latlng.lat;
+    document.getElementById('longitudeInput').value = latlng.lng;
+
+    // Open the modal
+    $('#modal-add_lot').modal('show');
+
+
+    // var popup = L.popup()
+    //     .setLatLng(latlng)
+    //     .setContent("Latitude: " + latlng.lat + "<br>Longitude: " + latlng.lng)
+    //     .openOn(map);
 });
 
 // var gridLayer = L.tileLayer('grid/{z}/{x}/{y}.png', {
@@ -738,7 +729,7 @@ $result=[];
                     case 'OCCUPIED':
                         return {
                     pane: 'pane_Marker_3',
-                    radius: 8.0,
+                    radius: 5.0,
                     opacity: 1,
                     color: '#C57B57',
                     dashArray: '',
@@ -757,7 +748,7 @@ $result=[];
                     case 'VACANT':
                         return {
                     pane: 'pane_Marker_3',
-                    radius: 8.0,
+                    radius: 5.0,
                     opacity: 1,
                     color: 'rgba(61,128,53,1.0)',
                     dashArray: '',
@@ -775,7 +766,7 @@ $result=[];
                     case 'NO_SLOT':
                     return {
                         pane: 'pane_Marker_3',
-                        radius: 8.0,
+                        radius: 5.0,
                         opacity: 1,
                         color: '#111D13',
                         dashArray: '',
@@ -789,12 +780,12 @@ $result=[];
                         interactive: true,
                     }
                     break;
-                    case 'COFFIN':
+                    case 'COMMON':
                     return {
                         pane: 'pane_Marker_3',
-                        radius: 8.0,
+                        radius: 10.0,
                         opacity: 1,
-                        color: '#00A7D0',
+                        color: '#fff',
                         dashArray: '',
                         lineCap: 'butt',
                         lineJoin: 'miter',
@@ -802,14 +793,32 @@ $result=[];
                         fill: true,
                         fillOpacity: 1,
                         // rgb(24, 22, 22)
-                        fillColor: '#00A7D0',
+                        fillColor: '#fff',
                         interactive: true,
+                    }
+                    break;
+                    case 'COFFIN':
+                    return {
+                        pane: 'pane_Marker_3',
+                        pane: 'pane_Marker_3',
+                        radius: 6.0,
+                        opacity: 1,
+                        color: '#00A7D0',
+                        dashArray: '',
+                        lineCap: 'butt',
+                        lineJoin: 'miter',
+                        weight: 16.0,
+                        fill: true,
+                        fillOpacity: 1,
+                        // rgb(24, 22, 22)
+                        fillColor: '#00A7D0',
+                        interactive: true,    // Adjust the height to match your requirements
                     }
                     break;
                     case 'MAUSOLEUM':
                     return {
                         pane: 'pane_Marker_3',
-                        radius: 8.0,
+                        radius: 5.0,
                         opacity: 1,
                         color: '#F7DBA7',
                         dashArray: '',
@@ -826,13 +835,13 @@ $result=[];
                     case 'BONE':
                     return {
                         pane: 'pane_Marker_3',
-                        radius: 8.0,
+                        radius: 6.0,
                         opacity: 1,
                         color: '#D33724',
                         dashArray: '',
                         lineCap: 'butt',
                         lineJoin: 'miter',
-                        weight: 2.0,
+                        weight: 16.0,
                         fill: true,
                         fillOpacity: 1,
                         // rgb(24, 22, 22)
@@ -856,11 +865,46 @@ $result=[];
                         feature: feature,
                         variables: {}
                     };
-                    return L.circleMarker(latlng, style_Marker_3_0(feature));
+
+                    // console.log(feature.properties);
+                    console.log(latlng);
+                    
+                    
+                    if(feature.properties["Status"] == "COFFIN" || feature.properties["Status"] == "BONE"){
+
+//                         var marker = L.marker([latlng.lat, latlng.lng]).addTo(map);
+
+// // Define the label as an HTML element
+// var label = L.divIcon({
+//     className: 'custom-label',
+//     html: 'Your Label Text',
+// });
+
+// // Add the label to the marker
+// marker.setIcon(label);
+
+
+
+        var top = [latlng.lat - 0.00009, latlng.lng]; // Top corner
+        var bottom = [latlng.lat + 0.00009, latlng.lng]; // Bottom corner
+
+        // Create a rectangle marker by connecting the top and bottom coordinates
+        var rectangle = L.polygon([top, bottom, bottom, top], style_Marker_3_0(feature));
+
+        return rectangle;
+
+                    }
+
+                    else{
+                        return L.circleMarker(latlng, style_Marker_3_0(feature));
+                    }
+
+                   
+
+
+                    
                 },
             });
-            bounds_group.addLayer(layer_Marker_3);
-            map.addLayer(layer_Marker_3);
 
             layer_Marker_3.on('click', function(e) {
                 var properties = e.layer.feature.properties;
