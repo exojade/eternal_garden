@@ -178,7 +178,7 @@
 
 			$fullname = strtoupper($_POST["last_name"] . "_" . $_POST["first_name"] . "_" . $_POST["middle_name"] . "_" . $_POST["suffix"]);
 			$fullname = str_replace(' ', '_', $fullname);
-			$target_pdf = "uploads/" . $fullname."/";
+			$target_pdf = "uploads/" . $profile_id."/";
 			if (!file_exists($target_pdf )) {
 				mkdir($target_pdf , 0777, true);
 			}
@@ -242,43 +242,38 @@
 					echo json_encode($res_arr); exit();
 		elseif($_POST["action"] == "add_deceased"):
 
-			// dump($_POST);
+		
 
 
 			$datetime1 = new DateTime($_POST["birthdate"]);
 			$datetime2 = new DateTime($_POST["date_of_death"]);
 			$interval = $datetime1->diff($datetime2);
 			$age = $interval->format('%y');
-
 	
 
 			
 			if(!isset($_POST["interment_type"]))
 				$_POST["interment_type"] = "";
 			if(!isset($_POST["deceased_type"]))
-				$_POST["deceased_type"] = "";
+				$_POST["deceased_type"] = "REMAINS";
+			// dump($_post);
+
 
 			$deceased_id = create_uuid("DEC");
 			$_POST["deceased_name"] = $_POST["firstname"] . " " . $_POST["middlename"]. " " . $_POST["lastname"] . $_POST["suffix"];
-			if (query("insert into deceased_profile 
-				(deceased_id, deceased_name,
-				deceased_firstname,deceased_middlename,deceased_lastname,deceased_suffix,
-				birthdate,date_of_death,age_died,religion,gender,burial_date,
-					slot_number,burial_status,profile_id,interment_type,deceased_type
-				) 
-				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
-				$deceased_id,$_POST["deceased_name"],$_POST["firstname"],$_POST["middlename"],$_POST["lastname"],
-				$_POST["suffix"],$_POST["birthdate"],$_POST["date_of_death"],
-				$age,$_POST["religion"],$_POST["gender"],"",
-				$_POST["slot_number"],"NO BURIAL DATE",$_POST["client_id"],$_POST["interment_type"],$_POST["deceased_type"]
-				) === false)
-				{
-					apologize("Sorry, that username has already been taken!");
-				}
-
+			if (query("INSERT INTO deceased_profile 
+            (deceased_id, deceased_name, deceased_firstname, deceased_middlename, deceased_lastname, deceased_suffix, birthdate, date_of_death, age_died, religion, gender, burial_date, slot_number, burial_status, profile_id, interment_type, deceased_type) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            $deceased_id, $_POST["deceased_name"], $_POST["firstname"], $_POST["middlename"], $_POST["lastname"],
+            $_POST["suffix"], $_POST["birthdate"], $_POST["date_of_death"],
+            $age, $_POST["religion"], $_POST["gender"], "???", // Make sure you provide the correct value here
+            $_POST["slot_number"], "NO BURIAL DATE", $_POST["client_id"], $_POST["interment_type"], $_POST["deceased_type"]
+            ) === false) {
+  dump("error");
+}
 				$fullname = strtoupper($_POST["lastname"] . "_" . $_POST["firstname"] . "_" . $_POST["middlename"] . "_" . $_POST["suffix"]);
 				$fullname = str_replace(' ', '_', $fullname);
-				$target_pdf = "uploads/deceased/" . $fullname."/";
+				$target_pdf = "uploads/deceased/" . $deceased_id."/";
 				if (!file_exists($target_pdf )) {
 					mkdir($target_pdf , 0777, true);
 				}
@@ -461,20 +456,13 @@
 				$services = "";
 				if(isset($_POST["services"]))
 				$services = serialize($_POST["services"]);
-
-				// dump($services);
 				$client = query("select * from crypt_slot where slot_id = ?", $_POST["slot_number"]);
-				
 				$client=$client[0];
 				$crypt = query("select * from crypt_list where crypt_id = ?",$client["crypt_id"]);
 				$crypt = $crypt[0];
 				$deceased = query("select * from deceased_profile where slot_number = ? and burial_status = 'NO BURIAL DATE'", $_POST["slot_number"]);
-				// dump($deceased);
 			
-
 				$crypt_fee= [];
-
-				//for transaction table
 				$transaction_id = create_uuid("TRANSACTION");
 				$total_fee = 0;
 				if($crypt["crypt_type"] == "BONE"):
@@ -489,8 +477,6 @@
 					if(isset($_POST["lapida_amount"]))
 						$total_fee = $total_fee + $price["lapida_amount"];
 				endif;
-
-
 				if($crypt["crypt_type"] == "COFFIN"):
 					$price = query("select * from pricing_coffincrypt where tbl_id = ?", $_POST["price_id"]);
 					$price = $price[0];
@@ -505,7 +491,7 @@
 						$total_fee = $total_fee + $price["lapida_amount"];
 				endif;
 
-				$service = "";
+				$service = [];
 				if(isset($_POST["service"])):
 					$in_service = "'" . implode("','", $_POST["service"]) . "'";
 					$service = query("select service_name, cost from services where service_name in (".$in_service.")");
@@ -513,6 +499,13 @@
 						$total_fee = $total_fee + $row["cost"];
 					endforeach;
 					// dump(count($service));
+					if(isset($_POST["lapida_amount"])):
+						$count = count($service);
+						$service[$count]["service_name"] = "Lapida";
+						$service[$count]["cost"] = $price["lapida_amount"];
+					endif;
+					$service = serialize($service);
+				else:
 					if(isset($_POST["lapida_amount"])):
 						$count = count($service);
 						$service[$count]["service_name"] = "Lapida";
@@ -527,9 +520,9 @@
 				$crypt_fee = "";
 
 				if (query("insert into transaction 
-					(transaction_id,date,total_fee,services,time,crypt_fee,profile_id,logs,timestamp,slot_id) 
-					VALUES(?,?,?,?,?,?,?,?,?,?)", 
-					$transaction_id,date("Y-m-d"),$total_fee,$service,date("H:i:s"),$crypt_fee,$client["occupied_by"],$logs,time(),$_POST["slot_number"]
+					(transaction_id,date,total_fee,services,time,crypt_fee,profile_id,logs,timestamp,slot_id,transaction_type) 
+					VALUES(?,?,?,?,?,?,?,?,?,?,?)", 
+					$transaction_id,date("Y-m-d"),$total_fee,$service,date("H:i:s"),$crypt_fee,$client["occupied_by"],$logs,time(),$_POST["slot_number"], "BURIAL"
 					) === false)
 					{
 						apologize("Sorry, that username has already been taken!");
@@ -618,9 +611,9 @@
 			// dump($message);
 
 			if (query("insert into transaction 
-				(transaction_id,date,total_fee,time,profile_id,logs,timestamp,slot_id) 
-				VALUES(?,?,?,?,?,?,?,?)", 
-				$transaction_id,date("Y-m-d"),$price,date("H:i:s"),$client["profile_id"], $message, time(), $client["slot_number"]
+				(transaction_id,date,total_fee,time,profile_id,logs,timestamp,slot_id,transaction_type) 
+				VALUES(?,?,?,?,?,?,?,?,?)", 
+				$transaction_id,date("Y-m-d"),$price,date("H:i:s"),$client["profile_id"], $message, time(), $client["slot_number"], "LAWN PURCHASE"
 				) === false)
 				{
 					apologize("Sorry, that username has already been taken!");

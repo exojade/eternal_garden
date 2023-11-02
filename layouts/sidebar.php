@@ -23,6 +23,7 @@ $pend = $pending[0]["count"];
           <li><a href="index"><i class="fa fa-circle"></i> <span>Main</span></a></li>
           <!-- <li><a href="maps?filter=ALL"><i class="fa fa-map"></i> <span>Map</span></a></li> -->
           <li><a href="reports"><i class="fa fa-bar-chart"></i> <span>Reports</span></a></li>
+          <li><a href="#"><i class="fa fa-file"></i> <span>Transaction</a></li>
           <li><a href="burial_space?action=list"><i class="fa fa-cross"></i> <span>Burial Space</span></a></li>
           <!-- <li><a href="coffin_crypt?action=list"><i class="fa fa-building"></i> <span>Coffin Crypt</span></a></li> -->
           <!-- <li><a href="bone_crypt?action=list"><i class="fa fa-bone"></i> <span>Bone Crypt</span></a></li> -->
@@ -41,7 +42,7 @@ $pend = $pending[0]["count"];
             <li><a href="pending_burial?action=list"><i class="fa fa-calendar"></i> <span>Pending for Burial</span></a></li>
             <?php endif; ?>
           <?php
-          $schedule = query("select COUNT(*) as count from burial_schedule where remarks = 'PENDING'");
+          $schedule = query("select COUNT(*) as count from burial_schedule where remarks in ('POSTPONED','PENDING')");
           $sched = $schedule[0]["count"];
           ?>
           <?php if($sched != 0): ?>
@@ -56,13 +57,14 @@ $pend = $pending[0]["count"];
             <span class="pull-right-container">
               <span class="label label-danger pull-right">5</span>
             </span></a></li>
+
       </ul>
 
       <?php elseif($role=="CEMETERY"): ?>
         <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
           <?php
-          $schedule = query("select COUNT(*) as count from burial_schedule where remarks = 'PENDING'");
+          $schedule = query("select COUNT(*) as count from burial_schedule where remarks in ('POSTPONED','PENDING')");
           $sched = $schedule[0]["count"];
           ?>
           <?php if($sched != 0): ?>

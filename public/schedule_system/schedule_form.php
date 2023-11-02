@@ -29,14 +29,54 @@
       </h1>
     </section>
     <section class="content">
+
+    <div class="row">
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>From Date:</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input name="from_date" id="from" type="date" class="form-control">
+                </div>
+                <!-- /.input group -->
+              </div>
+              </div>
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>To Date:</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input id="to" name="to_date" type="date" class="form-control">
+                </div>
+                <!-- /.input group -->
+              </div>
+              </div>
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>Filter:</label>
+                <button type="button" onclick="filter();" class="btn btn-primary btn-block">Filter</button>
+              </div>
+              </div>
+            </div>
       <div class="row">
        
         <!-- /.col -->
-        <div class="col-md-7">
+        <div class="col-md-12">
           <div class="box box-primary">
-            <div class="box-body ">
-              <table>
-
+            <div class="box-body">
+              <table class="table table-bordered schedule-datatable">
+                <thead>
+                  <th>Action</th>
+                  <th>Client</th>
+                  <th></th>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Remarks</th>
+                </thead>
               </table>
             </div>
             <!-- /.box-body -->
@@ -63,6 +103,29 @@
       <form class="generic_form_trigger" data-url="schedule">
       <input type="hidden" name="action" value="markDone">
       <div class="modal-body" id="modalBody">
+        <!-- Point information will be displayed here -->
+      </div>
+      <div class="modal-footer">
+                <button type="submit" class="btn btn-success" >MARK AS DONE</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="modal_schedule" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h5 class="modal-title" id="modalLabel">Client Information</h5>
+        </button>
+      </div>
+      <form class="generic_form_trigger" data-url="schedule">
+      <input type="hidden" name="action" value="markDone">
+      <div class="modal-body" id="modalBody">
+        <div class="fetched_data"></div>
         <!-- Point information will be displayed here -->
       </div>
       <div class="modal-footer">
@@ -348,10 +411,91 @@
 </script>
 
 <script>
-  $(function () {
-    $('#example2').DataTable()
-   
-  })
-</script>
+  var datatable = 
+            $('.schedule-datatable').DataTable({
+                "pageLength": 100,
+                language: {
+                    searchPlaceholder: "Enter Filter"
+                },
+                searching: false,
+                "bLengthChange": true,
+                "ordering": false,
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url':'schedule',
+                     'type': "POST",
+                     "data": function (data){
+                        data.action = "schedule-datatable";
+                     }
+                },
+                'columns': [
+                    { data: 'action', "orderable": false },
+                    { data: 'client', "orderable": false },
+                    { data: 'location', "orderable": false },
+                    { data: 'burial_date', "orderable": false },
+                    { data: 'burial_time', "orderable": false },
+                    { data: 'remarks', "orderable": false },
+                ],
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api(), data;
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+                    // // Total over all pages
+
+                    console.log(received = api
+                        .column(2)
+                        .data());
+
+
+                    received = api
+                        .column(2)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                        console.log(received);
+
+                    $('#currentTotal').html('P ' + received.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                }
+            });
+
+            function filter() {
+              var from = $('#from').val();
+              var to = $('#to').val();
+              console.log(from);
+              console.log(to);
+              datatable.ajax.url('schedule?action=schedule-datatable&from='+from+'&to='+to).load();
+          }
+
+
+  $(document).on("click", ".open-schedule", function () {
+    
+     var schedule_id = $(this).data('id');
+    
+     $.ajax({
+        type : 'post',
+        url : 'schedule',
+        data: {
+            schedule_id: schedule_id, action: "modal_schedule"
+        },
+        success : function(data){
+          $('#modal_schedule .fetched_data').html(data);
+            // swal.close();
+            $('#modal_schedule').modal('show');
+            // $(".select2").select2();//Show fetched data from database
+        }
+      });
+     
+     // As pointed out in comments, 
+     // it is unnecessary to have to manually call the modal.
+     // $('#addBookDialog').modal('show');
+});
+  </script>
 
 
