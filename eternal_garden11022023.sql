@@ -38,7 +38,10 @@ CREATE TABLE `burial_schedule` (
 
 insert  into `burial_schedule`(`profile_id`,`slot_number`,`burial_date`,`burial_time`,`remarks`,`schedule_id`,`services_availed`,`timestamp`,`date`,`time`,`transaction_id`) values 
 ('PROF-a973eade77117-231102','CRYPT_SLOT-2ccc0d19536a0-231023','2023-11-03','01:00 PM','DONE','SCHED-cdcc24a9c242f-231102',NULL,'1698901343','2023-11-02','01:02:23 pm','TRANSACTION-ecd94b44aab36-231102'),
-('PROF-8ef65eb73a1bc-231102','CRYPT_SLOT-6b6703ad2147a-231023','2023-11-30','01:00 PM','DONE','SCHED-dfb2735bfbcb5-231102',NULL,'1698901524','2023-11-02','01:05:24 pm','TRANSACTION-7f4fe9687fc3d-231102');
+('PROF-8ef65eb73a1bc-231102','CRYPT_SLOT-6b6703ad2147a-231023','2023-11-30','01:00 PM','DONE','SCHED-dfb2735bfbcb5-231102',NULL,'1698901524','2023-11-02','01:05:24 pm','TRANSACTION-7f4fe9687fc3d-231102'),
+('PROF-8559f8b2d26ad-231102','CRYPT_SLOT-02a2a148b8eaf-231023','2023-11-01','05:00 PM','DONE','SCHED-38c6181593c33-231102',NULL,'1698915922','2023-11-02','05:05:22 pm','TRANSACTION-5cffd54f9b357-231102'),
+('PROF-3f4bce3f992f9-231102','CRYPT_SLOT-f7aed6a8995bd-231023','2023-11-06','05:00 PM','DONE','SCHED-4bbdcce2773ff-231102',NULL,'1698916266','2023-11-02','05:11:06 pm','TRANSACTION-1226bc07691f1-231102'),
+('PROF-94c31ebb5768d-231102','CRYPT_SLOT-2ccc0d19536a0-231023','2017-11-09','06:00 PM','DONE','SCHED-dc61ee77d9c73-231102',NULL,'1698919518','2023-11-02','06:05:18 pm','TRANSACTION-493dcd7c93fd7-231102');
 
 /*Table structure for table `crypt_list` */
 
@@ -1416,7 +1419,7 @@ insert  into `crypt_slot`(`slot_id`,`crypt_id`,`active_status`,`occupied_by`,`sl
 ('CRYPT_SLOT-451a388255a39-231023','CRYPT-796caa375ef68-230525','VACANT','',1299,NULL,NULL,'125.663250, 7.319521','',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-32ab026cece5e-231023','CRYPT-796caa375ef68-230525','VACANT','',1300,NULL,NULL,'125.663250, 7.319534','',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-3faae2703027b-231023','CRYPT-796caa375ef68-230525','VACANT','',1301,NULL,NULL,'125.663250, 7.319547','',NULL,'LAWN',NULL),
-('CRYPT_SLOT-f7aed6a8995bd-231023','CRYPT-796caa375ef68-230525','VACANT','',1302,NULL,NULL,'125.663270, 7.319014','PRIME A',NULL,'LAWN',NULL),
+('CRYPT_SLOT-f7aed6a8995bd-231023','CRYPT-796caa375ef68-230525','OCCUPIED','PROF-3f4bce3f992f9-231102',1302,NULL,NULL,'125.663270, 7.319014','PRIME A',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-b156c203249ec-231023','CRYPT-796caa375ef68-230525','VACANT','',1303,NULL,NULL,'125.663270, 7.319027','',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-3caa423d92f00-231023','CRYPT-796caa375ef68-230525','VACANT','',1304,NULL,NULL,'125.663270, 7.319040','',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-e05278c00f4c8-231023','CRYPT-796caa375ef68-230525','VACANT','',1305,NULL,NULL,'125.663270, 7.319053','',NULL,'LAWN',NULL),
@@ -1458,7 +1461,7 @@ insert  into `crypt_slot`(`slot_id`,`crypt_id`,`active_status`,`occupied_by`,`sl
 ('CRYPT_SLOT-bb7dfeca4d372-231023','CRYPT-796caa375ef68-230525','VACANT','',1341,NULL,NULL,'125.663270, 7.319521','',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-5926d3263a72a-231023','CRYPT-796caa375ef68-230525','VACANT','',1342,NULL,NULL,'125.663270, 7.319534','',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-1c49d32a086c7-231023','CRYPT-796caa375ef68-230525','VACANT','',1343,NULL,NULL,'125.663270, 7.319547','SUPER PRIME A',NULL,'LAWN',NULL),
-('CRYPT_SLOT-02a2a148b8eaf-231023','CRYPT-796caa375ef68-230525','VACANT','',1344,NULL,NULL,'125.663290, 7.319014','CORNER LOT',NULL,'LAWN',NULL),
+('CRYPT_SLOT-02a2a148b8eaf-231023','CRYPT-796caa375ef68-230525','OCCUPIED','PROF-8559f8b2d26ad-231102',1344,NULL,NULL,'125.663290, 7.319014','CORNER LOT',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-cf575587c2b59-231023','CRYPT-796caa375ef68-230525','VACANT','',1345,NULL,NULL,'125.663290, 7.319027','',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-3296a497afe9e-231023','CRYPT-796caa375ef68-230525','VACANT','',1346,NULL,NULL,'125.663290, 7.319040','',NULL,'LAWN',NULL),
 ('CRYPT_SLOT-c012f5638db58-231023','CRYPT-796caa375ef68-230525','VACANT','',1347,NULL,NULL,'125.663290, 7.319053','',NULL,'LAWN',NULL),
@@ -12795,7 +12798,8 @@ insert  into `crypt_slot`(`slot_id`,`crypt_id`,`active_status`,`occupied_by`,`sl
 ('CRYPT_SLOT-3f2ff5af5a52c-231023','CRYPT-796caa375ef68-230525','VACANT',NULL,NULL,NULL,NULL,'125.66185438660133, 7.318315789210339','',NULL,'BONE',NULL),
 ('CRYPT_SLOT-8e771df3fb4e9-231031','CRYPT-796caa375ef68-230525','VACANT',NULL,NULL,NULL,NULL,'125.66324546954122, 7.31755607313582','',NULL,'COMMON',NULL),
 ('CRYPT_SLOT-8b669677cd803-231101','CRYPT-095512e8ea4d4-231101','VACANT',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'MAUSOLEUM',NULL),
-('CRYPT_SLOT-523033b1044f0-231101','CRYPT-796caa375ef68-230525','VACANT',NULL,NULL,NULL,NULL,'125.66184176612089, 7.318991070981045','',NULL,'MAUSOLEUM',NULL);
+('CRYPT_SLOT-523033b1044f0-231101','CRYPT-796caa375ef68-230525','VACANT',NULL,NULL,NULL,NULL,'125.66184176612089, 7.318991070981045','',NULL,'MAUSOLEUM',NULL),
+('CRYPT_SLOT-1ea7ffd904acb-231102','CRYPT-42d12219b842e-231031','OCCUPIED','DEC-1273caeef1ef2-231102',NULL,NULL,NULL,NULL,NULL,NULL,'COMMON','PROF-94c31ebb5768d-231102');
 
 /*Table structure for table `deceased_profile` */
 
@@ -12829,7 +12833,12 @@ CREATE TABLE `deceased_profile` (
 /*Data for the table `deceased_profile` */
 
 insert  into `deceased_profile`(`deceased_id`,`deceased_name`,`deceased_firstname`,`deceased_middlename`,`deceased_lastname`,`deceased_suffix`,`birthdate`,`date_of_death`,`age_died`,`religion`,`gender`,`burial_date`,`burial_time`,`slot_number`,`burial_status`,`profile_id`,`interment_type`,`transaction_id`,`status`,`deceased_type`,`death_certificate`,`active_status`) values 
-('DEC-94e9c7fb4f174-231102','MONKEY D LUFFY','MONKEY','D','LUFFY','','1990-11-01','2023-11-01',33,'PIRATE','Male','2023-11-30','01:00 PM','CRYPT_SLOT-6b6703ad2147a-231023','DONE','PROF-8ef65eb73a1bc-231102','','TRANSACTION-7f4fe9687fc3d-231102',NULL,'REMAINS','uploads/deceased/DEC-94e9c7fb4f174-231102/DEATHCERTIFICATE.jpg',NULL);
+('DEC-94e9c7fb4f174-231102','MONKEY D LUFFY','MONKEY','D','LUFFY','','1990-11-01','2023-11-01',33,'PIRATE','Male','2023-11-30','01:00 PM','CRYPT_SLOT-6b6703ad2147a-231023','DONE','PROF-8ef65eb73a1bc-231102','','TRANSACTION-7f4fe9687fc3d-231102',NULL,'REMAINS','uploads/deceased/DEC-94e9c7fb4f174-231102/DEATHCERTIFICATE.jpg',NULL),
+('DEC-303943234fece-231102','NICO  ROBIN','NICO','','ROBIN','','1999-09-17','2023-10-31',24,'PIRATE','Male','2023-11-01','05:00 PM','CRYPT_SLOT-02a2a148b8eaf-231023','DONE','PROF-8559f8b2d26ad-231102','1st Interment','TRANSACTION-5cffd54f9b357-231102',NULL,'REMAINS','uploads/deceased/DEC-303943234fece-231102/DEATHCERTIFICATE.pdf',NULL),
+('DEC-31f596a0f52be-231102','NAMI  NAMI','NAMI','','NAMI','','1990-08-01','2023-10-25',33,'PIRATE','Female','2023-11-06','05:00 PM','CRYPT_SLOT-f7aed6a8995bd-231023','DONE','PROF-3f4bce3f992f9-231102','1st Interment','TRANSACTION-1226bc07691f1-231102',NULL,'REMAINS','uploads/deceased/DEC-31f596a0f52be-231102/DEATHCERTIFICATE.pdf',NULL),
+('DEC-ee5d776d4f4fd-231102','TONY  CHOPPER','TONY','','CHOPPER','','1995-09-08','2015-10-25',20,'PIRATE','Male','2023-11-06','05:00 PM','CRYPT_SLOT-f7aed6a8995bd-231023','DONE','PROF-3f4bce3f992f9-231102','1st Interment','TRANSACTION-1226bc07691f1-231102',NULL,'BONES','uploads/deceased/DEC-ee5d776d4f4fd-231102/DEATHCERTIFICATE.pdf',NULL),
+('DEC-5a7a6c53dc39b-231102','FRANKY  CYBORG','FRANKY','','CYBORG','','1990-07-25','2015-09-15',25,'PIRATE','Male','2023-11-06','05:00 PM','CRYPT_SLOT-f7aed6a8995bd-231023','DONE','PROF-3f4bce3f992f9-231102','1st Interment','TRANSACTION-1226bc07691f1-231102',NULL,'BONES','uploads/deceased/DEC-5a7a6c53dc39b-231102/DEATHCERTIFICATE.pdf',NULL),
+('DEC-1273caeef1ef2-231102','ARLONG  FISHMAN','ARLONG','','FISHMAN','','1955-12-09','2017-10-30',61,'PIRATE','Male','2017-11-09','06:00 PM','CRYPT_SLOT-1ea7ffd904acb-231102','DONE',NULL,'','TRANSACTION-493dcd7c93fd7-231102',NULL,'REMAINS','uploads/deceased/DEC-1273caeef1ef2-231102/DEATHCERTIFICATE.pdf',NULL);
 
 /*Table structure for table `deceased_transaction` */
 
@@ -12845,7 +12854,13 @@ CREATE TABLE `deceased_transaction` (
 
 insert  into `deceased_transaction`(`transaction_id`,`deceased_id`,`profile_id`) values 
 ('TRANSACTION-ecd94b44aab36-231102','DEC-94e9c7fb4f174-231102',NULL),
-('TRANSACTION-7f4fe9687fc3d-231102','DEC-94e9c7fb4f174-231102',NULL);
+('TRANSACTION-7f4fe9687fc3d-231102','DEC-94e9c7fb4f174-231102',NULL),
+('TRANSACTION-5cffd54f9b357-231102','DEC-303943234fece-231102',NULL),
+('TRANSACTION-1226bc07691f1-231102','DEC-31f596a0f52be-231102',NULL),
+('TRANSACTION-1226bc07691f1-231102','DEC-ee5d776d4f4fd-231102',NULL),
+('TRANSACTION-1226bc07691f1-231102','DEC-5a7a6c53dc39b-231102',NULL),
+('TRANSACTION-493dcd7c93fd7-231102','DEC-1273caeef1ef2-231102',NULL),
+('TRANSACTION-eb6f4f016e740-231102','DEC-1273caeef1ef2-231102',NULL);
 
 /*Table structure for table `notification` */
 
@@ -12868,7 +12883,8 @@ CREATE TABLE `notification` (
 
 insert  into `notification`(`notification_id`,`profile_id`,`slot_id`,`year_date`,`6months_date`,`3months_date`,`month_date`,`week_date`,`day_before_date`,`date_expired`) values 
 ('NOTIF-2481a2bb03ede-231102','PROF-e34852d2f64ed-231102','CRYPT_SLOT-a5e819d46f80a-231023','2027-11-02','2028-05-02','2028-08-02','2028-10-02','2028-10-26','2028-11-01','2028-11-02'),
-('NOTIF-4d8fc9334dfc9-231102','PROF-a973eade77117-231102','CRYPT_SLOT-2ccc0d19536a0-231023','2022-11-02','2023-05-02','2023-08-02','2023-10-02','2023-10-26','2023-11-01','2023-11-02');
+('NOTIF-4d8fc9334dfc9-231102','PROF-a973eade77117-231102','CRYPT_SLOT-2ccc0d19536a0-231023','2022-11-02','2023-05-02','2023-08-02','2023-10-02','2023-10-26','2023-11-01','2023-11-02'),
+('NOTIF-312601215fa4d-231102','PROF-94c31ebb5768d-231102','CRYPT_SLOT-2ccc0d19536a0-231023','2021-11-02','2022-05-02','2022-08-02','2022-10-02','2022-10-26','2022-11-01','2022-11-02');
 
 /*Table structure for table `notification_status` */
 
@@ -12889,7 +12905,8 @@ CREATE TABLE `notification_status` (
 
 insert  into `notification_status`(`notification_id`,`year_notif_status`,`6months_notif_status`,`3months_notif_status`,`week_notif_status`,`day_before_notif_status`,`day_notif_status`,`month_notif_status`) values 
 ('NOTIF-2481a2bb03ede-231102',NULL,NULL,NULL,NULL,NULL,NULL,NULL),
-('NOTIF-4d8fc9334dfc9-231102',NULL,NULL,'1',NULL,NULL,NULL,NULL);
+('NOTIF-4d8fc9334dfc9-231102',NULL,NULL,'1',NULL,NULL,NULL,NULL),
+('NOTIF-312601215fa4d-231102',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `pricing` */
 
@@ -13020,7 +13037,10 @@ CREATE TABLE `profile_list` (
 /*Data for the table `profile_list` */
 
 insert  into `profile_list`(`profile_id`,`client_firstname`,`client_middlename`,`client_lastname`,`client_contact`,`client_suffix`,`email_address`,`gender`,`province`,`city_municipality`,`barangay`,`client_address`,`id_presented`,`id_number`,`place_issued`,`lease_date`,`date_expired`,`slot_number`,`lease_status`,`active_status`,`pricing_availed`,`requirements`,`services_availed`,`profile_type`,`occupant_type`,`certificate_indigency`,`valid_id`,`picture`,`paid_status`,`transaction_id`,`residency`) values 
+('PROF-3f4bce3f992f9-231102','SOGEKING','','USOPP','099120202022','','sogeking_usopp@yopmail.com','Male','DAVAO DEL NORTE','CARMEN','Anibongan','PUROK 10','BARANGAY ID','019101','BARANGAY','','','CRYPT_SLOT-f7aed6a8995bd-231023','AT NEED',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'uploads/PROF-3f4bce3f992f9-231102/ID.jpg','uploads/PROF-3f4bce3f992f9-231102/PICTURE.pdf','PAID','TRANSACTION-212887c498410-231102','OUTSIDE'),
+('PROF-8559f8b2d26ad-231102','RORONOA','Z','ZORO','099102020202','','roronoa_zoro@yopmail.com','Male','DAVAO DEL NORTE','CITY OF PANABO','Dapco','PUROK 2','ID','919111','BARANGAY','','','CRYPT_SLOT-02a2a148b8eaf-231023','AT NEED',NULL,NULL,NULL,NULL,NULL,NULL,'uploads/PROF-8559f8b2d26ad-231102/INDIGENCY.pdf','uploads/PROF-8559f8b2d26ad-231102/ID.pdf','uploads/PROF-8559f8b2d26ad-231102/PICTURE.pdf','PAID','TRANSACTION-0a8915663356e-231102','PANABO'),
 ('PROF-8ef65eb73a1bc-231102','GARP','D','MONKEY','09101019101','','monkeydgarp@yopmail.com','Male','DAVAO DEL NORTE','CITY OF PANABO','Cagangohan','NARTATEZ SUBD','ID','0101011','DAVAO CITY','','','CRYPT_SLOT-6b6703ad2147a-231023',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'uploads/PROF-8ef65eb73a1bc-231102/ID.jpg','uploads/PROF-8ef65eb73a1bc-231102/PICTURE.jpg',NULL,NULL,NULL),
+('PROF-94c31ebb5768d-231102','JIMBEI','','FISHMAN','0991522312','','jimbei_fishman@yopmail.com','Male','DAVAO DEL NORTE','CITY OF PANABO','Cagangohan','PUROK 1','ID','0101011','DAVAO CITY','2017-11-02','2022-11-02','CRYPT_SLOT-2ccc0d19536a0-231023',NULL,'FORMER',NULL,NULL,NULL,NULL,'NON INDIGENT',NULL,'uploads/PROF-94c31ebb5768d-231102/ID.jpg','uploads/PROF-94c31ebb5768d-231102/PICTURE.jpg',NULL,NULL,NULL),
 ('PROF-a973eade77117-231102','GARP','D','MONKEY','0901010111','','monkeydgarp@yopmail.com','Male','DAVAO DEL NORTE','CITY OF PANABO','Cagangohan','NARTATEZ SUBD','ID','01010111','BARANGAY','2018-11-02','2023-11-02','CRYPT_SLOT-2ccc0d19536a0-231023',NULL,'FORMER',NULL,NULL,NULL,NULL,'INDIGENT','uploads/PROF-a973eade77117-231102/INDIGENCY.jpg','uploads/PROF-a973eade77117-231102/ID.jpg','uploads/PROF-a973eade77117-231102/PICTURE.jpg',NULL,NULL,NULL);
 
 /*Table structure for table `requirements` */
@@ -13127,14 +13147,20 @@ CREATE TABLE `transaction` (
   `timestamp` varchar(100) DEFAULT NULL,
   `schedule_id` varchar(100) DEFAULT NULL,
   `slot_id` varchar(100) DEFAULT NULL,
-  `transaction_type` enum('LAWN PURCHASE','BURIAL','CANCELLATION','POSTPONEMENT') DEFAULT NULL
+  `transaction_type` enum('LAWN PURCHASE','BURIAL','CANCELLATION','POSTPONEMENT','TRANSFER COMMON') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*Data for the table `transaction` */
 
 insert  into `transaction`(`transaction_id`,`date`,`total_fee`,`services`,`requirements`,`pricing_availed`,`time`,`crypt_fee`,`profile_id`,`logs`,`timestamp`,`schedule_id`,`slot_id`,`transaction_type`) values 
 ('TRANSACTION-ecd94b44aab36-231102','2023-11-02','2505','a:3:{i:0;a:2:{s:12:\"service_name\";s:13:\"Use of Chapel\";s:4:\"cost\";s:3:\"500\";}i:1;a:2:{s:12:\"service_name\";s:15:\"Tent and Chairs\";s:4:\"cost\";s:3:\"500\";}i:2;a:2:{s:12:\"service_name\";s:6:\"Lapida\";s:4:\"cost\";s:3:\"300\";}}',NULL,NULL,'13:02:23','a:2:{i:0;a:2:{s:4:\"name\";s:17:\"Certification Fee\";s:4:\"cost\";s:3:\"100\";}i:1;a:2:{s:4:\"name\";s:9:\"Crypt Fee\";s:4:\"cost\";s:4:\"1105\";}}','PROF-a973eade77117-231102','PAID Transaction and Forward to scheduler!','1698901343',NULL,'CRYPT_SLOT-2ccc0d19536a0-231023','BURIAL'),
-('TRANSACTION-7f4fe9687fc3d-231102','2023-11-02','4259','a:1:{i:0;a:2:{s:12:\"service_name\";s:6:\"Lapida\";s:4:\"cost\";s:3:\"200\";}}',NULL,NULL,'13:05:24','a:2:{i:0;a:2:{s:4:\"name\";s:17:\"Certification Fee\";s:4:\"cost\";s:3:\"200\";}i:1;a:2:{s:4:\"name\";s:9:\"Crypt Fee\";s:4:\"cost\";s:4:\"3859\";}}','PROF-8ef65eb73a1bc-231102','PAID Transaction and Forward to scheduler!','1698901524',NULL,'CRYPT_SLOT-6b6703ad2147a-231023','BURIAL');
+('TRANSACTION-7f4fe9687fc3d-231102','2023-11-02','4259','a:1:{i:0;a:2:{s:12:\"service_name\";s:6:\"Lapida\";s:4:\"cost\";s:3:\"200\";}}',NULL,NULL,'13:05:24','a:2:{i:0;a:2:{s:4:\"name\";s:17:\"Certification Fee\";s:4:\"cost\";s:3:\"200\";}i:1;a:2:{s:4:\"name\";s:9:\"Crypt Fee\";s:4:\"cost\";s:4:\"3859\";}}','PROF-8ef65eb73a1bc-231102','PAID Transaction and Forward to scheduler!','1698901524',NULL,'CRYPT_SLOT-6b6703ad2147a-231023','BURIAL'),
+('TRANSACTION-0a8915663356e-231102','2023-11-02','49613',NULL,NULL,NULL,'17:04:26',NULL,'PROF-8559f8b2d26ad-231102','RORONOA ZORO paid 49,613.00. Lot Type: CORNER LOT. Lease Type: AT NEED. Residency: PANABO','1698915866',NULL,'CRYPT_SLOT-02a2a148b8eaf-231023','LAWN PURCHASE'),
+('TRANSACTION-5cffd54f9b357-231102','2023-11-02','13679','a:3:{i:0;a:2:{s:12:\"service_name\";s:13:\"Use of Chapel\";s:4:\"cost\";s:3:\"500\";}i:1;a:2:{s:12:\"service_name\";s:15:\"Tent and Chairs\";s:4:\"cost\";s:3:\"500\";}i:2;a:2:{s:12:\"service_name\";s:33:\"Interment Service Fee (Lawn Lots)\";s:4:\"cost\";s:5:\"12679\";}}',NULL,NULL,'17:05:21','','PROF-8559f8b2d26ad-231102','PAID Transaction and Forward to scheduler!','1698915921',NULL,'CRYPT_SLOT-02a2a148b8eaf-231023','BURIAL'),
+('TRANSACTION-212887c498410-231102','2023-11-02','66150',NULL,NULL,NULL,'17:09:12',NULL,'PROF-3f4bce3f992f9-231102','SOGEKING USOPP paid 66,150.00. Lot Type: PRIME A. Lease Type: AT NEED. Residency: OUTSIDE<br>Note: If Residency is outside PANABO, price is twice the original price: PRENEED 20,837.00 | AtNEED: 33,075.00','1698916152',NULL,'CRYPT_SLOT-f7aed6a8995bd-231023','LAWN PURCHASE'),
+('TRANSACTION-1226bc07691f1-231102','2023-11-02','13679','a:3:{i:0;a:2:{s:12:\"service_name\";s:13:\"Use of Chapel\";s:4:\"cost\";s:3:\"500\";}i:1;a:2:{s:12:\"service_name\";s:15:\"Tent and Chairs\";s:4:\"cost\";s:3:\"500\";}i:2;a:2:{s:12:\"service_name\";s:33:\"Interment Service Fee (Lawn Lots)\";s:4:\"cost\";s:5:\"12679\";}}',NULL,NULL,'17:11:06','','PROF-3f4bce3f992f9-231102','PAID Transaction and Forward to scheduler!','1698916266',NULL,'CRYPT_SLOT-f7aed6a8995bd-231023','BURIAL'),
+('TRANSACTION-493dcd7c93fd7-231102','2023-11-02','5369','a:3:{i:0;a:2:{s:12:\"service_name\";s:13:\"Use of Chapel\";s:4:\"cost\";s:3:\"500\";}i:1;a:2:{s:12:\"service_name\";s:15:\"Tent and Chairs\";s:4:\"cost\";s:3:\"500\";}i:2;a:2:{s:12:\"service_name\";s:6:\"Lapida\";s:4:\"cost\";s:3:\"300\";}}',NULL,NULL,'18:05:18','a:2:{i:0;a:2:{s:4:\"name\";s:17:\"Certification Fee\";s:4:\"cost\";s:3:\"100\";}i:1;a:2:{s:4:\"name\";s:9:\"Crypt Fee\";s:4:\"cost\";s:4:\"3969\";}}','PROF-94c31ebb5768d-231102','PAID Transaction and Forward to scheduler!','1698919518',NULL,'CRYPT_SLOT-2ccc0d19536a0-231023','BURIAL'),
+('TRANSACTION-eb6f4f016e740-231102','2023-11-02',NULL,NULL,NULL,NULL,'18:10:32',NULL,NULL,'This person has been transferred to common area.','1698919832',NULL,'CRYPT_SLOT-1ea7ffd904acb-231102','TRANSFER COMMON');
 
 /*Table structure for table `transaction_logs` */
 
@@ -13179,7 +13205,10 @@ insert  into `transaction_logs`(`transaction_id`,`slot_number`,`transaction_type
 ('LOGS-d428139e53e9d-231102','CRYPT_SLOT-a5e819d46f80a-231023','LEASE','RORONOA ZORO availed LEASE from 2023-11-02 to 2028-11-02','1698900340','2023-11-02','12:45:40 pm',''),
 ('LOGS-a14ba910f212b-231102','CRYPT_SLOT-6b6703ad2147a-231023','LEASE','GARP MONKEY availed LEASE from  to ','1698900736','2023-11-02','12:52:16 pm',''),
 ('LOGS-a5e917c92e0ac-231102','CRYPT_SLOT-2ccc0d19536a0-231023','LEASE','GARP MONKEY availed LEASE from 2018-11-02 to 2023-11-02','1698901310','2023-11-02','01:01:50 pm',''),
-('LOGS-6db1a7ee688c4-231102','CRYPT_SLOT-6b6703ad2147a-231023','LEASE','GARP MONKEY availed LEASE from  to ','1698901501','2023-11-02','01:05:01 pm','');
+('LOGS-6db1a7ee688c4-231102','CRYPT_SLOT-6b6703ad2147a-231023','LEASE','GARP MONKEY availed LEASE from  to ','1698901501','2023-11-02','01:05:01 pm',''),
+('LOGS-8e1347ecf3778-231102','CRYPT_SLOT-02a2a148b8eaf-231023','LEASE','RORONOA ZORO availed LEASE from  to ','1698915860','2023-11-02','05:04:20 pm',''),
+('LOGS-c44946baf8d22-231102','CRYPT_SLOT-f7aed6a8995bd-231023','LEASE','SOGEKING USOPP availed LEASE from  to ','1698916148','2023-11-02','05:09:08 pm',''),
+('LOGS-a6c9fa47d590c-231102','CRYPT_SLOT-2ccc0d19536a0-231023','LEASE','JIMBEI FISHMAN availed LEASE from 2017-11-02 to 2022-11-02','1698919475','2023-11-02','06:04:35 pm','');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
