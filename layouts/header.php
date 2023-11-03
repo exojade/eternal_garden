@@ -35,9 +35,9 @@ $user = $_SESSION["eternal_garden"];
     <!-- Logo -->
     <a href="index" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>E</b></span>
+      <span class="logo-mini"><b>C</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>EIS</b></span>
+      <span class="logo-lg"><b>CIS</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">

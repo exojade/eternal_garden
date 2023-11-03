@@ -19,6 +19,24 @@
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
+  <div class="modal fade" id="modal_details">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Transaction Details</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="fetched_data"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
   <section class="content-header">
       <h1>
         Sales Report
@@ -40,26 +58,14 @@
               </div>
               <div class="col-md-3">
               <div class="form-group">
-                <label>Deceased</label>
-                <select id="deceased_id" class="form-control select2" style="width: 100%;">
-                <option selected value="" >Select Deceased...</option>
-                <?php foreach($deceased as $row): ?>
-                    <option value="<?php echo($row["deceased_id"]); ?>"><?php echo($row["deceased_firstname"] . " " . $row["deceased_lastname"]); ?></option>
-                  <?php endforeach; ?>
-                </select>
+                <label>From</label>
+                <input type="date" name="from" id="from" class="form-control">
               </div>
               </div>
               <div class="col-md-3">
               <div class="form-group">
-                <label>Transaction Type</label>
-                <select id="transaction_type" class="form-control select2" style="width: 100%;">
-                <option selected value="" >Select Type...</option>
-                  <option value="LAWN PURCHASE">LAWN PURCHASE</option>
-                  <option value="BURIAL">BURIAL</option>
-                  <option value="CANCELLED">CANCELLED</option>
-                  <option value="POSTPONED">POSTPONED</option>
-                  <option value="TRANSFER COMMON">TRANSFER COMMON</option>
-                </select>
+                <label>To</label>
+                <input type="date" name="to" id="to" class="form-control">
               </div>
               </div>
               <div class="col-md-3">
@@ -70,16 +76,15 @@
               </div>
             </div>
       <div class="row">
-       
-        <!-- /.col -->
         <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-body">
-              <table class="table table-bordered transaction-datatable">
+              <table class="table table-bordered sales-datatable">
                 <thead>
+                  <th>Tranasction</th>
                   <th>Client</th>
-                  <th>Deceased</th>
                   <th>Location</th>
+                  <th>Total</th>
                   <th>Date</th>
                   <th>Time</th>
                   <th>Type</th>
@@ -121,7 +126,7 @@
   ?>
 <script>
   var datatable = 
-            $('.transaction-datatable').DataTable({
+            $('.sales-datatable').DataTable({
                 "pageLength": 10,
                 language: {
                     searchPlaceholder: "Enter Filter"
@@ -133,16 +138,30 @@
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url':'transaction',
+                    'url':'sales',
                      'type': "POST",
                      "data": function (data){
-                        data.action = "transaction-datatable";
+                        data.action = "sales-datatable";
                      }
                 },
                 'columns': [
+                    { data: 'action', "orderable": false },
                     { data: 'client', "orderable": false },
-                    { data: 'deceased', "orderable": false },
                     { data: 'location', "orderable": false },
+                    {
+            data: 'total_fee',
+            "orderable": false,
+            render: function (data, type, row) {
+                if (type === 'display' || type === 'filter') {
+                    // Format the data as currency when displaying or filtering
+                    return parseFloat(data).toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                }
+                return data; // For sorting and other purposes, return the original data
+            }
+        },
                     { data: 'date', "orderable": false },
                     { data: 'time', "orderable": false },
                     { data: 'transaction_type', "orderable": false },
@@ -158,7 +177,7 @@
                     // // Total over all pages
 
                     console.log(received = api
-                        .column(2)
+                        .column(3)
                         .data());
 
 
@@ -174,12 +193,13 @@
                 }
             });
 
+            $('.sales-datatable td:nth-child(4').addClass('text-right');
+
             function filter() {
               var client_id = $('#client_id').val();
-              var deceased_id = $('#deceased_id').val();
-              var transaction_type = $('#transaction_type').val();
-              
-              datatable.ajax.url('transaction?action=transaction-datatable&client='+client_id+'&deceased_id='+deceased_id+'&transaction_type='+transaction_type).load();
+              var from = $('#from').val();
+              var to = $('#to').val();
+              datatable.ajax.url('sales?action=sales-datatable&client='+client_id+'&from='+from+'&to='+to).load();
           }
 
 
@@ -203,6 +223,27 @@
 });
 
 $('.select2').select2()
+
+$(document).on("click", ".open_transaction_modal", function () {
+     var transaction_id = $(this).data('id');
+     $.ajax({
+        type : 'post',
+        url : 'profile',
+        data: {
+            transaction_id: transaction_id, action: "modal_details"
+        },
+        success : function(data){
+            $('#modal_details .fetched_data').html(data);
+            // swal.close();
+            $('#modal_details').modal('show');
+            // $(".select2").select2();//Show fetched data from database
+        }
+      });
+     
+     // As pointed out in comments, 
+     // it is unnecessary to have to manually call the modal.
+     // $('#addBookDialog').modal('show');
+});
 
   </script>
 

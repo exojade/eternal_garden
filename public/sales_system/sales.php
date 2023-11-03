@@ -1,29 +1,26 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 
-		if($_POST["action"] == "transaction-datatable"):
+		if($_POST["action"] == "sales-datatable"):
 			// dump($_REQUEST);
 			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
             $offset = $_POST["start"];
             $limit = $_POST["length"];
             $search = $_POST["search"]["value"];
-
-			$where = " where 1=1 ";
-
-
+			$where = " where total_fee != ''  ";
             if(isset($_REQUEST["client"])):
                 if($_REQUEST["client"] != "")
-                    $where = $where . " and t.profile_id = '" . $_REQUEST["client"] . "'";
+                    $where = $where . " and profile_id = '" . $_REQUEST["client"] . "'";
             endif;
 
-			if(isset($_REQUEST["deceased_id"])):
-                if($_REQUEST["deceased_id"] != "")
-                    $where = $where . " and deceased_id = '" . $_REQUEST["deceased_id"] . "'";
+			if(isset($_REQUEST["from"])):
+                if($_REQUEST["from"] != "")
+                    $where = $where . " and date >= '" . $_REQUEST["from"] . "'";
             endif;
 
-            if(isset($_REQUEST["transaction_type"])):
-                if($_REQUEST["transaction_type"] != "")
-                    $where = $where . " and transaction_type = '" . $_REQUEST["transaction_type"] . "'";
+            if(isset($_REQUEST["to"])):
+                if($_REQUEST["to"] != "")
+                    $where = $where . " and date <= '" . $_REQUEST["to"] . "'";
             endif;
 
 			$crypt = query("select * from crypt_slot s
@@ -46,45 +43,46 @@
 				$Deceased[$row["deceased_id"]] = $row;
 			endforeach;
 
+			$Deceased_Transaction = [];
+			$deceased_transaction = query("select * from deceased_transaction");
+			foreach($deceased_transaction as $row):
+				$Deceased_Transaction[$row["transaction_id"]][$row["deceased_id"]] = $row;
+			endforeach;
+
 
             // $data = query("select * from tblemployee_dtras");
             if($where != ""):
-                $query_string = "SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
-				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
+                $query_string = "SELECT * FROM TRANSACTION t  ".$where."
 				ORDER BY t.timestamp DESC
 				limit ".$limit." offset ".$offset." ";
                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
-				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
+                $all_data = query("SELECT * FROM TRANSACTION t ".$where."
 				ORDER BY t.timestamp DESC");
                 // $all_data = $data;
             else:
-                $query_string = "SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
-				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
+                $query_string = "SELECT * FROM TRANSACTION t ".$where."
 				ORDER BY t.timestamp DESC
 				limit ".$limit." offset ".$offset." ";
                                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
-				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
+                $all_data = query("SELECT * FROM TRANSACTION t ".$where."
 				ORDER BY t.timestamp DESC");
                 // $all_data = $data;
             endif;
             $i=0;
             foreach($data as $row):
 				// dump($row);
+
+				$data[$i]["action"] = '<a href="#" data-id="'.$row["transaction_id"].'"  class="btn btn-primary btn-xs btn-flat btn-block open_transaction_modal">View</a>';
+
+
 				$data[$i]["client"] = "";
 				if(isset($Profile[$row["profile_id"]])):
 					$profile = $Profile[$row["profile_id"]];
 					$data[$i]["client"] = $profile["client_firstname"] . " " . $profile["client_lastname"];
 				endif;
 
-				$data[$i]["deceased"] = "";
-				if(isset($Deceased[$row["deceased_id"]])):
-					$deceased = $Deceased[$row["deceased_id"]];
-					$data[$i]["deceased"] = $deceased["deceased_firstname"] . " " . $deceased["deceased_lastname"];
-				endif;
 					
 				$location = $Crypt[$row["slot_id"]];
 				
