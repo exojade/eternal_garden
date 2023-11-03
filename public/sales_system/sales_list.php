@@ -79,6 +79,7 @@
         <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-body">
+              <h2 class="pull-right" id="currentTotal">0.00</h2>
               <table class="table table-bordered sales-datatable">
                 <thead>
                   <th>Tranasction</th>
@@ -182,7 +183,7 @@
 
 
                     received = api
-                        .column(2)
+                        .column(3)
                         .data()
                         .reduce(function (a, b) {
                             return intVal(a) + intVal(b);

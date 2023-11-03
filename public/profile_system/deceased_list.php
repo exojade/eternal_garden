@@ -27,44 +27,38 @@
               <table class="table table-bordered table-striped sample_datatable">
                 <thead>
                 <tr>
-                  <th rowspan="2">Action</th>
-                  <th rowspan="2">Deceased</th>
-                  <th rowspan="2">BirthDate</th>
-                  <th rowspan="2">Gender</th>
-                  <th rowspan="2">Date of Death</th>
-                  <th rowspan="2">Age of Death</th>
-                  <th colspan="2">Burial</th>
-                  <!-- <th>Burial Information</th> -->
-                  <th rowspan="2">Crypt</th>
-                  <th rowspan="2">Slot</th>
-                  <th rowspan="2">Client</th>
-                </tr>
-                <tr>
-                  <th>Information</th>
-                  <th>Status</th>
+                  <th>Deceased</th>
+                  <th>BirthDate</th>
+                  <th>Gender</th>
+                  <th>Date of Death</th>
+                  <th>Age Died</th>
+                  <th>Location</th>
+                  <th>Client</th>
+                  <th>Death Certificate</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach($deceased_profile as $p): ?>
                 <tr>
-                  <td><a href="profile?action=client_details&slot=<?php echo($p["slot_id"]); ?>" class="btn btn-primary">View</a></td>
                   <td><?php echo($p["deceased_firstname"] . " " . $p["deceased_middlename"] . " " . $p["deceased_lastname"] . " " . $p["deceased_suffix"]); ?></td>
                   <td><?php echo($p["birthdate"]); ?></td>
                   <td><?php echo($p["gender"]); ?></td>
                   <td><?php echo($p["date_of_death"]); ?></td>
-                  <td><?php echo($p["age_died"]); ?></td>
-                  <td><?php echo($p["burial_date"] . " | " . $p["burial_time"]); ?></td>
-                  <?php if($p["burial_status"] == "NO BURIAL DATE" || $p["burial_status"] == "FOR SCHEDULING"): ?>
-                  <td><p class="text-red" ><?php echo($p["burial_status"]); ?></p></td>
-                  <?php elseif($p["burial_status"] == "PENDING"): ?>
-                    <td><p class="text-yellow" ><?php echo($p["burial_status"]); ?></p></td>
-                  <?php elseif($p["burial_status"] == "DONE"): ?>
-                    <td><p class="text-green"><?php echo($p["burial_status"]); ?></p></td>
-                  <?php endif; ?>
                   
-                  <td><?php echo($p["crypt_name"]); ?></td>
-                  <td><?php echo($p["slot_number"]); ?></td>
+                  <?php
+                  $location = "";
+                  	if($p["crypt_type"] == "LAWN"):
+                      $location = "LAWN : TYPE : ".$p["lawn_type"];
+                    elseif($p["crypt_type"] == "COFFIN" || $p["crypt_type"] == "BONE"):
+                      $location = $p["crypt_type"] ." : NAME : ".$p["crypt_name"] . " : ROW : " . $p["row_number"] . " : COLUMN : " . $p["column_number"];
+                    elseif($p["crypt_type"] == "COMMON"):
+                      $location = $p["crypt_type"] ." : NAME : ".$p["crypt_name"];
+                    endif;
+                  ?>
+                  <td><?php echo($p["age_died"]); ?></td>
+                  <td><?php echo($location); ?></td>
                   <td><?php echo($p["client_firstname"] . " " . $p["client_middlename"] . " " . $p["client_lastname"] . " " . $p["client_suffix"]); ?></td>
+                  <td><a href="<?php echo($p["death_certificate"]); ?>" target="_blank" class="btn btn-xs btn-flat btn-block btn-primary">View</a></td>
                   
                 </tr>
                 <?php endforeach; ?>
@@ -101,8 +95,10 @@
 
 <script>
   $(function () {
-    $('.sample_datatable').DataTable()
-   
+    $('.sample_datatable').DataTable({
+      "ordering": false,
+    });
+
   })
 </script>
 
