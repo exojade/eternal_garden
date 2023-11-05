@@ -12,6 +12,8 @@
      */
 
 
+  
+
      function to_peso($number){
         if($number != ""){
             return(number_format($number, 2, '.', ','));
