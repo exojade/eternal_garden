@@ -511,6 +511,34 @@ endforeach;
                             echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
                         endif;
                     endforeach;
+
+                    foreach($annex as $row):
+                        if($row["coordinates"] != ""):
+                        $trim = str_replace('""', '', $row['coordinates']);
+                            echo '{ "type": "Feature", "properties": { ';
+                            echo '"Status": "ANNEX",';
+                            echo '"Name": "'.$row["crypt_name"].'",';
+                            echo '"link_url": "none",';
+                            echo '"description": "",'; 
+                            echo '"slot_number": "'.$row['crypt_id'].'",';
+                            echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                            echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                            if(isset($Deceased2[$row["crypt_id"]])):
+                                $deceased = $Deceased2[$row["crypt_id"]];
+                                foreach($deceased as $d):
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "ANNEX",';
+                                    echo '"Name": "'.$d["deceased_name"].'",'; 
+                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b>",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
+                        endif;
+                    endforeach;
                 ?>
             ]
             }
@@ -518,7 +546,7 @@ endforeach;
 
         <script>
              var map = L.map('map', {
-                zoomControl:true, maxZoom:20, minZoom:19
+                zoomControl:true, maxZoom:21, minZoom:18
             }).fitBounds([[7.318064, 125.662665]]);
         // }).fitBounds([[7.31848,125.66304],[7.31848,125.66304]]);
             var hash = new L.Hash(map);
@@ -526,6 +554,7 @@ endforeach;
             var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
             L.control.locate({locateOptions: {maxZoom: 22}}).addTo(map);
             var bounds_group = new L.featureGroup([]);
+            map.setView([7.31848, 125.66304], 19);
             function setBounds() {
             }
             map.createPane('pane_GoogleSatellite_0');
@@ -753,6 +782,24 @@ endforeach;
                         interactive: true,    // Adjust the height to match your requirements
                     }
                     break;
+                    case 'ANNEX':
+                    return {
+                        pane: 'pane_Marker_3',
+                        pane: 'pane_Marker_3',
+                        radius: 20.0,
+                        opacity: 1,
+                        color: '#33B7B7',
+                        dashArray: '',
+                        lineCap: 'butt',
+                        lineJoin: 'miter',
+                        weight: 16.0,
+                        fill: true,
+                        fillOpacity: 1,
+                        // rgb(24, 22, 22)
+                        fillColor: '#33B7B7',
+                        interactive: true,  
+                    }
+                    break;
                     case 'MAUSOLEUM':
                     return {
                         pane: 'pane_Marker_3',
@@ -831,6 +878,15 @@ endforeach;
 
         return rectangle;
 
+                    }
+
+                    else if(feature.properties["Status"] == "ANNEX"){
+                        var left = [latlng.lat , latlng.lng - 0.00009]; // Top corner
+                        var right = [latlng.lat , latlng.lng + 0.00029]; // Bottom corner
+
+                        // Create a rectangle marker by connecting the top and bottom coordinates
+                        var rectangle = L.polygon([left, right, left, right], style_Marker_3_0(feature));
+                        return rectangle;
                     }
 
                     else{

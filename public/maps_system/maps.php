@@ -385,6 +385,7 @@
 			$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
 			$common = query("select * from crypt_list where crypt_type = 'COMMON'");
 			$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
+			$annex = query("select * from crypt_list where crypt_type = 'ANNEX'");
 			renderview("public/maps_system/public_map.php",
 			[
 				"lawn" => $lawn,
@@ -393,6 +394,7 @@
 				"bone" => $bone,
 				"common" => $common,
 				"no_slot" => $no_slot,
+				"annex" => $annex,
 			]);
 
 

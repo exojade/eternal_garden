@@ -266,7 +266,7 @@
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             $deceased_id, $_POST["deceased_name"], $_POST["firstname"], $_POST["middlename"], $_POST["lastname"],
             $_POST["suffix"], $_POST["birthdate"], $_POST["date_of_death"],
-            $age, $_POST["religion"], $_POST["gender"], "???", // Make sure you provide the correct value here
+            $age, $_POST["religion"], $_POST["gender"], "", // Make sure you provide the correct value here
             $_POST["slot_number"], "NO BURIAL DATE", $_POST["client_id"], $_POST["interment_type"], $_POST["deceased_type"]
             ) === false) {
   dump("error");
