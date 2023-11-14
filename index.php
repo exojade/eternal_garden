@@ -45,6 +45,8 @@
 					require 'public/coffin_crypt/coffin_crypt.php';
 				else if ($request == 'common_area')
 					require 'public/common_area/common_area.php';
+				else if ($request == 'annex')
+					require 'public/annex_area/annex.php';
 
 				else if ($request == 'reports')
 					require 'public/reports_system/reports.php';

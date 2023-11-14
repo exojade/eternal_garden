@@ -96,7 +96,7 @@
 
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Burials for this Year <?php echo(date("Y")); ?></h3>
@@ -116,7 +116,7 @@
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Statistics: Age Bracket | Male vs Female <?php echo(date("Y")); ?></h3>
@@ -225,7 +225,39 @@ function find_deceased() {
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90, 70, 35, 80, 90, 100]
+          data                : [
+<?php 
+$data = query("SELECT
+months.month AS MONTH,
+COALESCE(SUM(IF(deceased_profile.burial_date IS NOT NULL, 1, 0)), 0) AS count_per_month
+FROM
+(
+    SELECT 1 AS MONTH
+    UNION SELECT 2
+    UNION SELECT 3
+    UNION SELECT 4
+    UNION SELECT 5
+    UNION SELECT 6
+    UNION SELECT 7
+    UNION SELECT 8
+    UNION SELECT 9
+    UNION SELECT 10
+    UNION SELECT 11
+    UNION SELECT 12
+) AS months
+LEFT JOIN
+deceased_profile ON months.month = MONTH(deceased_profile.burial_date)
+AND YEAR(deceased_profile.burial_date) = YEAR(CURDATE())  -- Filter for the current year
+GROUP BY
+months.month
+ORDER BY
+months.month;");
+?>
+
+<?php foreach($data as $row): ?>
+            
+            28, 48, 40, 19, 86, 27, 90, 70, 35, 80, 90, 100
+          ]
         }
       ]
     }

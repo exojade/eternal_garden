@@ -33,7 +33,6 @@
             <span class="info-box-icon bg-red"><i class="fa fa-bone"></i></span>
             <div class="info-box-content">
               <span class="info-box-text">BONE CRYPT</span>
-              <span class="info-box-number">90<small>%</small></span>
             </div>
           </div>
       </div>
@@ -44,7 +43,6 @@
             <span class="info-box-icon bg-yellow"><i class="fa fa-home"></i></span>
             <div class="info-box-content">
               <span class="info-box-text">MAUSOLEUM</span>
-              <span class="info-box-number">90<small>%</small></span>
             </div>
           </div>
       </div>
@@ -55,7 +53,6 @@
             <span class="info-box-icon bg-green"><i class="fa fa-cross"></i></span>
             <div class="info-box-content">
               <span class="info-box-text">LAWN</span>
-              <span class="info-box-number">90<small>%</small></span>
             </div>
           </div>
       </div>
@@ -67,11 +64,23 @@
             <span class="info-box-icon bg-black"><i class="fa fa-cross"></i></span>
             <div class="info-box-content">
               <span class="info-box-text">COMMON AREA</span>
-              <span class="info-box-number">90<small>%</small></span>
             </div>
           </div>
       </div>
       </a>
+
+
+      <a href="annex?action=list">
+      <div class="col-md-6">
+          <div class="info-box">
+            <span class="info-box-icon bg-teal"><i class="fa fa-cross"></i></span>
+            <div class="info-box-content">
+              <span class="info-box-text">ANNEX</span>
+            </div>
+          </div>
+      </div>
+      </a>
+
 
     </div>
     
