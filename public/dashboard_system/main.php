@@ -1,18 +1,18 @@
 <?php
 
 
-// $list = query("select * from crypt_list");
+$list = query("select * from crypt_list");
 
-// foreach($list as $row):
-// 	$crypt_slot = query("select * from crypt_slot where crypt_id = ?", $row["crypt_id"]);
-// 	$crypt_slot_id = [];
-// 	foreach($crypt_slot as $row2):
-// 		$crypt_slot_id[] = $row2["slot_id"];
-// 	endforeach;
-// 	$crypt_slot_id = "'" . implode("','", $crypt_slot_id) . "'";
-// 	// dump($crypt_slot_id);
-// 	query("update crypt_slot set crypt_slot_type = ? where slot_id in (".$crypt_slot_id.")", $row["crypt_type"]);
-// endforeach;
+foreach($list as $row):
+	$crypt_slot = query("select * from crypt_slot where crypt_id = ?", $row["crypt_id"]);
+	$crypt_slot_id = [];
+	foreach($crypt_slot as $row2):
+		$crypt_slot_id[] = $row2["slot_id"];
+	endforeach;
+	$crypt_slot_id = "'" . implode("','", $crypt_slot_id) . "'";
+	// dump($crypt_slot_id);
+	query("update crypt_slot set crypt_slot_type = ? where slot_id in (".$crypt_slot_id.")", $row["crypt_type"]);
+endforeach;
 
 
 // $crypt_list = query("select * from crypt_list where crypt_type not in ('LAWN', 'MAUSOLEUM')");
