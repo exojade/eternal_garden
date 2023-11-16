@@ -25,6 +25,7 @@ $pend = $pending[0]["count"];
           <li><a href="maps?action=map_editor"><i class="fa fa-map"></i> <span>Map Editor</span></a></li>
           <li><a href="transaction?action=list"><i class="fa fa-file"></i> <span>Transaction</a></li>
           <li><a href="sales?action=list"><i class="fa fa-dollar"></i> <span>Sales</a></li>
+          <li><a href="reports?action=list"><i class="fa fa-table"></i> <span>Reports</a></li>
           <li><a href="burial_space?action=list"><i class="fa fa-cross"></i> <span>Burial Space</span></a></li>
           <!-- <li><a href="coffin_crypt?action=list"><i class="fa fa-building"></i> <span>Coffin Crypt</span></a></li> -->
           <!-- <li><a href="bone_crypt?action=list"><i class="fa fa-bone"></i> <span>Bone Crypt</span></a></li> -->
