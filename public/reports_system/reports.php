@@ -1,7 +1,7 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 
-		if($_POST["action"] == "transaction-datatable"):
+		if($_POST["action"] == "reports-datatable"):
 			// dump($_REQUEST);
 			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
             $offset = $_POST["start"];
@@ -9,6 +9,14 @@
             $search = $_POST["search"]["value"];
 
 			$where = " where 1=1 ";
+
+			if(isset($_REQUEST["burial_space"])):
+                if($_REQUEST["burial_space"] != "")
+					if($_REQUEST["burial_space"] == "COFFIN" || $_REQUEST["burial_space"] == "BONE" || $_REQUEST["burial_space"] == "MAUSOLEUM" || $_REQUEST["burial_space"] == "LAWN")
+                    	$where = $where . " and s.crypt_slot_type = '".$_REQUEST["burial_space"]."'";
+					else
+						$where = $where . " and s.crypt_id = '".$_REQUEST["burial_space"]."'";
+            endif;
 
 
             if(isset($_REQUEST["client"])):
@@ -18,13 +26,10 @@
 
 			if(isset($_REQUEST["deceased_id"])):
                 if($_REQUEST["deceased_id"] != "")
-                    $where = $where . " and deceased_id = '" . $_REQUEST["deceased_id"] . "'";
+                    $where = $where . " and d.deceased_id = '" . $_REQUEST["deceased_id"] . "'";
             endif;
 
-            if(isset($_REQUEST["transaction_type"])):
-                if($_REQUEST["transaction_type"] != "")
-                    $where = $where . " and transaction_type = '" . $_REQUEST["transaction_type"] . "'";
-            endif;
+			$where = $where . " and s.active_status = 'OCCUPIED' ";
 
 			$crypt = query("select * from crypt_slot s
 							left join crypt_list c
@@ -49,29 +54,41 @@
 
             // $data = query("select * from tblemployee_dtras");
             if($where != ""):
-                $query_string = "SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
-				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
-				ORDER BY t.timestamp DESC
+                $query_string = "select * from crypt_slot s
+				left join profile_list p
+				on s.occupied_by = p.profile_id
+				left join deceased_profile d
+				on d.profile_id = p.profile_id
+				".$where."
 				limit ".$limit." offset ".$offset." ";
                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
-				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
-				ORDER BY t.timestamp DESC");
+                $all_data = query("select * from crypt_slot s
+										left join profile_list p
+										on s.occupied_by = p.profile_id
+										left join deceased_profile d
+										on d.profile_id = p.profile_id
+										".$where."
+										");
                 // $all_data = $data;
             else:
-                $query_string = "SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
-				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
-				ORDER BY t.timestamp DESC
+                $query_string = "select * from crypt_slot s
+				left join profile_list p
+				on s.occupied_by = p.profile_id
+				left join deceased_profile d
+				on d.profile_id = p.profile_id
 				limit ".$limit." offset ".$offset." ";
                                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
-				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
-				ORDER BY t.timestamp DESC");
+                $all_data = query("select * from crypt_slot s
+				left join profile_list p
+				on s.occupied_by = p.profile_id
+				left join deceased_profile d
+				on d.profile_id = p.profile_id");
                 // $all_data = $data;
             endif;
             $i=0;
+			// dump($data);
             foreach($data as $row):
 				// dump($row);
 				$data[$i]["client"] = "";
@@ -87,7 +104,6 @@
 				endif;
 					
 				$location = $Crypt[$row["slot_id"]];
-				
 				if($location["crypt_type"] == "LAWN"):
 					$data[$i]["location"] = "LAWN : TYPE : ".$location["lawn_type"];
 				elseif($location["crypt_type"] == "COFFIN" || $location["crypt_type"] == "BONE"):
@@ -96,7 +112,8 @@
 					$data[$i]["location"] = $location["crypt_type"] ." : NAME : ".$location["crypt_name"];
 				endif;
 
-
+				$data[$i]["date"] = $row["burial_date"];
+				$data[$i]["time"] = $row["burial_time"];
 				// dump();	
                 $i++;
             endforeach;

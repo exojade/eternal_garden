@@ -88,14 +88,13 @@
         <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-body">
-              <table class="table table-bordered transaction-datatable">
+              <table class="table table-bordered reports-datatable">
                 <thead>
                   <th>Client</th>
                   <th>Deceased</th>
                   <th>Location</th>
                   <th>Date</th>
                   <th>Time</th>
-                  <th>Type</th>
                 </thead>
               </table>
             </div>
@@ -134,7 +133,7 @@
   ?>
 <script>
   var datatable = 
-            $('.transaction-datatable').DataTable({
+            $('.reports-datatable').DataTable({
                 "pageLength": 10,
                 language: {
                     searchPlaceholder: "Enter Filter"
@@ -146,10 +145,10 @@
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url':'transaction',
+                    'url':'reports',
                      'type': "POST",
                      "data": function (data){
-                        data.action = "transaction-datatable";
+                        data.action = "reports-datatable";
                      }
                 },
                 'columns': [
@@ -158,7 +157,6 @@
                     { data: 'location', "orderable": false },
                     { data: 'date', "orderable": false },
                     { data: 'time', "orderable": false },
-                    { data: 'transaction_type', "orderable": false },
                 ],
                 "footerCallback": function (row, data, start, end, display) {
                     var api = this.api(), data;
@@ -191,8 +189,9 @@
               var client_id = $('#client_id').val();
               var deceased_id = $('#deceased_id').val();
               var transaction_type = $('#transaction_type').val();
+              var burial_space = $('#burial_space_id').val();
               
-              datatable.ajax.url('transaction?action=transaction-datatable&client='+client_id+'&deceased_id='+deceased_id+'&transaction_type='+transaction_type).load();
+              datatable.ajax.url('reports?action=reports-datatable&burial_space='+burial_space+'&client='+client_id+'&deceased_id='+deceased_id+'&transaction_type='+transaction_type).load();
           }
 
 
