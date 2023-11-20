@@ -93,10 +93,12 @@ $pend = $pending[0]["count"];
           ?>
 
           <li><a href="transfer?action=list"><i class="fa fa-bell"></i> <span>Notice to Transfer</span>
+          <?php if(isset($count[0])): ?>
           <?php if($count[0]["count"] != 0): ?>
             <span class="pull-right-container">
               <span class="label label-danger pull-right"><?php echo($count[0]["count"]); ?></span>
             </span>
+          <?php endif; ?>
           <?php endif; ?>
           </a></li>
             
