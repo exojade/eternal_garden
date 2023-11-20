@@ -22,7 +22,6 @@
             <span class="info-box-icon bg-aqua"><i class="fa fa-building"></i></span>
             <div class="info-box-content">
               <span class="info-box-text">COFFIN CRYPT</span>
-              <span class="info-box-number">90<small>%</small></span>
             </div>
           </div>
       </div>
