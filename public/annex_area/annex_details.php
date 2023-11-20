@@ -208,9 +208,9 @@
                   <th>Client</th>
                 </thead>
                 <tbody>
-                  <?php foreach($deceased_profile as $row): ?>
+                  <?php foreach($deceased_profile as $row):?>
                     <tr>
-                      <td><a href="annex?action=client_details&slot=<?php echo($row["slot_number"]); ?>" class="btn btn-primary btn-xs btn-block">Details</a></td>
+                      <td><a href="annex?action=client_details&slot=<?php echo($row["slot_id"]); ?>" class="btn btn-primary btn-xs btn-block">Details</a></td>
                       <td><?php echo($row["deceased_firstname"] . " " . $row["deceased_lastname"]); ?></td>
                       <td><?php echo($row["birthdate"]); ?></td>
                       <td><?php echo($row["date_of_death"]); ?></td>
