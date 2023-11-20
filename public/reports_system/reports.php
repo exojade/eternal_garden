@@ -33,7 +33,7 @@
 
 			if(isset($_REQUEST["client"])):
                 if($_REQUEST["client"] != "")
-                    $where = $where . " and t.profile_id = '" . $_REQUEST["client"] . "'";
+                    $where = $where . " and p.profile_id = '" . $_REQUEST["client"] . "'";
             endif;
 
 
