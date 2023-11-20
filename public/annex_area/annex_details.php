@@ -199,9 +199,26 @@
               <div class="table-responsive">
               <table class="table table-bordered table-striped sample_datatable">
                 <thead>
+                  <th>Action</th>
+                  <th>Deceased</th>
+                  <th>BirthDate</th>
+                  <th>Date Died</th>
+                  <th>Age Died</th>
+                  <th>Death Certificate</th>
                   <th>Client</th>
                 </thead>
                 <tbody>
+                  <?php foreach($deceased_profile as $row): ?>
+                    <tr>
+                      <td><a href="annex?action=client_details&slot=<?php echo($row["slot_number"]); ?>" class="btn btn-primary btn-xs btn-block">Details</a></td>
+                      <td><?php echo($row["deceased_firstname"] . " " . $row["deceased_lastname"]); ?></td>
+                      <td><?php echo($row["birthdate"]); ?></td>
+                      <td><?php echo($row["date_of_death"]); ?></td>
+                      <td><?php echo($row["age_died"]); ?></td>
+                      <td><a href="<?php echo($row["death_certificate"]); ?>" class="btn btn-primary btn-xs">View Certificate</a></td>
+                      <td><?php echo($row["client_firstname"] . " " . $row["client_lastname"]); ?></td>
+                    </tr>
+                  <?php endforeach; ?>
          
                 </tbody>
               </table>

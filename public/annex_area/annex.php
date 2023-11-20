@@ -390,10 +390,12 @@
 				$Profile[$row["profile_id"]] = $row;
 			endforeach;
 
-			$deceased_profile = query("select s.*, d.*, t.slot_id from crypt_slot s left join deceased_profile d
-										on s.occupied_by = d.deceased_id
-										left join transaction t on t.transaction_id = d.transaction_id
-										where crypt_id = ?", $_GET["id"]);
+			$deceased_profile = query("select * from crypt_slot s
+										left join profile_list p
+										on s.occupied_by = p.profile_id
+										left join deceased_profile d
+										on d.profile_id = p.profile_id
+										where s.crypt_id = ?", $_GET["id"]);
 			render("public/annex_area/annex_details.php",
 			[
 				"annex" => $annex,
