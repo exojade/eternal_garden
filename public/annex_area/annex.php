@@ -81,7 +81,7 @@
 					"result" => "success",
 					"title" => "Success",
 					"message" => "Success on adding Data",
-					"link" => "profile?action=client_details&slot=".$crypt_slot_id,
+					"link" => "annex?action=client_details&slot=".$crypt_slot_id,
 					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 					];
 					echo json_encode($res_arr); exit();
