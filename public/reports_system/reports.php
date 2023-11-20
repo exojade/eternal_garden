@@ -12,7 +12,7 @@
 
 			if(isset($_REQUEST["burial_space"])):
                 if($_REQUEST["burial_space"] != "")
-					if($_REQUEST["burial_space"] == "COFFIN" || $_REQUEST["burial_space"] == "BONE" || $_REQUEST["burial_space"] == "MAUSOLEUM" || $_REQUEST["burial_space"] == "LAWN")
+					if($_REQUEST["burial_space"] == "COFFIN" || $_REQUEST["burial_space"] == "BONE" || $_REQUEST["burial_space"] == "MAUSOLEUM" || $_REQUEST["burial_space"] == "LAWN" || $_REQUEST["burial_space"] == "COMMON" || $_REQUEST["burial_space"] == "ANNEX")
                     	$where = $where . " and s.crypt_slot_type = '".$_REQUEST["burial_space"]."'";
 					else
 						$where = $where . " and s.crypt_id = '".$_REQUEST["burial_space"]."'";
@@ -84,6 +84,7 @@
 										".$where."
 										");
                 // $all_data = $data;
+				// dump($query_string);
             else:
                 $query_string = "select * from crypt_slot s
 				left join profile_list p
@@ -98,6 +99,7 @@
 				on s.occupied_by = p.profile_id
 				left join deceased_profile d
 				on d.profile_id = p.profile_id");
+		
                 // $all_data = $data;
             endif;
             $i=0;
@@ -123,7 +125,6 @@
 				endif;
 
 
-					
 				$location = $Crypt[$row["slot_id"]];
 				if($location["crypt_type"] == "LAWN"):
 					$data[$i]["location"] = "LAWN : TYPE : ".$location["lawn_type"];
@@ -131,6 +132,8 @@
 					$data[$i]["location"] = $location["crypt_type"] ." : NAME : ".$location["crypt_name"] . " : ROW : " . $location["row_number"] . " : COLUMN : " . $location["column_number"];
 				elseif($location["crypt_type"] == "COMMON"):
 					$data[$i]["location"] = $location["crypt_type"] ." : NAME : ".$location["crypt_name"];
+				elseif($location["crypt_type"] == "ANNEX"):
+						$data[$i]["location"] = $location["crypt_type"] ." : NAME : ".$location["crypt_name"];
 				endif;
 
 				$data[$i]["date"] = $row["burial_date"];

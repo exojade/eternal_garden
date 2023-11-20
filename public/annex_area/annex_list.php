@@ -8,13 +8,6 @@
     overflow: auto;
 }
 </style>
-
-
-
-
-
-
-<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
   <section class="content-header">
@@ -58,7 +51,7 @@
       <div class="row">
       <?php foreach($annex_list as $annex): ?>
         <div class="col-md-4">
-        <a href="common_area?action=details&id=<?php echo($annex["crypt_id"]); ?>">
+        <a href="annex?action=details&id=<?php echo($annex["crypt_id"]); ?>">
         <div class="box box-widget widget-user">
             <div class="widget-user-header bg-teal">
               <h3 class="widget-user-username"><?php echo($annex["crypt_name"]); ?></h3>

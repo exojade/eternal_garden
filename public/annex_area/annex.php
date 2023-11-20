@@ -1,6 +1,101 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		// dump($_POST);
+
+
+		if($_POST["action"] == "addClient"):
+			// dump($_POST);
+
+			$crypt_slot_id = create_uuid("CRYPT_SLOT");
+			$profile_id = create_uuid("PROF");
+			if (query("insert into profile_list 
+				(
+					profile_id,
+					client_firstname,client_middlename,client_lastname,client_suffix,
+					client_contact,email_address,gender,
+					province,city_municipality,barangay,client_address,
+					id_presented,id_number,place_issued,slot_number
+				) 
+				VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+				$profile_id,
+				$_POST["first_name"],$_POST["middle_name"],$_POST["last_name"],$_POST["suffix"],
+				$_POST["client_contact"],$_POST["email_address"],$_POST["gender"],
+				$_POST["province"],$_POST["city_mun"],$_POST["barangay"],$_POST["client_address"],
+				$_POST["id_presented"],$_POST["id_number"],$_POST["place_issued"],$crypt_slot_id
+				) === false):
+					apologize("Sorry, that username has already been taken!");
+				endif;
+			$target_pdf = "uploads/" . $profile_id."/";
+			if (!file_exists($target_pdf )) {
+				mkdir($target_pdf , 0777, true);
+			}
+			if($_FILES["certificate_indigency"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["certificate_indigency"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "INDIGENCY" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['certificate_indigency']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set certificate_indigency = '".$target."'
+					where profile_id = '".$profile_id."'");
+			endif;
+			if($_FILES["valid_id"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["valid_id"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "ID" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['valid_id']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set valid_id = '".$target."'
+					where profile_id = '".$profile_id."'");
+			endif;
+
+			if($_FILES["picture"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["picture"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "PICTURE" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['picture']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set picture = '".$target."'
+					where profile_id = '".$profile_id."'");
+			endif;
+
+
+			if (query("insert into crypt_slot 
+				(
+					slot_id,crypt_id,active_status,occupied_by,crypt_slot_type
+				) 
+				VALUES(?,?,?,?,?)", 
+				$crypt_slot_id,$_POST["crypt_id"],"OCCUPIED",$profile_id,"ANNEX"
+				
+				) === false):
+					apologize("Sorry, that username has already been taken!");
+				endif;
+			
+			
+				$res_arr = [
+					"result" => "success",
+					"title" => "Success",
+					"message" => "Success on adding Data",
+					"link" => "profile?action=client_details&slot=".$crypt_slot_id,
+					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+					];
+					echo json_encode($res_arr); exit();
+
+				endif;
+
+
+
+
+
+
+
+
+
 		if($_POST["action"] == "add_annex"){
 			// dump($_POST);
 			$crypt_id = create_uuid("CRYPT");
@@ -196,6 +291,76 @@
 
 		}
 
+
+		if($_POST["action"] == "addDeceased"):
+
+
+			$datetime1 = new DateTime($_POST["birthdate"]);
+			$datetime2 = new DateTime($_POST["date_of_death"]);
+			$interval = $datetime1->diff($datetime2);
+			$age = $interval->format('%y');
+	
+
+			
+			// dump($_POST);
+
+
+			$deceased_id = create_uuid("DEC");
+			$_POST["deceased_name"] = $_POST["firstname"] . " " . $_POST["middlename"]. " " . $_POST["lastname"] . $_POST["suffix"];
+			if (query("INSERT INTO deceased_profile 
+            (deceased_id, deceased_name, deceased_firstname, deceased_middlename, deceased_lastname, deceased_suffix, birthdate, date_of_death, age_died, religion, gender, burial_date, slot_number, burial_status, profile_id) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            $deceased_id, $_POST["deceased_name"], $_POST["firstname"], $_POST["middlename"], $_POST["lastname"],
+            $_POST["suffix"], $_POST["birthdate"], $_POST["date_of_death"],
+            $age, $_POST["religion"], $_POST["gender"], "", // Make sure you provide the correct value here
+            $_POST["slot_number"], "DONE", $_POST["client_id"]
+            ) === false) {
+			dump("error");
+			}
+				$fullname = strtoupper($_POST["lastname"] . "_" . $_POST["firstname"] . "_" . $_POST["middlename"] . "_" . $_POST["suffix"]);
+				$fullname = str_replace(' ', '_', $fullname);
+				$target_pdf = "uploads/deceased/" . $deceased_id."/";
+				if (!file_exists($target_pdf )) {
+					mkdir($target_pdf , 0777, true);
+				}
+	
+
+				if($_FILES["death_certificate"]["size"] != 0):
+					$path_parts = pathinfo($_FILES["death_certificate"]["name"]);
+					$extension = $path_parts['extension'];
+					$target = $target_pdf . "DEATHCERTIFICATE" . "." . $extension;
+						if(!move_uploaded_file($_FILES['death_certificate']['tmp_name'], $target)){
+							echo("FAMILY Do not have upload files");
+							exit();
+						}
+				query("update deceased_profile set death_certificate = '".$target."'
+						where deceased_id = '".$deceased_id."'");
+				endif;
+
+
+			// $transaction_id = create_uuid("LOGS");
+			// 	$message = $_POST["deceased_name"] . " was added to this slot";
+			// 	if (query("insert into transaction_logs 
+			// 	(transaction_id,slot_number,transaction_type,message,timestamp,transaction_date,transaction_time,services_availed) 
+			// 	VALUES(?,?,?,?,?,?,?,?)", 
+			// 	$transaction_id,$_POST["slot_number"],"DECEASED PROFILE",$message,
+			// 	time(),date("Y-m-d"),date("h:i:s a"),""
+			// 	) === false)
+			// 	{
+			// 		apologize("Sorry, that username has already been taken!");
+			// 	}
+
+
+				$res_arr = [
+					"result" => "success",
+					"title" => "Success",
+					"message" => "Success on adding Data",
+					"link" => "refresh",
+					// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+					];
+					echo json_encode($res_arr); exit();
+		endif;
+
 		
 		
 		
@@ -238,26 +403,29 @@
 			]);
 		}
 
-		else if($_GET["action"] == "new"){
-			// dump($_GET);
-			$coffin = query("select * from pricing where type='coffin_crypt'");
-			$slot = query("select * from crypt_slot s
-							left join crypt_list l
-							on l.crypt_id = s.crypt_id
-							 where s.slot_id = ?", $_GET["slot_id"]);
+		if($_GET["action"] == "client_details"){
+			$slot = query("select * from crypt_slot where slot_id = ?", $_GET["slot"]);
+			$client = query("select * from profile_list where profile_id = ?", $slot[0]["occupied_by"]);
+			if(!empty($client)):
+				// dump($client);
+			$deceased = query("select * from deceased_profile where profile_id = ?", $client[0]["profile_id"]);
+			else:
+			$deceased = "";
+			endif;
+			// dump($deceased);
+			$slot = query("select  * from crypt_slot as slot
+							left join crypt_list as crypt
+							on slot.crypt_id = crypt.crypt_id
+							where slot.slot_id = ?", $_GET["slot"]);
 			$slot = $slot[0];
-			// dump($slot);
-			$requirements = query("select * from requirements where pricing_id = ?", $coffin[0]["pricing_id"]);
-			$services = query("select * from services");
-
-			// dump($crypt_slots);
-			render("public/coffin_crypt/new_coffin_crypt.php",
+			// dump($client);
+			render("public/annex_area/annex_profile_details.php",
 			[
-				"coffin" => $coffin,
-				"requirements" => $requirements,
-				"services" => $services,
+				"client" => $client,
+				"deceased" => $deceased,
 				"slot" => $slot,
 			]);
 		}
+		
 	}
 ?>

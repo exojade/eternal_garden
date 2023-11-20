@@ -35,6 +35,8 @@
                     <option value="BONE">BONE [ALL]</option>
                     <option value="MAUSOLEUM">MAUSOLEUM [ALL]</option>
                     <option value="LAWN">LAWN [ALL]</option>
+                    <option value="COMMON">COMMON [ALL]</option>
+                    <option value="ANNEX">ANNEX [ALL]</option>
                     <?php foreach($burial_space as $row): ?>
                       <option value="<?php echo($row["crypt_id"]); ?>"><?php echo($row["crypt_name"] . " [" . $row["crypt_type"] . "]"); ?></option>
                     <?php endforeach; ?>
@@ -236,11 +238,14 @@ $('.select2').select2()
 
 $('#reservation').daterangepicker({
   // singleDatePicker: true,
-  startDate: "<?php echo(date("Y")); ?>-01-01",  // Set start date to null
+ // Set start date to null
   locale: {
     format: 'YYYY-MM-DD',
   }
 })
+
+
+$('#reservation').val('');
 
   </script>
 

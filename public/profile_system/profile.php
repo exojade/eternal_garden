@@ -640,7 +640,19 @@
 					];
 					echo json_encode($res_arr); exit();
 			endif;
+
 			$slot = query("select * from crypt_slot where slot_id = ?", $_POST["slot_id"]);
+			if($slot[0]["crypt_slot_type"] == "ANNEX"):
+				query("delete from crypt_slot where slot_id = ?", $_POST["slot_id"]);
+				$res_arr = [
+					"result" => "success",
+					"title" => "Success",
+					"message" => "Success on Vacating the Slot",
+					"link" => "annex?action=details&id=".$slot[0]["crypt_id"],
+					];
+					echo json_encode($res_arr); exit();
+			endif;
+			
 			$profile_id = $slot[0]["occupied_by"];
 			query("update profile_list set active_status = 'FORMER' where profile_id = ?", $profile_id);
 			query("update crypt_slot set occupied_by = null, active_status = 'VACANT' where slot_id = ?", $_POST["slot_id"]);
