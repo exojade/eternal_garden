@@ -60,6 +60,11 @@ $pend = $pending[0]["count"];
               <span class="label label-danger pull-right">5</span>
             </span></a></li>
 
+            <li><a href="resources/pdf_installer.exe"><i class="fa fa-bell"></i> <span>PDF Installer</span>
+            <span class="pull-right-container">
+              <span class="label label-danger pull-right">5</span>
+            </span></a></li>
+
       </ul>
 
       <?php elseif($role=="CEMETERY"): ?>
