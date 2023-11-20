@@ -266,7 +266,7 @@
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             $deceased_id, $_POST["deceased_name"], $_POST["firstname"], $_POST["middlename"], $_POST["lastname"],
             $_POST["suffix"], $_POST["birthdate"], $_POST["date_of_death"],
-            $age, $_POST["religion"], $_POST["gender"], "???", // Make sure you provide the correct value here
+            $age, $_POST["religion"], $_POST["gender"], "", // Make sure you provide the correct value here
             $_POST["slot_number"], "NO BURIAL DATE", $_POST["client_id"], $_POST["interment_type"], $_POST["deceased_type"]
             ) === false) {
   dump("error");
@@ -640,7 +640,19 @@
 					];
 					echo json_encode($res_arr); exit();
 			endif;
+
 			$slot = query("select * from crypt_slot where slot_id = ?", $_POST["slot_id"]);
+			if($slot[0]["crypt_slot_type"] == "ANNEX"):
+				query("delete from crypt_slot where slot_id = ?", $_POST["slot_id"]);
+				$res_arr = [
+					"result" => "success",
+					"title" => "Success",
+					"message" => "Success on Vacating the Slot",
+					"link" => "annex?action=details&id=".$slot[0]["crypt_id"],
+					];
+					echo json_encode($res_arr); exit();
+			endif;
+			
 			$profile_id = $slot[0]["occupied_by"];
 			query("update profile_list set active_status = 'FORMER' where profile_id = ?", $profile_id);
 			query("update crypt_slot set occupied_by = null, active_status = 'VACANT' where slot_id = ?", $_POST["slot_id"]);

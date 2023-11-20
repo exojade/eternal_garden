@@ -5,7 +5,7 @@
 			// dump($_POST);
 			$crypt_id = create_uuid("CRYPT");
 			$inserts = array();
-        	$queryFormat = "('%s','%s','%s','%s','%s','%s','%s','%s')";
+        	$queryFormat = "('%s','%s','%s','%s','%s','%s','%s','%s','%s')";
 			if (query("insert INTO crypt_list (crypt_id, crypt_name, crypt_type, crypt_rows, crypt_columns)
                         VALUES(?,?,?,?,?)", 
                         $crypt_id, $_POST["crypt_name"], "COFFIN", $_POST["crypt_rows"], $_POST["crypt_columns"]) === false){
@@ -27,7 +27,7 @@
 				for($j = 1; $j<=$_POST["crypt_columns"]; $j++){
 					$crypt_slot_id = create_uuid("CRYPT_SLOT");
 					$inserts[] = sprintf(
-						$queryFormat, $crypt_slot_id, $crypt_id, "VACANT","",$slot_number, $i, $j, "FRONT");
+						$queryFormat, $crypt_slot_id, $crypt_id, "VACANT","",$slot_number, $i, $j, "FRONT", "COFFIN");
 						$slot_number++;
 				}	
 			endfor;
@@ -36,7 +36,7 @@
 				for($j = 1; $j<=$_POST["crypt_columns"]; $j++){
 					$crypt_slot_id = create_uuid("CRYPT_SLOT");
 					$inserts[] = sprintf(
-						$queryFormat, $crypt_slot_id, $crypt_id, "VACANT","",$slot_number, $i, $j, "BACK");
+						$queryFormat, $crypt_slot_id, $crypt_id, "VACANT","",$slot_number, $i, $j, "BACK", "COFFIN");
 						$slot_number++;
 				}	
 			endfor;
@@ -44,7 +44,7 @@
 
 			$query = implode( ",", $inserts );
                 $query_string = "insert into crypt_slot
-                (slot_id, crypt_id, active_status,occupied_by,slot_number, row_number, column_number, face) 
+                (slot_id, crypt_id, active_status,occupied_by,slot_number, row_number, column_number, face, crypt_slot_type) 
                 VALUES " . $query;
                 // dump($query_string);
 			query($query_string);

@@ -1,6 +1,11 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="AdminLTE/bower_components/fullcalendar/dist/fullcalendar.min.css">
+<link rel="stylesheet" href="AdminLTE/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
 <link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
-<link rel="stylesheet" href="AdminLTE/bower_components/morris.js/morris.css">
+<link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+<link rel="stylesheet" href="AdminLTE/dist/css/AdminLTE.min.css">
+
 <style>
 .products-list {
 	padding-right: 10px;
@@ -8,59 +13,68 @@
     overflow: auto;
 }
 </style>
-<script src="AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-	<script src="AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
-	<script src="AdminLTE/dist/js/adminlte.min.js"></script>
-	<script src="AdminLTE/dist/js/demo.js"></script>
-  <script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
+
+<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
   <section class="content-header">
       <h1>
-        Reports
-        <small>System</small>
+        Transaction
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="./"><i class="fa fa-dashboard"></i> HOMES</a></li>
-        <li class="active">Dashboard</li>
-      </ol>
     </section>
     <section class="content">
-    <div class="box box-info">
-    <div class="box-header with-border">
-              <h3 class="box-title">Filter Here</h3>
-              <div class="box-tools pull-right">
-                
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              
+    <form class="generic_form_trigger" data-url="reports">
+      <input type="hidden" name="action" value="printForm">
+    <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Burial Space</label>
+                  <select name="burial_space" id="burial_space_id" class="form-control select2" style="width: 100%;">
+                    <option selected value="">Select Burial Space</option>
+                    <option value="COFFIN">COFFIN [ALL]</option>
+                    <option value="BONE">BONE [ALL]</option>
+                    <option value="MAUSOLEUM">MAUSOLEUM [ALL]</option>
+                    <option value="LAWN">LAWN [ALL]</option>
+                    <option value="COMMON">COMMON [ALL]</option>
+                    <option value="ANNEX">ANNEX [ALL]</option>
+                    <?php foreach($burial_space as $row): ?>
+                      <option value="<?php echo($row["crypt_id"]); ?>"><?php echo($row["crypt_name"] . " [" . $row["crypt_type"] . "]"); ?></option>
+                    <?php endforeach; ?>
+                  </select>
                 </div>
+              </div>
 
-                <div class="box-body">
-                <div class="row">
               <div class="col-md-3">
               <div class="form-group">
-                <label>From Date:</label>
-                <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                  </div>
-                  <input type="date" class="form-control">
-                </div>
-                <!-- /.input group -->
+                <label>Client</label>
+                <select name="client_id" id="client_id" class="form-control select2" style="width: 100%;">
+                  <option selected value="" >Select Client...</option>
+                  <?php foreach($client as $row): ?>
+                    <option value="<?php echo($row["profile_id"]); ?>"><?php echo($row["client_firstname"] . " " . $row["client_lastname"]); ?></option>
+                  <?php endforeach; ?>
+                </select>
               </div>
               </div>
               <div class="col-md-3">
               <div class="form-group">
-                <label>To Date:</label>
+                <label>Deceased</label>
+                <select name="deceased_id" id="deceased_id" class="form-control select2" style="width: 100%;">
+                <option selected value="" >Select Deceased...</option>
+                <?php foreach($deceased as $row): ?>
+                    <option value="<?php echo($row["deceased_id"]); ?>"><?php echo($row["deceased_firstname"] . " " . $row["deceased_lastname"]); ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              </div>
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>Burial Ddate:</label>
+
                 <div class="input-group">
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input type="date" class="form-control">
+                  <input name="burial_date" type="text" class="form-control pull-right" id="reservation">
                 </div>
                 <!-- /.input group -->
               </div>
@@ -68,227 +82,171 @@
               <div class="col-md-3">
               <div class="form-group">
                 <label>Filter:</label>
-                <button class="btn btn-primary btn-block">Filter</button>
+                <button type="button" onclick="filter();" class="btn btn-primary btn-block">Filter</button>
               </div>
               </div>
+
               <div class="col-md-3">
               <div class="form-group">
-                <label>Print:</label>
-                <a href="resources/sales_revenue.pdf" target="_blank" class="btn btn-success btn-block"><i class="fa fa-print"></i> Print</a>
+                <label>Print</label>
+                <button type="submit" class="btn btn-success btn-block">Print</button>
               </div>
               </div>
             </div>
-
-                </div>
-            </div>
-            </div>
-
-
-
-
+          </form>
       <div class="row">
-        <div class="col-md-8">
-        <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Burials Statistics</h3>
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
+       
+        <!-- /.col -->
+        <div class="col-md-12">
+          <div class="box box-primary">
             <div class="box-body">
-              <div class="chart">
-                <canvas id="lineChart" style="height:300px"></canvas>
-              </div>
+              <table class="table table-bordered reports-datatable">
+                <thead>
+                  <th>Client</th>
+                  <th>Deceased</th>
+                  <th>Location</th>
+                  <th>Date</th>
+                  <th>Time</th>
+                </thead>
+              </table>
             </div>
             <!-- /.box-body -->
           </div>
+          <!-- /. box -->
         </div>
-
-        <div class="col-md-4">
-        <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">Statistics: Age Bracket | Male vs Female</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body chart-responsive">
-              <div class="chart" id="bar-chart" style="height: 300px;"></div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-        </div>
+        <!-- /.col -->
       </div>
-
-
-
+      <!-- /.row -->
     </section>
+
+
+    
   </div>
+  
   <?php 
     require("layouts/footer.php");
   ?>
+
+<script src="AdminLTE/bower_components/moment/moment.js"></script>
+<script src="AdminLTE/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
 <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
-<script src="AdminLTE/bower_components/morris.js/morris.min.js"></script>
-<script src="AdminLTE/bower_components/raphael/raphael.min.js"></script>
-<script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
+<script src="AdminLTE/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="AdminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script src="AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
+  <script src="AdminLTE/bower_components/select2/dist/js/select2.full.min.js"></script>
+	<script src="AdminLTE/dist/js/adminlte.min.js"></script>
+	<script src="AdminLTE/dist/js/demo.js"></script>
+  <script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
 
 
-  <script>
-function find_deceased() {
-	swal({title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false});
-	var search_query = $('#search_engine').val();
-	var amount = $('#search_engine_amount').val();
-		$.ajax({
-		  type : 'post',
-		  url : 'index',
-		  data: {
-      action: "track_deceased",
-			q: search_query
-		  },
-		//   data :  'q='+search_query,
-		  success : function(data){
-			$( "#results_table .rowings" ).remove();
-			if(data == "not enough"){
-			  swal({
-				title: 'Information',
-				text: 'Not Enough. Taasi gamay ang Search. < 2 characters.',
-				type: "error"
-			  }).then(function() {
-				swal.close();
-			  });
-			}
-			else{
-			  data = JSON.parse(data);
-			// console.log(data);
-			$.each(data, function(i, item) {
-			  console.log(data[i]);
-			  $('.results-data').after('\
-			  <tr class="rowings">\
-			  <td><a href="profile?action=details&id='+data[i].slot_id+'" class="btn btn-primary btn-flat btn-block">Details</a></td>\
-			  <td>'+data[i].deceased_name+'</td>\
-			  <td>'+data[i].deceased_date_death+'</td>\
-			  <td>'+data[i].location+'</td>\
-			  <tr>');
-			});
-			swal.close();
-		  }
-		}
-		});    
-		  }
+<script src="AdminLTE/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="AdminLTE/bower_components/moment/min/moment.min.js"></script>
+<script src="AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 
-      
-
-    var bar = new Morris.Bar({
-      element: 'bar-chart',
-      resize: true,
-      data: [
-        {y: '0-15', a: 100, b: 90},
-        {y: '16-30', a: 75, b: 65},
-        {y: '31-40', a: 50, b: 40},
-        {y: '41-50', a: 75, b: 65},
-        {y: '51-60', a: 50, b: 40},
-        {y: '61-80', a: 75, b: 65},
-        {y: '80+', a: 100, b: 90}
-      ],
-      barColors: ['#00a65a', '#f56954'],
-      xkey: 'y',
-      ykeys: ['a', 'b'],
-      labels: ['Male', 'Female'],
-      hideHover: 'auto'
-    });
-
-
-    var areaChartData = {
-      labels  : [
-        <?php for($i=1;$i<32;$i++):
-          echo("'".$i."',");
-        endfor;
-          ?>
-      ],
-      datasets: [
-        
-        {
-          label               : 'Digital Goods',
-          fillColor           : 'rgba(60,141,188,0.9)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [
-            <?php for($i=1;$i<32;$i++):
-          echo(rand(100,1000) .",");
-        endfor;
-          ?>
-            // 28, 48, 40, 19, 86, 27, 90, 70, 35, 80, 90, 100
-
-          ]
-        }
-      ]
-    }
-
-    var areaChartOptions = {
-      //Boolean - If we should show the scale at all
-      showScale               : true,
-      //Boolean - Whether grid lines are shown across the chart
-      scaleShowGridLines      : false,
-      //String - Colour of the grid lines
-      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-      //Number - Width of the grid lines
-      scaleGridLineWidth      : 1,
-      //Boolean - Whether to show horizontal lines (except X axis)
-      scaleShowHorizontalLines: true,
-      //Boolean - Whether to show vertical lines (except Y axis)
-      scaleShowVerticalLines  : true,
-      //Boolean - Whether the line is curved between points
-      bezierCurve             : true,
-      //Number - Tension of the bezier curve between points
-      bezierCurveTension      : 0.3,
-      //Boolean - Whether to show a dot for each point
-      pointDot                : false,
-      //Number - Radius of each point dot in pixels
-      pointDotRadius          : 4,
-      //Number - Pixel width of point dot stroke
-      pointDotStrokeWidth     : 1,
-      //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-      pointHitDetectionRadius : 20,
-      //Boolean - Whether to show a stroke for datasets
-      datasetStroke           : true,
-      //Number - Pixel width of dataset stroke
-      datasetStrokeWidth      : 2,
-      //Boolean - Whether to fill the dataset with a color
-      datasetFill             : true,
-      //String - A legend template
-      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].lineColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-      //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-      maintainAspectRatio     : true,
-      //Boolean - whether to make the chart responsive to window resizing
-      responsive              : true
-    }
-
-    var lineChartCanvas          = $('#lineChart').get(0).getContext('2d')
-    var lineChart                = new Chart(lineChartCanvas)
-    var lineChartOptions         = areaChartOptions
-    lineChartOptions.datasetFill = false
-    lineChart.Line(areaChartData, lineChartOptions)
-
-
-  </script>
   
   <?php
 	require("layouts/footer_end.php");
   ?>
-
 <script>
-  $(function () {
-    $('#example2').DataTable()
-   
-  })
-</script>
+  var datatable = 
+            $('.reports-datatable').DataTable({
+                "pageLength": 10,
+                language: {
+                    searchPlaceholder: "Enter Filter"
+                },
+                searching: false,
+                "bLengthChange": true,
+                "ordering": false,
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url':'reports',
+                     'type': "POST",
+                     "data": function (data){
+                        data.action = "reports-datatable";
+                     }
+                },
+                'columns': [
+                    { data: 'client', "orderable": false },
+                    { data: 'deceased', "orderable": false },
+                    { data: 'location', "orderable": false },
+                    { data: 'date', "orderable": false },
+                    { data: 'time', "orderable": false },
+                ],
+                "footerCallback": function (row, data, start, end, display) {
+                    var api = this.api(), data;
+                    var intVal = function (i) {
+                        return typeof i === 'string' ?
+                            i.replace(/[\$,]/g, '') * 1 :
+                            typeof i === 'number' ?
+                                i : 0;
+                    };
+                    // // Total over all pages
+
+                    console.log(received = api
+                        .column(2)
+                        .data());
+
+
+                    received = api
+                        .column(2)
+                        .data()
+                        .reduce(function (a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                        console.log(received);
+
+                    $('#currentTotal').html('P ' + received.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                }
+            });
+
+            function filter() {
+              var client_id = $('#client_id').val();
+              var deceased_id = $('#deceased_id').val();
+              var transaction_type = $('#transaction_type').val();
+              var burial_space = $('#burial_space_id').val();
+              var burial_date = $('#reservation').val();
+              
+              datatable.ajax.url('reports?action=reports-datatable&burial_space='+burial_space+'&client='+client_id+'&deceased_id='+deceased_id+'&burial_date='+burial_date).load();
+          }
+
+
+  $(document).on("click", ".open-schedule", function () {
+    
+     var schedule_id = $(this).data('id');
+    
+     $.ajax({
+        type : 'post',
+        url : 'schedule',
+        data: {
+            schedule_id: schedule_id, action: "modal_schedule"
+        },
+        success : function(data){
+          $('#modal_schedule .fetched_data').html(data);
+            // swal.close();
+            $('#modal_schedule').modal('show');
+            // $(".select2").select2();//Show fetched data from database
+        }
+      });
+});
+
+$('.select2').select2()
+
+$('#reservation').daterangepicker({
+  // singleDatePicker: true,
+ // Set start date to null
+  locale: {
+    format: 'YYYY-MM-DD',
+  }
+})
+
+
+$('#reservation').val('');
+
+  </script>
 
 

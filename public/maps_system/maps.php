@@ -206,10 +206,45 @@
 
 				if(!isset($_POST["public"])):
 				$message = $message . '
-				<div class="text-center"><a target="_blank" href="bone_crypt?action=details&id='.$_POST["slot_number"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
+				<div class="text-center"><a target="_blank" href="common_area?action=details&id='.$crypt["crypt_id"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
 				';
 				endif;
 				echo($message);
+
+
+				elseif($crypt["crypt_type"] == "ANNEX"):
+					$count = query("select count(*) as count from crypt_slot where crypt_id = ?", $crypt["crypt_id"]);
+					// echo();
+		
+							$message = "";
+							$message = $message . '
+						<div class="box box-widget widget-user">
+						<div class="widget-user-header bg-teal">
+						  <h3 class="widget-user-username">'.$crypt["crypt_name"].'</h3>
+						  <h5 class="widget-user-desc">ANNEX</h5>
+						</div>
+						<div class="widget-user-image">
+						  <img  src="resources/crypt_building.png" alt="User Avatar">
+						</div>
+						<div class="box-footer">
+						  <div class="row">
+							<div class="col-sm-12 border-right">
+							  <div class="description-block">
+							  <h5 class="description-header">'.$count[0]["count"].'</h5>
+								<span class="description-text">DECEASED LISTED HERE</span>
+							  </div>
+							</div>
+						  </div>
+						</div>
+					  </div>
+							';
+		
+						if(!isset($_POST["public"])):
+						$message = $message . '
+						<div class="text-center"><a target="_blank" href="annex?action=details&id='.$crypt["crypt_id"].'" class="btn text-center btn-primary btn-flat">Open Information</a></div>
+						';
+						endif;
+						echo($message);
 
 			elseif($crypt["crypt_type"] == "MAUSOLEUM"):
 				// dump($_POST);
@@ -350,6 +385,7 @@
 			$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
 			$common = query("select * from crypt_list where crypt_type = 'COMMON'");
 			$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
+			$annex = query("select * from crypt_list where crypt_type = 'ANNEX'");
 			renderview("public/maps_system/public_map.php",
 			[
 				"lawn" => $lawn,
@@ -358,6 +394,7 @@
 				"bone" => $bone,
 				"common" => $common,
 				"no_slot" => $no_slot,
+				"annex" => $annex,
 			]);
 
 
@@ -368,6 +405,7 @@
 				$bone = query("select * from crypt_list where crypt_type = 'BONE'");
 				$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
 				$common = query("select * from crypt_list where crypt_type = 'COMMON'");
+				$annex = query("select * from crypt_list where crypt_type = 'ANNEX'");
 				$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
 				render("public/maps_system/map_editor.php",
 				[
@@ -377,6 +415,7 @@
 					"bone" => $bone,
 					"common" => $common,
 					"no_slot" => $no_slot,
+					"annex" => $annex,
 				]);
 
 			endif;

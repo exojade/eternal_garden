@@ -36,19 +36,24 @@
       $coffin = query("select count(*) as count from crypt_list where crypt_type = 'COFFIN'");
       $coffin = $coffin[0]["count"];
 
-      $lawn = query("select count(*) as count from crypt_list where crypt_type = 'LAWN'");
+      $lawn = query("select count(*) as count from crypt_slot where crypt_slot_type = 'LAWN'");
       $lawn = $lawn[0]["count"];
 
       $mausoleum = query("select count(*) as count from crypt_list where crypt_type = 'MAUSOLEUM'");
       $mausoleum = $mausoleum[0]["count"];
 
+      $annex = query("select count(*) as count from crypt_list where crypt_type = 'ANNEX'");
+      $annex = $annex[0]["count"];
+
+      $common = query("select count(*) as count from crypt_list where crypt_type = 'COMMON'");
+      $common = $common[0]["count"];
 
 
 
       ?>
 
     <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-aqua"><i class="fa fa-bone"></i></span>
 
@@ -58,7 +63,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-red"><i class="fa fa-building"></i></span>
 
@@ -71,7 +76,7 @@
 
         <div class="clearfix visible-sm-block"></div>
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-green"><i class="fa fa-cross"></i></span>
 
@@ -81,7 +86,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-yellow"><i class="fa fa-home"></i></span>
 
@@ -91,12 +96,34 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-black"><i class="fa fa-cross"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Common</span>
+              <span class="info-box-number"><?php echo($common); ?></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-teal"><i class="fa fa-cross"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Annex</span>
+              <span class="info-box-number"><?php echo($annex); ?></span>
+            </div>
+          </div>
+        </div>
       </div>
 
 
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
         <div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Burials for this Year <?php echo(date("Y")); ?></h3>
@@ -116,7 +143,7 @@
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Statistics: Age Bracket | Male vs Female <?php echo(date("Y")); ?></h3>
@@ -191,19 +218,67 @@ function find_deceased() {
 		});    
 		  }
 
-      
+    <?php
+    $data = query("SELECT
+    CASE
+        WHEN months.month = 1 THEN 'January'
+        WHEN months.month = 2 THEN 'February'
+        WHEN months.month = 3 THEN 'March'
+        WHEN months.month = 4 THEN 'April'
+        WHEN months.month = 5 THEN 'May'
+        WHEN months.month = 6 THEN 'June'
+        WHEN months.month = 7 THEN 'July'
+        WHEN months.month = 8 THEN 'August'
+        WHEN months.month = 9 THEN 'September'
+        WHEN months.month = 10 THEN 'October'
+        WHEN months.month = 11 THEN 'November'
+        WHEN months.month = 12 THEN 'December'
+        ELSE 'Month not available'
+    END AS MONTH,
+    COALESCE(SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END), 0) AS male_count,
+    COALESCE(SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END), 0) AS female_count
+FROM
+    (
+        SELECT 1 AS MONTH
+        UNION SELECT 2
+        UNION SELECT 3
+        UNION SELECT 4
+        UNION SELECT 5
+        UNION SELECT 6
+        UNION SELECT 7
+        UNION SELECT 8
+        UNION SELECT 9
+        UNION SELECT 10
+        UNION SELECT 11
+        UNION SELECT 12
+    ) AS months
+LEFT JOIN
+    (
+        SELECT
+            MONTH(deceased_profile.burial_date) AS MONTH,
+            gender
+        FROM
+            deceased_profile
+        WHERE
+            YEAR(deceased_profile.burial_date) = YEAR(CURDATE())  -- Filter for the current year
+    ) AS profile_data
+ON
+    months.month = profile_data.month
+GROUP BY
+    months.month
+ORDER BY
+    months.month;");
+    
+    ?>
 
     var bar = new Morris.Bar({
       element: 'bar-chart',
       resize: true,
       data: [
-        {y: '0-15', a: 100, b: 90},
-        {y: '16-30', a: 75, b: 65},
-        {y: '31-40', a: 50, b: 40},
-        {y: '41-50', a: 75, b: 65},
-        {y: '51-60', a: 50, b: 40},
-        {y: '61-80', a: 75, b: 65},
-        {y: '80+', a: 100, b: 90}
+        <?php foreach($data as $row): ?>
+          {y: '<?php echo($row["MONTH"]); ?>', a: <?php echo($row["male_count"]); ?>, b: <?php echo($row["female_count"]); ?>},
+        <?php endforeach; ?>
+
       ],
       barColors: ['#00a65a', '#f56954'],
       xkey: 'y',
@@ -225,7 +300,40 @@ function find_deceased() {
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90, 70, 35, 80, 90, 100]
+          data                : [
+<?php 
+$data = query("SELECT
+months.month AS MONTH,
+COALESCE(SUM(IF(deceased_profile.burial_date IS NOT NULL, 1, 0)), 0) AS count_per_month
+FROM
+(
+    SELECT 1 AS MONTH
+    UNION SELECT 2
+    UNION SELECT 3
+    UNION SELECT 4
+    UNION SELECT 5
+    UNION SELECT 6
+    UNION SELECT 7
+    UNION SELECT 8
+    UNION SELECT 9
+    UNION SELECT 10
+    UNION SELECT 11
+    UNION SELECT 12
+) AS months
+LEFT JOIN
+deceased_profile ON months.month = MONTH(deceased_profile.burial_date)
+AND YEAR(deceased_profile.burial_date) = YEAR(CURDATE())  -- Filter for the current year
+GROUP BY
+months.month
+ORDER BY
+months.month;");
+?>
+
+<?php foreach($data as $row): ?>
+            
+        <?php echo($row["count_per_month"]); ?>,
+<?php endforeach; ?>
+          ]
         }
       ]
     }
@@ -234,7 +342,7 @@ function find_deceased() {
       //Boolean - If we should show the scale at all
       showScale               : true,
       //Boolean - Whether grid lines are shown across the chart
-      scaleShowGridLines      : false,
+      scaleShowGridLines      : true,
       //String - Colour of the grid lines
       scaleGridLineColor      : 'rgba(0,0,0,.05)',
       //Number - Width of the grid lines
@@ -244,7 +352,7 @@ function find_deceased() {
       //Boolean - Whether to show vertical lines (except Y axis)
       scaleShowVerticalLines  : true,
       //Boolean - Whether the line is curved between points
-      bezierCurve             : true,
+      bezierCurve             : false,
       //Number - Tension of the bezier curve between points
       bezierCurveTension      : 0.3,
       //Boolean - Whether to show a dot for each point
