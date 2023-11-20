@@ -15,7 +15,7 @@
 		$request = explode('/',$request);
 		$request = $request[1];
 		
-		$countering = array("login", "register", "print", "maps", "profile");
+		$countering = array("login", "register", "print", "maps", "profile", "reports");
 		
 		if (!in_array($request, $countering)){
 			if(empty($_SESSION["eternal_garden"]["userid"]) && empty($_SESSION["eternal_garden"]["application"])){
@@ -99,6 +99,8 @@
 
 			else if ($request == 'profile')
 					require 'public/profile_system/profile.php';
+			else if ($request == 'reports')
+					require 'public/reports_system/reports.php';
 		}
 		
 		

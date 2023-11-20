@@ -19,14 +19,27 @@
             endif;
 
 
-            if(isset($_REQUEST["client"])):
+            if(isset($_REQUEST["burial_date"])):
+                if($_REQUEST["burial_date"] != ""):
+					$dateArray = explode(' - ', $_REQUEST["burial_date"]);
+					// Extract "from date" and "to date" from the array
+					$fromDate = $dateArray[0];
+					$toDate = $dateArray[1];
+					$where = $where . " and d.burial_date >= '" . $fromDate . "'";
+					$where = $where . " and d.burial_date <= '" . $toDate . "'";
+				endif;
+            endif;
+
+
+			if(isset($_REQUEST["client"])):
                 if($_REQUEST["client"] != "")
                     $where = $where . " and t.profile_id = '" . $_REQUEST["client"] . "'";
             endif;
 
+
 			if(isset($_REQUEST["deceased_id"])):
                 if($_REQUEST["deceased_id"] != "")
-                    $where = $where . " and d.deceased_id = '" . $_REQUEST["deceased_id"] . "'";
+                    $where = $where . " and (d.deceased_id = '" . $_REQUEST["deceased_id"] . "' or occupied_by = '".$_REQUEST["deceased_id"]."')";
             endif;
 
 			$where = $where . " and s.active_status = 'OCCUPIED' ";
@@ -91,6 +104,7 @@
 			// dump($data);
             foreach($data as $row):
 				// dump($row);
+
 				$data[$i]["client"] = "";
 				if(isset($Profile[$row["profile_id"]])):
 					$profile = $Profile[$row["profile_id"]];
@@ -102,6 +116,13 @@
 					$deceased = $Deceased[$row["deceased_id"]];
 					$data[$i]["deceased"] = $deceased["deceased_firstname"] . " " . $deceased["deceased_lastname"];
 				endif;
+
+				if($row["crypt_slot_type"] == "COMMON"):
+					$deceased = $Deceased[$row["occupied_by"]];
+					$data[$i]["deceased"] = $deceased["deceased_firstname"] . " " . $deceased["deceased_lastname"];
+				endif;
+
+
 					
 				$location = $Crypt[$row["slot_id"]];
 				if($location["crypt_type"] == "LAWN"):
@@ -199,13 +220,30 @@
 				$message = $message . "<td>" . $row["cost"] . "</td>";
 				$message = $message . "</tr>";
 			endforeach;
-
-			
 			$message = $message ."</tbody></table>";
-
-
 			echo($message);
+		endif;
 
+		if($_POST["action"] == "printForm"):
+				// dump($_POST);
+				$base_url = the_base_url();
+				$options = urlencode(serialize($_POST));
+                $webpath = $base_url . "/eternal_garden/reports?action=printForm&options=".$options;
+                $filename = "REPORT";
+				$path = "resources/reports/".$filename.".pdf";
+				$exec = '"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe" -O landscape --image-dpi 300 "'.$webpath.'" '.$path.'';
+				// dump($webpath);
+				exec($exec);
+
+				$res_arr = [
+					"result" => "success",
+					"title" => "Success",
+					"message" => "Success",
+					"link" => $path,
+					"newlink" => "newlink",
+					];
+					echo json_encode($res_arr); exit();
+			
 		endif;
 
 
@@ -359,6 +397,14 @@
 				"client" => $client,
 				"burial_space" => $burial_space,
 				// "slot" => $slot,
+			]);
+		endif;
+
+
+		if($_GET["action"] == "printForm"):
+			
+			renderview("public/reports_system/printForm.php",[
+				// "forms" => $forms,
 			]);
 		endif;
 

@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/fullcalendar/dist/fullcalendar.print.min.css" media="print">
 <link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
 <link rel="stylesheet" href="AdminLTE/dist/css/AdminLTE.min.css">
 
 <style>
@@ -22,12 +23,13 @@
       </h1>
     </section>
     <section class="content">
-
+    <form class="generic_form_trigger" data-url="reports">
+      <input type="hidden" name="action" value="printForm">
     <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
                   <label>Burial Space</label>
-                  <select id="burial_space_id" class="form-control select2" style="width: 100%;">
+                  <select name="burial_space" id="burial_space_id" class="form-control select2" style="width: 100%;">
                     <option selected value="">Select Burial Space</option>
                     <option value="COFFIN">COFFIN [ALL]</option>
                     <option value="BONE">BONE [ALL]</option>
@@ -43,7 +45,7 @@
               <div class="col-md-3">
               <div class="form-group">
                 <label>Client</label>
-                <select id="client_id" class="form-control select2" style="width: 100%;">
+                <select name="client_id" id="client_id" class="form-control select2" style="width: 100%;">
                   <option selected value="" >Select Client...</option>
                   <?php foreach($client as $row): ?>
                     <option value="<?php echo($row["profile_id"]); ?>"><?php echo($row["client_firstname"] . " " . $row["client_lastname"]); ?></option>
@@ -54,7 +56,7 @@
               <div class="col-md-3">
               <div class="form-group">
                 <label>Deceased</label>
-                <select id="deceased_id" class="form-control select2" style="width: 100%;">
+                <select name="deceased_id" id="deceased_id" class="form-control select2" style="width: 100%;">
                 <option selected value="" >Select Deceased...</option>
                 <?php foreach($deceased as $row): ?>
                     <option value="<?php echo($row["deceased_id"]); ?>"><?php echo($row["deceased_firstname"] . " " . $row["deceased_lastname"]); ?></option>
@@ -64,15 +66,15 @@
               </div>
               <div class="col-md-3">
               <div class="form-group">
-                <label>Transaction Type</label>
-                <select id="transaction_type" class="form-control select2" style="width: 100%;">
-                <option selected value="" >Select Type...</option>
-                  <option value="LAWN PURCHASE">LAWN PURCHASE</option>
-                  <option value="BURIAL">BURIAL</option>
-                  <option value="CANCELLED">CANCELLED</option>
-                  <option value="POSTPONED">POSTPONED</option>
-                  <option value="TRANSFER COMMON">TRANSFER COMMON</option>
-                </select>
+                <label>Burial Ddate:</label>
+
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input name="burial_date" type="text" class="form-control pull-right" id="reservation">
+                </div>
+                <!-- /.input group -->
               </div>
               </div>
               <div class="col-md-3">
@@ -81,7 +83,15 @@
                 <button type="button" onclick="filter();" class="btn btn-primary btn-block">Filter</button>
               </div>
               </div>
+
+              <div class="col-md-3">
+              <div class="form-group">
+                <label>Print</label>
+                <button type="submit" class="btn btn-success btn-block">Print</button>
+              </div>
+              </div>
             </div>
+          </form>
       <div class="row">
        
         <!-- /.col -->
@@ -126,6 +136,13 @@
 	<script src="AdminLTE/dist/js/adminlte.min.js"></script>
 	<script src="AdminLTE/dist/js/demo.js"></script>
   <script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
+
+
+<script src="AdminLTE/plugins/input-mask/jquery.inputmask.js"></script>
+<script src="AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+<script src="AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+<script src="AdminLTE/bower_components/moment/min/moment.min.js"></script>
+<script src="AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 
   
   <?php
@@ -190,8 +207,9 @@
               var deceased_id = $('#deceased_id').val();
               var transaction_type = $('#transaction_type').val();
               var burial_space = $('#burial_space_id').val();
+              var burial_date = $('#reservation').val();
               
-              datatable.ajax.url('reports?action=reports-datatable&burial_space='+burial_space+'&client='+client_id+'&deceased_id='+deceased_id+'&transaction_type='+transaction_type).load();
+              datatable.ajax.url('reports?action=reports-datatable&burial_space='+burial_space+'&client='+client_id+'&deceased_id='+deceased_id+'&burial_date='+burial_date).load();
           }
 
 
@@ -215,6 +233,14 @@
 });
 
 $('.select2').select2()
+
+$('#reservation').daterangepicker({
+  // singleDatePicker: true,
+  startDate: "<?php echo(date("Y")); ?>-01-01",  // Set start date to null
+  locale: {
+    format: 'YYYY-MM-DD',
+  }
+})
 
   </script>
 

@@ -285,10 +285,27 @@
                             text: o.message,
                             type: "success"
                         }).then(function () {
-                            if (o.link == "refresh")
-                                window.location.reload();
+                          if(typeof(o.newlink) != "undefined" && o.newlink !== null) {
+                          if(o.newlink == "newlink"){
+                            console.log(o);
+                            if(o.link == "refresh")
+                            window.location.reload();
+                            else if(o.link == "not_refresh")
+                              console.log("");
                             else
-                                window.location.replace(o.link);
+                              window.open(o.link, '_blank');
+                              // window.location.replace(o.link, "_blank");
+                          }
+                      }
+                      else{
+                        if(o.link == "refresh")
+                        window.location.reload();
+                        else if(o.link == "not_refresh")
+                          console.log("");
+                        else
+                          window.location.replace(o.link);
+
+                      }
                         });
                     } else {
                         swal({

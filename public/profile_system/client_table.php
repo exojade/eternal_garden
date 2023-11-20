@@ -563,3 +563,28 @@ $progress_percentage = 0;
               </div>
             </div>
           </div>
+                          
+                              <div class="box">
+                                <div class="box-body">
+                                  <table class="table table-bordered">
+                                      <thead>
+                                        <th>Attachment</th>
+                                        <th>Link</th>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <th>Certificate of Indigency</th>
+                                          <th><?php if($client["certificate_indigency"] != ""): ?> <a target="_blank" href="<?php echo($client["certificate_indigency"]); ?>" class="btn  btn-sm btn-primary">Certificate of Indigency</a> <?php endif; ?></th>
+                                        </tr>
+                                        <tr>
+                                          <th>Valid ID</th>
+                                          <th><?php if($client["valid_id"] != ""): ?> <a target="_blank" href="<?php echo($client["valid_id"]); ?>" class="btn  btn-sm btn-primary">Valid ID</a> <?php endif; ?></th>
+                                        </tr>
+                                        <tr>
+                                          <th>Picture Image</th>
+                                          <th><?php if($client["picture"] != ""): ?> <a target="_blank" href="<?php echo($client["picture"]); ?>" class="btn  btn-sm btn-primary">Picture Image</a> <?php endif; ?></th>
+                                        </tr>
+                                      </tbody>
+                                  </table>
+                                </div>
+                            </div>
