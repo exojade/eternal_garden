@@ -12,6 +12,20 @@
      */
 
 
+     function convertDateFormat($inputDate) {
+        // Create a DateTime object from the input date
+        $dateTime = DateTime::createFromFormat('Y-m-d', $inputDate);
+    
+        // Check for errors in date conversion
+        if (!$dateTime) {
+            return 'Invalid date format';
+        }
+    
+        // Format the date as "F d Y"
+        $formattedDate = $dateTime->format('F d Y');
+    
+        return $formattedDate;
+    }
   
 
      function to_peso($number){
