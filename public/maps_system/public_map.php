@@ -321,6 +321,17 @@ foreach($deceased_profile as $d):
     $Deceased[$d["slot_number"]][$d["deceased_id"]] = $d;
     $Deceased2[$d["crypt_id"]][$d["deceased_id"]] = $d;
 endforeach;
+$client = query("select * from profile_list");
+$Clients = [];
+        foreach($client as $row):
+            $Clients[$row["profile_id"]] = $row;
+        endforeach;
+
+        $crypt_slot = query("select * from crypt_slot");
+					foreach($crypt_slot as $c):
+						if($c["occupied_by"] != "")
+							$Crypt_slot[$c["crypt_id"]][$c["occupied_by"]] = $c;
+					endforeach;
 // dump($Deceased);
 
             if($_GET["filter"] == "ALL"){
@@ -349,21 +360,23 @@ endforeach;
                         if(isset($Deceased[$row["slot_id"]])):
                             $deceased = $Deceased[$row["slot_id"]];
                             $trim = str_replace('""', '', $row['coordinates']);
+                            $location = $row["lawn_type"];
                             echo '{ "type": "Feature", "properties": { ';
                                 echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 echo '"Status": "OCCUPIED",';
                                 echo '"slot_number": "'.$row['slot_id'].'",';
-                                echo '"description": "<b>Lease:</b> '.$row["lease_date"].' - '.$row["date_expired"].'",';
+                                echo '"description": "[CLIENT] <br><b>Location:</b> '.$location.'",';
                                 echo '"Name": "'.$row["client_name"].'",';
                                 echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
                             foreach($deceased as $d):
+                                $location = $row["lawn_type"];
                                 $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
                                 echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 echo '"Status": "OCCUPIED",';
-                                echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b><br>Niche #: '.$row["slot_number"].'",';
+                                echo '"description": "[DECEASED]<br> <b>'.convertDateFormat($d["birthdate"]) . ' - ' . convertDateFormat($d["date_of_death"]) .'</b><br>Location: '.$location.'",';
                                 echo '"slot_number": "'.$row['slot_id'].'",';
                                 echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
                                 echo '"Name": "'.$d["deceased_name"].'",';
@@ -405,7 +418,7 @@ endforeach;
                                     echo '{ "type": "Feature", "properties": { ';
                                     echo '"Status": "MAUSOLEUM",';
                                     echo '"Name": "'.$d["deceased_name"].'",';
-                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b><br>Mausoleum: '.$row["crypt_name"].'",';
+                                    echo '"description": "<b>'.convertDateFormat($d["birthdate"]) . ' - ' . convertDateFormat($d["date_of_death"]) .'</b><br>Mausoleum: '.$row["crypt_name"].'",';
                                     echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
                                     echo '"slot_number": "'.$row['crypt_id'].'",';
                                     echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
@@ -432,7 +445,24 @@ endforeach;
                                     echo '{ "type": "Feature", "properties": { ';
                                     echo '"Status": "BONE",';
                                     echo '"Name": "'.$d["deceased_name"].'",'; 
-                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b><br>Crypt: '.$row["crypt_name"].'<br>Row: '.$d["row_number"].' | Column: '.$d["column_number"].'<br>Crypt Number: '.$d["crypt_number"].'",';
+                                    echo '"description": "[DECEASED] <br> <b>'.convertDateFormat($d["birthdate"]) . ' - ' . convertDateFormat($d["date_of_death"]) .'</b><br>Crypt: '.$row["crypt_name"].'<br>Row: '.$d["row_number"].' | Column: '.$d["column_number"].'<br>Crypt Number: '.$d["crypt_number"].'",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
+
+
+                            if(isset($Crypt_slot[$row["crypt_id"]])):
+                                $crypt_slot = $Crypt_slot[$row["crypt_id"]];
+                                foreach($crypt_slot as $cs):
+                                    // dump($Clients[$cs["occupied_by"]]);
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "BONE",';
+                                    echo '"Name": "'.$Clients[$cs["occupied_by"]]["client_firstname"] . " " . $Clients[$cs["occupied_by"]]["client_lastname"].'",';
+                                    echo '"description": "[CLIENT]<br>Crypt: '.$row["crypt_name"].'<br>Row: '.$cs["row_number"].' | Column: '.$cs["column_number"].'<br>Crypt Number: '.$cs["slot_number"].'",';
                                     echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
                                     echo '"slot_number": "'.$row['crypt_id'].'",';
                                     echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
@@ -460,7 +490,24 @@ endforeach;
                                     echo '{ "type": "Feature", "properties": { ';
                                     echo '"Status": "COFFIN",';
                                     echo '"Name": "'.$d["deceased_name"].'",'; 
-                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b><br>Crypt: '.$row["crypt_name"].'<br>Row: '.$d["row_number"].' | Column: '.$d["column_number"].'<br>Crypt Number: '.$d["crypt_number"].'",';
+                                    echo '"description": "<b>'.convertDateFormat($d["birthdate"]) . ' - ' . convertDateFormat($d["date_of_death"]) .'</b><br>Crypt: '.$row["crypt_name"].'<br>Row: '.$d["row_number"].' | Column: '.$d["column_number"].'<br>Crypt Number: '.$d["crypt_number"].'",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
+
+
+                            if(isset($Crypt_slot[$row["crypt_id"]])):
+                                $crypt_slot = $Crypt_slot[$row["crypt_id"]];
+                                foreach($crypt_slot as $cs):
+                                    // dump($Clients[$cs["occupied_by"]]);
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "COFFIN",';
+                                    echo '"Name": "'.$Clients[$cs["occupied_by"]]["client_firstname"] . " " . $Clients[$cs["occupied_by"]]["client_lastname"].'",';
+                                    echo '"description": "[CLIENT]<br>Crypt: '.$row["crypt_name"].'<br>Row: '.$cs["row_number"].' | Column: '.$cs["column_number"].'<br>Crypt Number: '.$cs["slot_number"].'",';
                                     echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
                                     echo '"slot_number": "'.$row['crypt_id'].'",';
                                     echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
@@ -488,7 +535,7 @@ endforeach;
                                     echo '{ "type": "Feature", "properties": { ';
                                     echo '"Status": "COMMON",';
                                     echo '"Name": "'.$d["deceased_name"].'",'; 
-                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b>",';
+                                    echo '"description": "<b>'.convertDateFormat($d["birthdate"]) . ' - ' . convertDateFormat($d["date_of_death"]) .'</b>",';
                                     echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
                                     echo '"slot_number": "'.$row['crypt_id'].'",';
                                     echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
@@ -530,8 +577,24 @@ endforeach;
                                     echo '{ "type": "Feature", "properties": { ';
                                     echo '"Status": "ANNEX",';
                                     echo '"Name": "'.$d["deceased_name"].'",'; 
-                                    echo '"description": "<b>'.$d["birthdate"] . ' - ' . $d["date_of_death"] .'</b>",';
+                                    echo '"description": "[DECEASED]<br><b>'.convertDateFormat($d["birthdate"]) . ' - ' . convertDateFormat($d["date_of_death"]) .'</b>",';
                                     echo '"link_url": "profile?action=client_details&slot='.$d["slot_number"].'",';
+                                    echo '"slot_number": "'.$row['crypt_id'].'",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
+
+                            if(isset($Crypt_slot[$row["crypt_id"]])):
+                                $crypt_slot = $Crypt_slot[$row["crypt_id"]];
+                                foreach($crypt_slot as $cs):
+                                    // dump($Clients[$cs["occupied_by"]]["client_firstname"]);
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"Status": "ANNEX",';
+                                    echo '"Name": "'.$Clients[$cs["occupied_by"]]["client_firstname"] . " " . $Clients[$cs["occupied_by"]]["client_lastname"].'",';
+                                    echo '"description": "[CLIENT]<br>Crypt: '.$row["crypt_name"].$cs["slot_number"].'",';
+                                    echo '"link_url": "annex?action=client_details&slot='.$d["slot_number"].'",';
                                     echo '"slot_number": "'.$row['crypt_id'].'",';
                                     echo '"auxiliary_storage_labeling_offsetquad": "'.$row['crypt_id'].'" },'; 
                                     echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
