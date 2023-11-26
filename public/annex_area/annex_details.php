@@ -121,21 +121,21 @@
                 <div class="col-md-4">
                   <div class="form-group">
                       <label for="exampleInputFile">Certificate of Indigency (optional)</label>
-                      <input name="certificate_indigency" type="file" id="exampleInputFile">
+                      <input name="certificate_indigency" type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Upload document here!</p>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                       <label for="exampleInputFile">Valid ID *</label>
-                      <input name="valid_id" required type="file" id="exampleInputFile">
+                      <input name="valid_id" required type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Upload document here!</p>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                       <label for="exampleInputFile">2 x 2 ID *</label>
-                      <input name="picture" required type="file" id="exampleInputFile">
+                      <input name="picture" required type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Upload document here!</p>
                   </div>
                 </div>

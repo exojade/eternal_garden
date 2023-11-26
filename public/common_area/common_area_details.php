@@ -45,6 +45,7 @@
                 </thead>
                 <tbody>
                   <?php foreach($deceased_profile as $row):
+                  // dump($deceased_profile);
                     ?>
                     <tr>
                       <td><?php echo($row["deceased_firstname"] . " " . $row["deceased_lastname"]); ?></td>

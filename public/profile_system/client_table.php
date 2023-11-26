@@ -110,7 +110,7 @@
               <div class="col-md-12">
                   <div class="form-group">
                       <label for="exampleInputFile">Death Certificate</label>
-                      <input name="death_certificate" required type="file" id="exampleInputFile">
+                      <input name="death_certificate" required type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Upload death certificate here!</p>
                   </div>
                 </div>
@@ -170,8 +170,8 @@
                 left join profile_list p
                 on s.occupied_by = p.profile_id
                 where s.active_status = 'OCCUPIED'
-                and s.slot_id != ?", $slot["slot_id"]); 
-                
+                and s.slot_id != ? and crypt_slot_type not in ('ANNEX', 'COMMON')", $slot["slot_id"]); 
+                // dump($transfer);
                 $common = query("select * from crypt_list where crypt_type = 'COMMON'");
                 
                 ?>

@@ -774,6 +774,18 @@
 			elseif($_POST["action"] == "transfer"):
 				// dump($_POST);
 
+				$deceased = query("select * from deceased_profile where deceased_id = ?", $_POST["deceased_id"]);
+				// dump($deceased);
+				if($deceased[0]["burial_status"] != "DONE"):
+					$res_arr = [
+						"result" => "failed",
+						"title" => "Failed",
+						"message" => "Data with Burial Dates is not Done, cannot be transferred!",
+						"link" => "refresh",
+						];
+						echo json_encode($res_arr); exit();
+				endif;
+
 				if($_POST["crypt_type"] != "COMMON"):
 				$slot = query("select * from crypt_slot where slot_id = ?", $_POST["slot_id"]);
 				query("update deceased_profile set slot_number = ?,
