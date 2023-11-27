@@ -71,9 +71,15 @@
   <div class="content-wrapper">
 
   <section class="content-header">
-      <h1>
+
+        <h1>
         Map Details
+     
     </h1>
+
+       
+   
+      
     </section>
     <section class="content">
 
@@ -187,6 +193,39 @@
                         <span><i class="fa fa-square text-no_slot"></i> No Slot</span>
                     </div>
                     </div>
+                    <div class="col-md-6">
+                    <form class="generic_form" data-url="maps" >
+                        <input type="hidden" name="action" value="filter_map_editor">
+                        <!-- <input type="hidden" name="id" value="<?php echo($_GET["id"]); ?>"> -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <?php  ?>
+                        <select class="form-control" name="filter">
+                            <?php if(isset($_GET["filter"])): ?>
+                                <option value="<?php echo($_GET["filter"]); ?>"><?php echo($_GET["filter"]); ?></option>
+                            <?php endif; ?>
+                           <option value="ALL">ALL</option>
+                           <option value="SUPER PRIME A">SUPER PRIME A</option>
+                           <option value="SUPER PRIME B">SUPER PRIME B</option>
+                           <option value="SUPER PRIME C">SUPER PRIME C</option>
+                           <option value="PRIME A">PRIME A</option>
+                           <option value="PRIME B">PRIME B</option>
+                           <option value="PRIME C">PRIME C</option>
+                           <option value="REGULAR LOT">REGULAR LOT</option>
+                           <option value="CORNER LOT">CORNER LOT</option>
+                           <option></option>
+                        </select>
+                            </div>
+                            <div class="col-md-4">
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                                
+                            </div>
+                        </div>
+                       
+                      </form>
+                    </div>
+
+
                     
                 </div>
                 <br>
@@ -253,12 +292,22 @@ foreach($deceased_profile as $d):
 endforeach;
 // dump($Deceased);
 
-$result=[];
-  
+                $result=[];
                 $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
-                                    left join profile_list client
-                                    on client.slot_number = slot.slot_id
-                                    where crypt_slot_type = 'LAWN'");
+                left join profile_list client
+                on client.slot_number = slot.slot_id
+                where crypt_slot_type = 'LAWN'");
+                
+                if(isset($_GET["filter"])):
+                    if($_GET["filter"] != "ALL"):
+                        $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
+                        left join profile_list client
+                        on client.slot_number = slot.slot_id
+                        where crypt_slot_type = 'LAWN' and lawn_type = ?", $_GET["filter"]);
+                    endif;
+                endif;
+
+
         $client = query("select * from profile_list");
         $Clients = [];
         foreach($client as $row):

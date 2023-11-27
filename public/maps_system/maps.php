@@ -283,6 +283,18 @@
 			endif;
 		endif;
 
+		if($_POST["action"] == "filter_map_editor"):
+			// dump($_POST);
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on adding Data",
+				"link" => "maps?action=map_editor&filter=".$_POST["filter"],
+				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+				];
+				echo json_encode($res_arr); exit();
+		endif;
+
 		if($_POST["action"] == "add_lot"):
 			$crypt_id = "CRYPT-796caa375ef68-230525";
 			$slot_id = create_uuid("CRYPT_SLOT");
