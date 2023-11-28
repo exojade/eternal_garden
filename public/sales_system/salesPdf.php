@@ -153,36 +153,7 @@ $crypt = query("select * from crypt_slot s
 					$profile = $Profile[$row["profile_id"]];
 					$client = $profile["client_firstname"] . " " . $profile["client_lastname"];
 				endif;
-        ?><?php echo($client); ?></td>
-
-        <td><?php
-        $location = $Crypt[$row["slot_id"]];
-				
-				if($location["crypt_type"] == "LAWN"):
-					$the_location = "LAWN : TYPE : ".$location["lawn_type"];
-				elseif($location["crypt_type"] == "COFFIN" || $location["crypt_type"] == "BONE"):
-					$the_location = $location["crypt_type"] ." : NAME : ".$location["crypt_name"] . " : ROW : " . $location["row_number"] . " : COLUMN : " . $location["column_number"];
-				elseif($location["crypt_type"] == "COMMON"):
-					$the_location = $location["crypt_type"] ." : NAME : ".$location["crypt_name"];
-				endif;
-        
-        
-        echo($the_location); ?></td>
-        <td><?php echo($row["transaction_type"]); ?></td>
-        <td><?php echo($row["date"]); ?></td>
-        <td><?php echo($row["time"]); ?></td>
-        <td><?php echo(to_peso($row["total_fee"])); ?></td>
-      </tr>
-    <?php endforeach; ?>
-    <?php foreach($data as $row): ?>
-      <tr>
-      <td><?php
-        $client = "";
-				if(isset($Profile[$row["profile_id"]])):
-					$profile = $Profile[$row["profile_id"]];
-					$client = $profile["client_firstname"] . " " . $profile["client_lastname"];
-				endif;
-        ?><?php echo($client); ?></td>
+        ?><?php echo(strtoupper($client)); ?></td>
 
         <td><?php
         $location = $Crypt[$row["slot_id"]];
