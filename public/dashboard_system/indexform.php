@@ -146,7 +146,7 @@
         <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Statistics: Age Bracket | Male vs Female <?php echo(date("Y")); ?></h3>
+              <h3 class="box-title">Statistics: Male vs Female <?php echo(date("Y")); ?></h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -160,6 +160,27 @@
             <!-- /.box-body -->
           </div>
         </div>
+
+
+        <div class="col-md-12">
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Statistics: Age Bracket <?php echo(date("Y")); ?></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body chart-responsive">
+              <div class="chart" id="age_bar" style="height: 300px;"></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+
+
       </div>
 
 
@@ -284,6 +305,61 @@ ORDER BY
       xkey: 'y',
       ykeys: ['a', 'b'],
       labels: ['Male', 'Female'],
+      hideHover: 'auto'
+    });
+
+
+ <?php 
+   $bracket = [];
+   $bracket[0] = "0 - 10";
+   $bracket[1] = "11 - 25";
+   $bracket[2] = "26 - 35";
+   $bracket[3] = "36 - 45";
+   $bracket[4] = "46 - 60";
+   $bracket[5] = "61 - 75";
+   $bracket[6] = "76 - 85";
+   $bracket[7] = "86 and above";
+
+   $bracks = query("SELECT
+   CASE
+       WHEN age_died BETWEEN 0 AND 10 THEN '0 - 10'
+       WHEN age_died BETWEEN 11 AND 25 THEN '11 - 25'
+       WHEN age_died BETWEEN 26 AND 35 THEN '26 - 35'
+       WHEN age_died BETWEEN 36 AND 45 THEN '36 - 45'
+       WHEN age_died BETWEEN 46 AND 60 THEN '46 - 60'
+       WHEN age_died BETWEEN 61 AND 75 THEN '61 - 75'
+       WHEN age_died BETWEEN 76 AND 85 THEN '76 - 85'
+       WHEN age_died >= 86 THEN '86 and above'
+   END AS age_bracket,
+   COUNT(*) AS count
+FROM
+   deceased_profile
+GROUP BY
+   age_bracket
+ORDER BY
+   MIN(age_died);");
+
+$Bracket = [];
+
+   foreach($bracks as $row):
+    $Bracket[$row["age_bracket"]] = $row;
+   endforeach;
+  //  dump($Bracket);
+
+?>
+    var age_bar = new Morris.Bar({
+      element: 'age_bar',
+      resize: true,
+      data: [
+        <?php foreach($bracket as $row): ?>
+          {y: '<?php echo($row); ?>', a: <?php if(isset($Bracket[$row])): echo($Bracket[$row]["count"]); else: echo("0"); endif; ?>},
+        <?php endforeach; ?>
+
+      ],
+      barColors: ['#33658A'],
+      xkey: 'y',
+      ykeys: ['a'],
+      labels: ['Count'],
       hideHover: 'auto'
     });
 

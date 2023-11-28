@@ -247,7 +247,6 @@ background-image: url('resources/eternal_bg.jpg');
     </div>
   </div>
 </div>
-
 <div class="login-box" style="width:80% !important; padding-bottom: 100px; max-height: 1300px;">
 <p style="color:#fff; font-size:200%;" id="message" class="text-center">This is where special people are cherished 
 and remembered</p>
