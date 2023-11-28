@@ -120,16 +120,10 @@ $crypt = query("select * from crypt_slot s
       
 ?>
 
-<div class="row">
-  <div class="col-xs-5 text-right">
-    <img  class="img-responsive  pull-right"  style="width: 30%; height: auto; " src="resources/logo.png">
-  </div>
-  <div class="col-xs-7">
-    <p style="font-size:200%; color:#254C0B;font-weight:900; ">City Government of Panabo</p>
-    <p style="font-size:200%; color:#254C0B;font-weight:900; ">PANABO ETERNAL GARDEN</p>
-    <p style="font-size:200%; color:#254C0B;font-weight:900; ">CEEMDO</p>
-  </div>
-</div>
+    <img  class="img-responsive center-block"  style="width: 10%; height: auto; " src="resources/logo.png">
+    <p class="text-center" style="font-size:200%; margin-bottom:0px; color:#254C0B;font-weight:900; ">City Government of Panabo</p>
+    <p class="text-center" style="font-size:200%; margin-bottom:0px; color:#254C0B;font-weight:900; ">PANABO ETERNAL GARDEN</p>
+    <p class="text-center" style="font-size:200%; margin-bottom:0px; color:#254C0B;font-weight:900; ">CEEMDO</p>
 <br>
 
 <table class="table table-bordered">
