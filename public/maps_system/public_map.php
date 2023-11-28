@@ -251,20 +251,25 @@ background-image: url('resources/eternal_bg.jpg');
 <p style="color:#fff; font-size:200%;" id="message" class="text-center">This is where special people are cherished 
 and remembered</p>
 <div class="alert alert-success alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+       
                 <h4><i class="icon fa fa-check"></i> Public Map for View <a href="login" class="btn btn-primary pull-right">Login</a></h4>
               </div>
 <div class="box">
     <div class="box-body">
     <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
+                        <style>
+                            .the_legend{
+                                font-size: 150%;
+                            }
+                        </style>
                     <h3>Legend:</h3>
-                        <span><i class="fa fa-square text-vacant"></i> Vacant</span>
-                        <span><i class="fa fa-square text-occupied"></i> Occupied</span>
-                        <span><i class="fa fa-square text-coffin"></i> Coffin Crypt</span>
-                        <span><i class="fa fa-square text-mausoleum"></i> Mausoleum</span>
-                        <span><i class="fa fa-square text-bone"></i> Bone Crypt</span>
-                        <span><i class="fa fa-square text-no_slot"></i> No Slot</span>
+                        <span class="the_legend"><i class="fa fa-square text-vacant"></i> Vacant</span>
+                        <span class="the_legend"><i class="fa fa-square text-occupied"></i> Occupied</span>
+                        <span class="the_legend"><i class="fa fa-square text-coffin"></i> Coffin Crypt</span>
+                        <span class="the_legend"><i class="fa fa-square text-mausoleum"></i> Mausoleum</span>
+                        <span class="the_legend"><i class="fa fa-square text-bone"></i> Bone Crypt</span>
+                        <span class="the_legend"><i class="fa fa-square text-no_slot"></i> No Slot</span>
                     </div>
                    
                 </div>
