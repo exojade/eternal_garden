@@ -396,10 +396,70 @@
 
 				$crypt_slot = query("select * from crypt_slot
 								where slot_id = ?", $_POST["slot_number"]);
+
+
+				$services = query("select * from services");
+				$requirements = query("select * from requirements");
+				$pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["lawn_type"]);
+
 				$message = '
 				<h3 class="text-center">THIS LAWN IS STILL VACANT</h3>
 				<h4 class="text-center">'.$crypt_slot[0]["lawn_type"].'</h4>
 				<h4 class="text-center">Niche | Lawn Number: '.$crypt_slot[0]["slot_number"].'</h4>
+
+				<div class="row">
+				';
+
+				if($crypt_slot[0]["lawn_type"] != ""):
+
+					$message = $message . '
+				<div class="col-md-3">
+				<h5><b>PRICING:</b></h5>
+				<ul class="list-unstyled">
+                <li> <b>'.$crypt_slot[0]["lawn_type"].'</b>
+                  <ul>
+                    <li>PRE NEED : '.to_peso($pricing[0]["pre_need"]).'</li>
+                    <li>AT NEED : '.to_peso($pricing[0]["at_need"]).'</li>
+                  </ul>
+                </li>
+			
+              </ul>
+
+				</div>';
+
+				endif;
+
+				$message = $message . '
+				<div class="col-md-5">
+
+				<h5><b>SERVICES OFFERED:</b></h5>
+				<ul>';
+
+				foreach($services as $row):
+					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+				<div class="col-md-4">
+
+				<h5><b>REQUIREMENTS:</b></h5>
+				<ul>';
+
+				foreach($requirements as $row):
+					$message = $message . '<li>'.$row["requirement"].'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+		  </div>
+
+
+
 				';
 
 				if(!isset($_POST["public"])):

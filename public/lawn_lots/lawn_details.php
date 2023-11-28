@@ -114,7 +114,6 @@
                            <option></option>
                         </select>
                         <button class="btn btn-primary" type="submit">Filter</button>
-
                       </form>
                     </div>
                 </div>

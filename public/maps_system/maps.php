@@ -90,6 +90,10 @@
 				", $_POST["slot_number"]);
 				$details = $details[0];
 			if($crypt["crypt_type"] == "COFFIN"):
+
+				$pricing = query("select * from pricing_coffincrypt");
+				$services = query("select * from services where type = 'ALL'");
+				$requirements = query("select * from requirements");
 			
 			$message = '
 				<div class="box box-widget widget-user">
@@ -123,6 +127,56 @@
               </div>
             </div>
           </div>
+
+		  
+		  <div class="row">
+				<div class="col-md-3">
+				<h5><b>PRICING:</b></h5>
+				<ul class="list-unstyled">
+                <li>INDIGENT
+                  <ul>
+                    <li>Amount : '.to_peso($pricing[1]["amount"]).'</li>
+                    <li>Lapida : '.to_peso($pricing[1]["lapida_amount"]).'</li>
+                    <li>Certification : '.to_peso($pricing[1]["certification_amount"]).'</li>
+                  </ul>
+                </li>
+				<li>NON - INDIGENT
+                  <ul>
+                    <li>Amount : '.to_peso($pricing[0]["amount"]).'</li>
+                    <li>Lapida : '.to_peso($pricing[0]["lapida_amount"]).'</li>
+                    <li>Certification : '.to_peso($pricing[0]["certification_amount"]).'</li>
+                  </ul>
+                </li>
+              </ul>
+
+				</div>
+				<div class="col-md-5">
+
+				<h5><b>SERVICES OFFERED:</b></h5>
+				<ul>';
+
+				foreach($services as $row):
+					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+				<div class="col-md-4">
+
+				<h5><b>REQUIREMENTS:</b></h5>
+				<ul>';
+
+				foreach($requirements as $row):
+					$message = $message . '<li>'.$row["requirement"].'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+		  </div>
 				';
 
 				if(!isset($_POST["public"])):
@@ -133,6 +187,13 @@
 				echo($message);
 
 			elseif($crypt["crypt_type"] == "BONE"):
+
+
+				$pricing = query("select * from pricing_bonecrypt");
+				$services = query("select * from services where type = 'ALL'");
+				$requirements = query("select * from requirements");
+
+
 				// dump("awit");
 				$message = "";
 				$message = $message . '
@@ -167,6 +228,58 @@
               </div>
             </div>
           </div>
+
+
+		  <div class="row">
+				<div class="col-md-3">
+				<h5><b>PRICING:</b></h5>
+				<ul class="list-unstyled">
+                <li>
+                  <ul>
+                    <li>Amount : '.to_peso($pricing[0]["amount"]).'</li>
+                    <li>Certification : '.to_peso($pricing[0]["certification"]).'</li>
+                  </ul>
+                </li>
+				<li><b>LAPIDA COST</b>
+                  <ul>
+				  ';
+				  foreach($pricing as $row):
+					$message = $message . '<li>'.$row["type"].' : '.to_peso($row["lapida_amount"]).'</li>';
+				  endforeach;
+
+				  $message = $message . '
+                  </ul>
+                </li>
+              </ul>
+
+				</div>
+				<div class="col-md-5">
+
+				<h5><b>SERVICES OFFERED:</b></h5>
+				<ul>';
+
+				foreach($services as $row):
+					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+				<div class="col-md-4">
+
+				<h5><b>REQUIREMENTS:</b></h5>
+				<ul>';
+
+				foreach($requirements as $row):
+					$message = $message . '<li>'.$row["requirement"].'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+		  </div>
 				';
 
 				if(!isset($_POST["public"])):
