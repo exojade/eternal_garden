@@ -46,6 +46,21 @@
     color: #F7DBA7!important;
 }
 
+
+@font-face { 
+	font-family: 'Pacifico';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	/* src: url('AdminLTE/dist/fonts/SpaceGrotesk-Regular.ttf');  */
+}
+
+
+#message
+{
+	font-family: 'Pacifico', sans-serif;
+}
+
 .custom-label {
     position: absolute;
     background-color: white;
@@ -234,7 +249,8 @@ background-image: url('resources/eternal_bg.jpg');
 </div>
 
 <div class="login-box" style="width:80% !important; padding-bottom: 100px; max-height: 1300px;">
-
+<p style="color:#fff; font-size:200%;" id="message" class="text-center">This is where special people are cherished 
+and remembered</p>
 <div class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4><i class="icon fa fa-check"></i> Public Map for View <a href="login" class="btn btn-primary pull-right">Login</a></h4>
