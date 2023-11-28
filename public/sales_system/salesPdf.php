@@ -165,12 +165,12 @@ $crypt = query("select * from crypt_slot s
         <td><?php echo($row["transaction_type"]); ?></td>
         <td><?php echo($row["date"]); ?></td>
         <td><?php echo($row["time"]); ?></td>
-        <td><?php echo(to_peso($row["total_fee"])); ?></td>
+        <td><span class="pull-right text-right"><?php echo(to_peso($row["total_fee"])); ?></span></td>
       </tr>
     <?php endforeach; ?>
     <tr>
     <th colspan="5">TOTAL</th>
-    <th><?php echo(to_peso($total)); ?></th>
+    <th><span class="pull-right text-right"><?php echo(to_peso($total)); ?></span></th>
   </tr>
   </tbody>
 
