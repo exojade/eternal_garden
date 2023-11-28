@@ -19,7 +19,7 @@
 
   <section class="content-header">
       <h1>
-        Transaction
+        Reports
       </h1>
     </section>
     <section class="content">

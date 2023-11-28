@@ -45,10 +45,12 @@
     <section class="content">
 
     <div class="row">
+      <form class="generic_form_trigger" data-url="sales">
+        <input type="hidden" name="action" value="print_pdf">
               <div class="col-md-3">
               <div class="form-group">
                 <label>Client</label>
-                <select id="client_id" class="form-control select2" style="width: 100%;">
+                <select id="client_id" class="form-control select2" name="profile" style="width: 100%;">
                   <option selected value="" >Select Client...</option>
                   <?php foreach($client as $row): ?>
                     <option value="<?php echo($row["profile_id"]); ?>"><?php echo($row["client_firstname"] . " " . $row["client_lastname"]); ?></option>
@@ -56,13 +58,13 @@
                 </select>
               </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
               <div class="form-group">
                 <label>From</label>
                 <input type="date" name="from" id="from" class="form-control">
               </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
               <div class="form-group">
                 <label>To</label>
                 <input type="date" name="to" id="to" class="form-control">
@@ -74,6 +76,13 @@
                 <button type="button" onclick="filter();" class="btn btn-primary btn-block">Filter</button>
               </div>
               </div>
+              <div class="col-md-2">
+              <div class="form-group">
+                <label>Print:</label>
+                <button type="submit" onclick="filter();" class="btn btn-success btn-block">Print</button>
+              </div>
+              </div>
+              </form>
             </div>
       <div class="row">
         <div class="col-md-12">

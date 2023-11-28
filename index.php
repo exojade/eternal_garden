@@ -15,7 +15,7 @@
 		$request = explode('/',$request);
 		$request = $request[1];
 		
-		$countering = array("login", "register", "print", "maps", "profile", "reports");
+		$countering = array("login", "register", "print", "maps", "profile", "reports", "sales");
 		
 		if (!in_array($request, $countering)){
 			if(empty($_SESSION["eternal_garden"]["userid"]) && empty($_SESSION["eternal_garden"]["application"])){
@@ -26,21 +26,14 @@
 					require 'public/dashboard_system/main.php';
 				else if ($request == 'users')
 					require 'public/users_system/users.php';
-
-
 				else if ($request == 'profile')
 					require 'public/profile_system/profile.php';
-
 				else if ($request == 'pending_burial')
 					require 'public/pending_system/pending.php';
-
 				else if ($request == 'maps')
 					require 'public/maps_system/maps.php';
-
 				else if ($request == 'burial_space')
 					require 'public/burial_space_system/burial_space.php';
-
-
 				else if ($request == 'coffin_crypt')
 					require 'public/coffin_crypt/coffin_crypt.php';
 				else if ($request == 'common_area')
@@ -101,6 +94,9 @@
 					require 'public/profile_system/profile.php';
 			else if ($request == 'reports')
 					require 'public/reports_system/reports.php';
+
+				else if ($request == 'sales')
+					require 'public/sales_system/sales.php';
 		}
 		
 		

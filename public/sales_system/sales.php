@@ -190,6 +190,29 @@
 		endif;
 
 
+		if($_POST["action"] == "print_pdf"):
+				// dump($_POST);
+				$base_url = the_base_url();
+				$options = urlencode(serialize($_POST));
+                $webpath = $base_url . "/eternal_garden/sales?action=print_pdf&options=".$options;
+                $filename = "SALES";
+				$path = "resources/sales/".$filename.".pdf";
+				$exec = '"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe" -O portrait --image-dpi 300 "'.$webpath.'" '.$path.'';
+				// dump($webpath);
+				exec($exec);
+				$res_arr = [
+					"result" => "success",
+					"title" => "Success",
+					"message" => "Success",
+					"link" => $path,
+					"newlink" => "newlink",
+					];
+					echo json_encode($res_arr); exit();
+
+
+
+
+		endif;
 
 
 
@@ -339,6 +362,13 @@
 				// "deceased" => $deceased,
 				"client" => $client,
 				// "slot" => $slot,
+			]);
+		endif;
+
+
+		if($_GET["action"] == "print_pdf"):
+			renderview("public/sales_system/salesPdf.php",[
+				// "forms" => $forms,
 			]);
 		endif;
 
