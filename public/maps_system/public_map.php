@@ -282,8 +282,22 @@ background-image: url('resources/eternal_bg.jpg');
 <!-- SweetAlert -->
 <script src="AdminLTE/plugins/sweetalert/sweetalert2.min.js"></script>
 <script src="public/login_system/login.js"></script>
-
-
+<style>
+.main-footer {
+    background: #fff;
+    padding: 15px;
+    color: #444;
+    border-top: 1px solid #d2d6de;
+    z-index: 1001 !important;
+    position: fixed;
+    bottom: 0;
+    margin-left: 0px !important;
+    width: 100%;
+}
+    </style>
+<footer class="main-footer no-print">
+    <strong>EMAIL<i class="fa fa-facebook"></i> : </strong> ceemdopanabo@gmail.com .&emsp;&emsp;&emsp; <strong>FACEBOOK<i class="fa fa-facebook-official"></i> : </strong> CITY ECONOMIC ENTERPRISE MANAGEMENT AND DEVELOPMENT OFFICE - PANABO
+  </footer>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
@@ -1167,5 +1181,8 @@ var formData = new FormData(form);
     });
   });
 </script>
+
+
 </body>
+
 </html>
