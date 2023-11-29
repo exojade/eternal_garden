@@ -293,10 +293,8 @@ endforeach;
 // dump($Deceased);
 
                 $result=[];
-                $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
-                left join profile_list client
-                on client.slot_number = slot.slot_id
-                where crypt_slot_type = 'LAWN'");
+                $result = $lawn;
+         
                 
                 if(isset($_GET["filter"])):
                     if($_GET["filter"] != "ALL"):
@@ -307,7 +305,7 @@ endforeach;
                     endif;
                 endif;
 
-
+    //    dump($result);
         $client = query("select * from profile_list");
         $Clients = [];
         foreach($client as $row):

@@ -525,13 +525,46 @@
 
 
 			elseif($_GET["action"] == "map_editor"):
+				$mausoleum = [];
+				$coffin = [];
+				$bone = [];
+				$lawn = [];
+				$common = [];
+				$annex = [];
+				$no_slot = [];
+
+				if(!isset($_GET["type"])):
 				$mausoleum = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
 				$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
 				$bone = query("select * from crypt_list where crypt_type = 'BONE'");
-				$lawn = query("select * from crypt_slot where crypt_slot_type = 'LAWN'");
+				$lawn = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
+                left join profile_list client
+                on client.slot_number = slot.slot_id
+                where crypt_slot_type = 'LAWN'");
 				$common = query("select * from crypt_list where crypt_type = 'COMMON'");
 				$annex = query("select * from crypt_list where crypt_type = 'ANNEX'");
 				$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");
+				else:
+					if($_GET["type"] == "LAWN"):
+						$lawn = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
+						left join profile_list client
+						on client.slot_number = slot.slot_id
+						where crypt_slot_type = 'LAWN'");
+					elseif($_GET["type"]=="COFFIN"):
+						$coffin = query("select * from crypt_list where crypt_type = 'COFFIN'");
+					elseif($_GET["type"] == "BONE"):
+						$bone = query("select * from crypt_list where crypt_type = 'BONE'");
+					elseif($_GET["type"] == "MAUSOLEUM"):
+						$bone = query("select * from crypt_list where crypt_type = 'MAUSOLEUM'");
+					elseif($_GET["type"] == "COMMON"):
+						$bone = query("select * from crypt_list where crypt_type = 'COMMON'");
+					elseif($_GET["type"] == "ANNEX"):
+						$bone = query("select * from crypt_list where crypt_type = 'ANNEX'");
+					endif;
+					
+
+
+				endif;
 				render("public/maps_system/map_editor.php",
 				[
 					"lawn" => $lawn,

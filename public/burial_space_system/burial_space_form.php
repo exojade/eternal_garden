@@ -46,7 +46,7 @@
           </div>
       </div>
       </a>
-      <a href="maps?action=map_details&crypt_type=LAWN&filter=ALL#20/7.32051/125.66230">
+      <a href="maps?action=map_editor&type=LAWN&filter=ALL">
       <div class="col-md-6">
           <div class="info-box">
             <span class="info-box-icon bg-green"><i class="fa fa-cross"></i></span>
