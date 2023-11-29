@@ -340,6 +340,7 @@ endforeach;
                                 echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                
                             foreach($deceased as $d):
                                 $location = $row["lawn_type"];
                                 $trim = str_replace('""', '', $row['coordinates']);
@@ -354,6 +355,8 @@ endforeach;
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
                             endforeach;
                         else:
+                        // if($row["crypt_id"] == "CRYPT-796caa375ef68-230525"):
+
                             $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
                                 echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
@@ -368,6 +371,7 @@ endforeach;
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
                         endif;
+                        // endif;
                     }
 
                     foreach($mausoleum as $row):

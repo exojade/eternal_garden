@@ -222,12 +222,12 @@
                         <select class="form-control" name="filter">
                            <option value="<?php echo($_GET["filter"]); ?>"><?php echo($_GET["filter"]); ?></option>
                            <option value="ALL">ALL</option>
-                           <option value="SUPER_PRIME_A">SUPER_PRIME_A</option>
-                           <option value="SUPER_PRIME_B">SUPER_PRIME_B</option>
-                           <option value="SUPER_PRIME_C">SUPER_PRIME_C</option>
-                           <option value="PRIME_A">PRIME_A</option>
-                           <option value="PRIME_B">PRIME_B</option>
-                           <option value="PRIME_C">PRIME_C</option>
+                           <option value="SUPER PRIME A">SUPER PRIME A</option>
+                           <option value="SUPER PRIME B">SUPER PRIME B</option>
+                           <option value="SUPER PRIME C">SUPER PRIME C</option>
+                           <option value="PRIME A">PRIME A</option>
+                           <option value="PRIME B">PRIME B</option>
+                           <option value="PRIME C">PRIME C</option>
                            <option value="REGULAR">REGULAR</option>
                            <option value="CORNER">CORNER</option>
                            <option></option>
