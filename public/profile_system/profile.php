@@ -326,7 +326,7 @@
 			$crypt_slot = $crypt_slot[0];
 			$deceased = query("select * from deceased_profile where profile_id = ?", $crypt_slot["profile_id"]);
 			// dump($deceased);
-
+			if(!isset($_POST["public"])):
 			if($crypt_slot["active_status"]=="OCCUPIED"):
 			$message = "";
 			$message = $message .'
@@ -497,6 +497,136 @@
 				endif;
 				echo($message);
 			endif;
+
+		else:
+			
+			$crypt_slot = query("select * from crypt_slot
+			where slot_id = ?", $_POST["slot_number"]);
+			// dump($crypt_slot);
+
+$services = query("select * from services");
+$requirements = query("select * from requirements");
+$pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["lawn_type"]);
+			$message = "";
+			if($crypt_slot[0]["active_status"]=="OCCUPIED"):
+				$message = $message . "<p class='text-center'><b>LAWN: " . $crypt_slot[0]["lawn_type"] . "[OCCUPIED]</b></p>";
+
+				if($crypt_slot[0]["lawn_type"] != ""):
+					$message = $message . '<div class="row">';
+					$message = $message . '
+				<div class="col-md-3">
+				<h5><b>PRICING:</b></h5>
+				<ul class="list-unstyled">
+                <li> <b>'.$crypt_slot[0]["lawn_type"].'</b>
+                  <ul>
+                    <li>PRE NEED : '.to_peso($pricing[0]["pre_need"]).'</li>
+                    <li>AT NEED : '.to_peso($pricing[0]["at_need"]).'</li>
+                  </ul>
+                </li>
+			
+              </ul>
+
+				</div>';
+
+				endif;
+
+				$message = $message . '
+				<div class="col-md-5">
+
+				<h5><b>SERVICES OFFERED:</b></h5>
+				<ul>';
+
+				foreach($services as $row):
+					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+				<div class="col-md-4">
+
+				<h5><b>REQUIREMENTS:</b></h5>
+				<ul>';
+
+				foreach($requirements as $row):
+					$message = $message . '<li>'.$row["requirement"].'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+		  </div>
+
+
+
+				';
+				echo($message);
+				// dump("occupied");
+			else:
+				// dump($crypt_slot);
+				$message="";
+				$message = $message . "<p class='text-center'><b>LAWN: " . $crypt_slot[0]["lawn_type"] . "[VACANT]</b></p>";
+				$message = $message . '<div class="row">';
+				
+
+				if($crypt_slot[0]["lawn_type"] != ""):
+
+					$message = $message . '
+				<div class="col-md-3">
+				<h5><b>PRICING:</b></h5>
+				<ul class="list-unstyled">
+                <li> <b>'.$crypt_slot[0]["lawn_type"].'</b>
+                  <ul>
+                    <li>PRE NEED : '.to_peso($pricing[0]["pre_need"]).'</li>
+                    <li>AT NEED : '.to_peso($pricing[0]["at_need"]).'</li>
+                  </ul>
+                </li>
+			
+              </ul>
+
+				</div>';
+
+				endif;
+
+				$message = $message . '
+				<div class="col-md-5">
+
+				<h5><b>SERVICES OFFERED:</b></h5>
+				<ul>';
+
+				foreach($services as $row):
+					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+				<div class="col-md-4">
+
+				<h5><b>REQUIREMENTS:</b></h5>
+				<ul>';
+
+				foreach($requirements as $row):
+					$message = $message . '<li>'.$row["requirement"].'</li>';
+				endforeach;
+
+				$message = $message . '
+				</ul>
+
+				</div>
+		  </div>
+
+
+
+				';
+			
+				echo($message);
+			endif;
+		
+		endif;
 			elseif($_POST["action"] == "convert_no_slot"):
 				// dump($_POST);
 				query("update crypt_slot set crypt_slot_type = 'NO_SLOT', lawn_type=''
