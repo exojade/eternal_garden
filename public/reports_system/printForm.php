@@ -83,9 +83,9 @@ $where = " where 1=1 ";
             endif;
 
 
-			      if(isset($options["client"])):
-                if($options["client"] != "")
-                    $where = $where . " and t.profile_id = '" . $options["client"] . "'";
+			      if(isset($options["client_id"])):
+                if($options["client_id"] != "")
+                    $where = $where . " and d.profile_id = '" . $options["client_id"] . "'";
             endif;
 
 
