@@ -690,6 +690,7 @@
 
 		elseif($_POST["action"] == "vacate"):
 			$deceased = query("select count(*) as count from deceased_profile where slot_number = ?", $_POST["slot_id"]);
+			// dump($deceased);
 			$count = $deceased[0]["count"];
 			if($count != 0):
 				$res_arr = [
