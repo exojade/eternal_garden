@@ -194,6 +194,8 @@
                     </div>
                     </div>
                     <div class="col-md-6">
+
+                    <?php if(isset($_GET["type"]) && $_GET["type"] == "LAWN"): ?>
                     <form class="generic_form" data-url="maps" >
                         <input type="hidden" name="action" value="filter_map_editor">
                         <?php if(isset($_GET["type"])): ?>
@@ -224,8 +226,42 @@
                                 
                             </div>
                         </div>
-                       
                       </form>
+                    
+                      <?php elseif(!isset($_GET["type"])): ?>
+
+                        <form class="generic_form" data-url="maps" >
+                        <input type="hidden" name="action" value="filter_map_editor">
+                        <?php if(isset($_GET["type"])): ?>
+                        <input type="hidden" name="type" value="<?php echo($_GET["type"]); ?>">
+                        <?php endif; ?>
+                        <!-- <input type="hidden" name="id" value="<?php echo($_GET["id"]); ?>"> -->
+                        <div class="row">
+                            <div class="col-md-8">
+                                <?php  ?>
+                        <select class="form-control" name="filter">
+                            <?php if(isset($_GET["filter"])): ?>
+                                <option value="<?php echo($_GET["filter"]); ?>"><?php echo($_GET["filter"]); ?></option>
+                            <?php endif; ?>
+                           <option value="ALL">ALL</option>
+                           <option value="SUPER PRIME A">SUPER PRIME A</option>
+                           <option value="SUPER PRIME B">SUPER PRIME B</option>
+                           <option value="SUPER PRIME C">SUPER PRIME C</option>
+                           <option value="PRIME A">PRIME A</option>
+                           <option value="PRIME B">PRIME B</option>
+                           <option value="PRIME C">PRIME C</option>
+                           <option value="REGULAR LOT">REGULAR LOT</option>
+                           <option value="CORNER LOT">CORNER LOT</option>
+                           <option></option>
+                        </select>
+                            </div>
+                            <div class="col-md-4">
+                        <button class="btn btn-primary" type="submit">Filter</button>
+                                
+                            </div>
+                        </div>
+                      </form>
+                      <?php endif; ?>
                     </div>
 
 

@@ -34,7 +34,7 @@ endforeach;
       <h1>
         Bone Crypt List
       <a class="btn btn-primary pull-right btn-flat" data-toggle="modal" data-target="#modal_add_crypt">Add Crypt</a>
-      <a href="maps?action=map_details&crypt_type=BONE&filter=ALL" class="btn btn-success pull-right btn-flat" >Open Map</a>
+      <a href="maps?action=map_editor&type=BONE" class="btn btn-success pull-right btn-flat" >Open Map</a>
       </h1>
     </section>
     <section class="content">
