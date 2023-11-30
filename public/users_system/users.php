@@ -6,9 +6,10 @@
 			// dump($_POST);
 			$userid = create_uuid("USR");
 			$password = "secret";
+			$salt = '$2a$10$' . bin2hex(random_bytes(22));
 			if (query("insert INTO tbl_users (user_id,username,password,role,fullname) 
 				VALUES(?,?,?,?,?)", 
-				$userid,$_POST["username"], crypt($password,''),$_POST["role"],$_POST["fullname"]) === false)
+				$userid,$_POST["username"], crypt($password,$salt),$_POST["role"],$_POST["fullname"]) === false)
 				{
 					apologize("Sorry, that username has already been taken!");
 				}
