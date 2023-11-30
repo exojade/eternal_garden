@@ -99,6 +99,7 @@
                       <form class="generic_form" data-url="lawn">
                         <input type="hidden" name="action" value="filter_lawn">
                         <input type="hidden" name="id" value="<?php echo($_GET["id"]); ?>">
+                        <?php if(isset($_GET[""])) ?>
                         <label>Filter</label>
                         <select class="form-control" name="filter">
                            <option value="<?php echo($_GET["filter"]); ?>"><?php echo($_GET["filter"]); ?></option>
