@@ -196,6 +196,9 @@
                     <div class="col-md-6">
                     <form class="generic_form" data-url="maps" >
                         <input type="hidden" name="action" value="filter_map_editor">
+                        <?php if(isset($_GET["type"])): ?>
+                        <input type="hidden" name="type" value="<?php echo($_GET["type"]); ?>">
+                        <?php endif; ?>
                         <!-- <input type="hidden" name="id" value="<?php echo($_GET["id"]); ?>"> -->
                         <div class="row">
                             <div class="col-md-8">

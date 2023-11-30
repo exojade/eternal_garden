@@ -398,11 +398,17 @@
 
 		if($_POST["action"] == "filter_map_editor"):
 			// dump($_POST);
+
+			$link = "maps?action=map_editor&filter=".$_POST["filter"];
+			if(isset($_POST["type"])):
+				$link = $link . "&type=".$_POST["type"];
+			endif;
+
 			$res_arr = [
 				"result" => "success",
 				"title" => "Success",
 				"message" => "Success on adding Data",
-				"link" => "maps?action=map_editor&filter=".$_POST["filter"],
+				"link" => $link,
 				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 				];
 				echo json_encode($res_arr); exit();
