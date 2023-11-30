@@ -308,10 +308,12 @@ endforeach;
 $result=[];
             if($_GET["crypt_type"] == "LAWN"):
                 if($_GET["filter"] == "ALL"){
-                $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
-                                    left join profile_list client
-                                    on client.slot_number = slot.slot_id
-                                    where crypt_slot_type = 'LAWN'");
+                $result = query("SELECT slot.*,CONCAT(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) AS client_name, lease_date, date_expired FROM crypt_slot slot
+                LEFT JOIN profile_list CLIENT
+                ON client.slot_number = slot.slot_id
+                WHERE crypt_slot_type = 'LAWN'
+                group by coordinates
+                ");
                 }
                 else{
                 $result = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot

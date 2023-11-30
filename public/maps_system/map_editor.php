@@ -294,6 +294,14 @@ endforeach;
 
                 $result=[];
                 $result = $lawn;
+
+                $list = query("select * from crypt_list where coordinates is not null");
+                $Cryptss = [];
+                foreach($list as $row):
+                    $Cryptss[$row["coordinates"]] = $row;
+                endforeach;
+
+                    
          
                 
                 if(isset($_GET["filter"])):
@@ -327,6 +335,7 @@ endforeach;
             "features": [
                 <?php
                     foreach($result as $row){
+                        if(!isset($Cryptss[$row["coordinates"]])):
                         if(isset($Deceased[$row["slot_id"]])):
                             $deceased = $Deceased[$row["slot_id"]];
                             $trim = str_replace('""', '', $row['coordinates']);
@@ -370,6 +379,7 @@ endforeach;
                                 echo '"slot_number": "'.$row['slot_id'].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                        endif;
                         endif;
                         // endif;
                     }
