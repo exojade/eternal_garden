@@ -249,7 +249,6 @@
                            <option value="SUPER PRIME C">SUPER PRIME C</option>
                            <option value="PRIME A">PRIME A</option>
                            <option value="PRIME B">PRIME B</option>
-                           <option value="PRIME C">PRIME C</option>
                            <option value="REGULAR LOT">REGULAR LOT</option>
                            <option value="CORNER LOT">CORNER LOT</option>
                            <option></option>
