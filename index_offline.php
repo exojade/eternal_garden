@@ -8,7 +8,8 @@
 		
 		$request = $_SERVER['REQUEST_URI'];
 		$constants = get_defined_constants();
-		// $request = explode('/eternal_garden',$request);
+		$request = explode('/eternal_garden',$request);
+		$request = $request[1];
 		$request = explode('?',$request);
 		$request = $request[0];
 		$request = explode('/',$request);
