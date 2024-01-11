@@ -2,6 +2,30 @@
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "add_schedule"):
 			// dump($_POST);
+
+
+			$selectedDate = $_POST["deceased_burial_date"];
+    		$selectedTime = $_POST["deceased_burial_time"];
+			$dateTime = new DateTime($selectedDate . ' ' . $selectedTime);
+
+			$minTime = new DateTime('08:00:00');
+    		$maxTime = new DateTime('16:00:00');
+
+			if ($dateTime < $minTime || $dateTime > $maxTime) {
+				$res_arr = [
+					"result" => "failed",
+					"title" => "Failed",
+					"message" => "Time should be between 8:00 AM and 4:00 PM",
+					// "link" => "pending_burial?action=list",
+					];
+					echo json_encode($res_arr); exit();
+				// Handle the error as needed
+			}
+
+			// dump("payts");
+
+
+
 			$for_schedule = query("select * from burial_schedule where schedule_id = ?",$_POST["schedule_id"]);
 			$for_schedule = $for_schedule[0];
 			$deceased = query("select * from deceased_profile where slot_number = ? and burial_status = 'FOR SCHEDULING'", $for_schedule["slot_number"]);

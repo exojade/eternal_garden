@@ -37,34 +37,22 @@
                   <th>Death Certificate</th>
                 </tr>
                 </thead>
-                <tbody>
-                <?php foreach($deceased_profile as $p): ?>
-                <tr>
-                  <td><?php echo($p["deceased_firstname"] . " " . $p["deceased_middlename"] . " " . $p["deceased_lastname"] . " " . $p["deceased_suffix"]); ?></td>
-                  <td><?php echo($p["birthdate"]); ?></td>
-                  <td><?php echo($p["gender"]); ?></td>
-                  <td><?php echo($p["date_of_death"]); ?></td>
-                  
-                  <?php
-                  $location = "";
-                  	if($p["crypt_type"] == "LAWN"):
-                      $location = "LAWN : TYPE : ".$p["lawn_type"];
-                    elseif($p["crypt_type"] == "COFFIN" || $p["crypt_type"] == "BONE"):
-                      $location = $p["crypt_type"] ." : NAME : ".$p["crypt_name"] . " : ROW : " . $p["row_number"] . " : COLUMN : " . $p["column_number"];
-                    elseif($p["crypt_type"] == "COMMON"):
-                      $location = $p["crypt_type"] ." : NAME : ".$p["crypt_name"];
-                    endif;
-                  ?>
-                  <td><?php echo($p["age_died"]); ?></td>
-                  <td><?php echo($location); ?></td>
-                  <td><?php echo($p["client_firstname"] . " " . $p["client_middlename"] . " " . $p["client_lastname"] . " " . $p["client_suffix"]); ?></td>
-                  <td><a href="<?php echo($p["death_certificate"]); ?>" target="_blank" class="btn btn-xs btn-flat btn-block btn-primary">View</a></td>
-                  
-                </tr>
-                <?php endforeach; ?>
-                </tbody>
-                </tfoot>
+              
+           
               </table>
+
+
+
+
+
+              
+
+
+
+
+
+
+
             </div>
             <!-- /.box-body -->
           </div>
@@ -94,11 +82,63 @@
   ?>
 
 <script>
-  $(function () {
-    $('.sample_datatable').DataTable({
-      "ordering": false,
-    });
+ var datatable = 
+            $('.sample_datatable').DataTable({
+                // "searching": false,
+                "pageLength": 10,
+                language: {
+                    searchPlaceholder: "Enter Filter"
+                },
+                // "bLengthChange": false,
+                "ordering": false,
+                // "info":     false,
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                
+                'ajax': {
+                    'url':'profile',
+                     'type': "POST",
+                     "data": function (data){
+                        data.action = "deceased_datatable";
+                     }
+                },
+                'columns': [
+                    // { data: 'Employeeid', "visible": false, "searchable": false },
+                    // { data: 'action', "orderable": false },
+                    { data: 'deceased_name', "orderable": false },
+                    { data: 'birthdate', "orderable": false  },
+                    { data: 'gender', "orderable": false  },
+                    { data: 'date_death', "orderable": false  },
+                    { data: 'age_died', "orderable": false  },
+                    { data: 'location', "orderable": false  },
+                    { data: 'client', "orderable": false  },
+                    { data: 'death_certificate', "orderable": false  },
+                ],
+            });
 
-  })
+            function filter() {
+              // alert("new");
+           
+            var activeStatusData = $('#active_status').select2('data');
+    
+            var jobType ="";
+            var depId ="";
+            var activeStatus ="";
+
+            if (jobtypeData[0])
+                jobType = jobtypeData[0].id;
+            if (depData[0])
+                depId = depData[0].id;
+            if (activeStatusData[0])
+                activeStatus = activeStatusData[0].id;
+        
+            // else{
+            datatable.ajax.url('employees?action=datatable&jobType=' + jobType + '&depId=' + depId + '&activeStatus=' + activeStatus).load();
+            // }
+        }
+
+
+
 </script>
 

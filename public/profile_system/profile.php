@@ -1,6 +1,140 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
-		if($_POST["action"] == "add_client"):
+		if($_POST["action"] == "deceased_datatable"):
+			dump($_REQUEST);
+
+			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
+            $offset = $_POST["start"];
+            $limit = $_POST["length"];
+            $search = $_POST["search"]["value"];
+
+			$where = " where 1=1 ";
+
+			if(isset($_REQUEST["burial_space"])):
+                if($_REQUEST["burial_space"] != "")
+					if($_REQUEST["burial_space"] == "COFFIN" || $_REQUEST["burial_space"] == "BONE" || $_REQUEST["burial_space"] == "MAUSOLEUM" || $_REQUEST["burial_space"] == "LAWN" || $_REQUEST["burial_space"] == "COMMON" || $_REQUEST["burial_space"] == "ANNEX")
+                    	$where = $where . " and s.crypt_slot_type = '".$_REQUEST["burial_space"]."'";
+					else
+						$where = $where . " and s.crypt_id = '".$_REQUEST["burial_space"]."'";
+            endif;
+
+			$where = $where . " and s.active_status = 'OCCUPIED' ";
+
+			$crypt = query("select * from crypt_slot s
+							left join crypt_list c
+							on c.crypt_id = s.crypt_id");
+            $Crypt = [];
+            foreach($crypt as $row):
+                $Crypt[$row["slot_id"]] = $row;
+            endforeach;
+
+			$Profile = [];
+			$profile = query("select * from profile_list");
+			foreach($profile as $row):
+				$Profile[$row["profile_id"]] = $row;
+			endforeach;
+
+			$Deceased = [];
+			$deceased = query("select * from deceased_profile");
+			foreach($deceased as $row):
+				$Deceased[$row["deceased_id"]] = $row;
+			endforeach;
+
+
+            // $data = query("select * from tblemployee_dtras");
+            if($where != ""):
+                $query_string = "select * from crypt_slot s
+				left join profile_list p
+				on s.occupied_by = p.profile_id
+				left join deceased_profile d
+				on d.profile_id = p.profile_id
+				".$where."
+				limit ".$limit." offset ".$offset." ";
+                // dump($query_string);
+                $data = query($query_string);
+                $all_data = query("select * from crypt_slot s
+										left join profile_list p
+										on s.occupied_by = p.profile_id
+										left join deceased_profile d
+										on d.profile_id = p.profile_id
+										".$where."
+										");
+                // $all_data = $data;
+				// dump($query_string);
+            else:
+                $query_string = "select * from crypt_slot s
+				left join profile_list p
+				on s.occupied_by = p.profile_id
+				left join deceased_profile d
+				on d.profile_id = p.profile_id
+				limit ".$limit." offset ".$offset." ";
+                                // dump($query_string);
+                $data = query($query_string);
+                $all_data = query("select * from crypt_slot s
+				left join profile_list p
+				on s.occupied_by = p.profile_id
+				left join deceased_profile d
+				on d.profile_id = p.profile_id");
+		
+                // $all_data = $data;
+            endif;
+            $i=0;
+			// dump($data);
+            foreach($data as $row):
+				// dump($row);
+
+				$data[$i]["client"] = "";
+				if(isset($Profile[$row["profile_id"]])):
+					$profile = $Profile[$row["profile_id"]];
+					$data[$i]["client"] = $profile["client_firstname"] . " " . $profile["client_lastname"];
+				endif;
+
+				$data[$i]["deceased"] = "";
+				if(isset($Deceased[$row["deceased_id"]])):
+					$deceased = $Deceased[$row["deceased_id"]];
+					$data[$i]["deceased"] = $deceased["deceased_firstname"] . " " . $deceased["deceased_lastname"];
+				endif;
+
+				if($row["crypt_slot_type"] == "COMMON"):
+					$deceased = $Deceased[$row["occupied_by"]];
+					$data[$i]["deceased"] = $deceased["deceased_firstname"] . " " . $deceased["deceased_lastname"];
+				endif;
+
+
+				$location = $Crypt[$row["slot_id"]];
+				if($location["crypt_type"] == "LAWN"):
+					$data[$i]["location"] = "LAWN : TYPE : ".$location["lawn_type"];
+				elseif($location["crypt_type"] == "COFFIN" || $location["crypt_type"] == "BONE"):
+					$data[$i]["location"] = $location["crypt_type"] ." : NAME : ".$location["crypt_name"] . " : ROW : " . $location["row_number"] . " : COLUMN : " . $location["column_number"];
+				elseif($location["crypt_type"] == "COMMON"):
+					$data[$i]["location"] = $location["crypt_type"] ." : NAME : ".$location["crypt_name"];
+				elseif($location["crypt_type"] == "ANNEX"):
+						$data[$i]["location"] = $location["crypt_type"] ." : NAME : ".$location["crypt_name"];
+				endif;
+
+				$data[$i]["date"] = $row["burial_date"];
+				$data[$i]["time"] = $row["burial_time"];
+				// dump();	
+                $i++;
+            endforeach;
+            $json_data = array(
+                "draw" => $draw + 1,
+                "iTotalRecords" => count($all_data),
+                "iTotalDisplayRecords" => count($all_data),
+                "aaData" => $data
+            );
+            echo json_encode($json_data);
+
+
+
+
+
+
+
+
+
+
+		elseif($_POST["action"] == "add_client"):
 			// dump($_FILES);
 			$_POST["client_name"] = $_POST["first_name"] . " " . $_POST["last_name"];
 			if($_POST["crypt_slot_type"] == "LAWN"):

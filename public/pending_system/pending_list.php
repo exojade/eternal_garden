@@ -42,18 +42,36 @@
                 <div class="form-group">
                         <label>Burial Schedule Date *</label>
                         <div class="input-group">
-                          <input name="deceased_burial_date" required type="date" class="form-control">
+                          <input name="deceased_burial_date" id="deceased_burial_date" required type="date" class="form-control">
                           <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                           </div>
                         </div>
                       </div>
+                      <script>
+    // Get the current date in the format YYYY-MM-DD
+    function getCurrentDate() {
+      const today = new Date();
+      const year = today.getFullYear();
+      let month = today.getMonth() + 1;
+      let day = today.getDate();
+
+      // Add leading zero if month or day is less than 10
+      month = month < 10 ? `0${month}` : month;
+      day = day < 10 ? `0${day}` : day;
+
+      return `${year}-${month}-${day}`;
+    }
+
+    // Set the minimum date for the input field
+    document.getElementById('deceased_burial_date').min = getCurrentDate();
+  </script>
                 
                       <div class="bootstrap-timepicker">
                       <div class="form-group">
                         <label>Burial Time (optional)</label>
                         <div class="input-group">
-                          <input name="deceased_burial_time" value="" type="text" class="form-control timepicker">
+                          <input name="deceased_burial_time" id="deceased_burial_time" value="" type="text" class="form-control timepicker">
                           <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                           </div>
@@ -158,8 +176,23 @@
 
 <script>
 $('.timepicker').timepicker({
-      showInputs: false,
-      autoUpdateInput: false,   
-    })
+      timeFormat: 'h:i A', // 12-hour format with AM/PM
+      interval: 30,         // Set time interval if needed
+      minTime: '8:00am',    // Minimum allowed time
+      maxTime: '4:00pm',    // Maximum allowed time
+      defaultTime: '8:00am', // Set a default time if needed
+    });
+
+    // Validate time selection on change
+    $('#deceased_burial_time').on('changeTime', function() {
+      const selectedTime = $(this).val();
+      const maxTime = '4:00pm';
+
+      // Compare selected time with the maximum allowed time
+      if (selectedTime > maxTime) {
+        alert('Please select a time before 4:00 PM.');
+        $(this).val(''); // Clear the invalid selection
+      }
+    });
   </script>
 

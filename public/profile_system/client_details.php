@@ -158,7 +158,7 @@
                   <div class="form-group">
                       <label for="exampleInputFile">Valid ID *</label>
                       <input name="valid_id" required type="file" accept=".pdf, image/*" id="exampleInputFile">
-                      <p class="help-block">Upload document here!</p>
+                      <p class="help-block">Take a photo of the valid ID and upload it here. </p>
                   </div>
                 </div>
                 <div class="col-md-4">

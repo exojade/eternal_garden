@@ -8,13 +8,14 @@
 		
 		$request = $_SERVER['REQUEST_URI'];
 		$constants = get_defined_constants();
-		// $request = explode('/eternal_garden',$request);
+		$request = explode('/eternal_garden',$request);
+		$request = $request[1];
 		$request = explode('?',$request);
 		$request = $request[0];
 		$request = explode('/',$request);
 		$request = $request[1];
 		
-		$countering = array("login", "register", "print", "maps", "profile", "reports", "sales");
+		$countering = array("login", "register", "print", "maps", "profile", "reports", "sales", "cronNotify");
 		
 		if (!in_array($request, $countering)){
 			if(empty($_SESSION["eternal_garden"]["userid"]) && empty($_SESSION["eternal_garden"]["application"])){
@@ -40,8 +41,11 @@
 				else if ($request == 'annex')
 					require 'public/annex_area/annex.php';
 
+				else if ($request == 'cronNotify')
+					require 'public/transfer_system/cronNotify.php';
+
 				else if ($request == 'reports')
-					require 'public/reports_system/reports.php';
+					require 'public/transfer_system/reports.php';
 
 				else if ($request == 'bone_crypt')
 					require 'public/bone_crypt/bone_crypt.php';
@@ -93,6 +97,9 @@
 					require 'public/profile_system/profile.php';
 			else if ($request == 'reports')
 					require 'public/reports_system/reports.php';
+				
+					else if ($request == 'cronNotify')
+					require 'public/transfer_system/cronNotify.php';
 
 				else if ($request == 'sales')
 					require 'public/sales_system/sales.php';

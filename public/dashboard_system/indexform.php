@@ -126,7 +126,7 @@
         <div class="col-md-12">
         <div class="box box-info">
             <div class="box-header with-border">
-              <h3 class="box-title">Burials for this Year <?php echo(date("Y")); ?></h3>
+              <h3 class="box-title">Burials 5 Year Span</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -146,7 +146,7 @@
         <div class="col-md-12">
         <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Statistics: Male vs Female <?php echo(date("Y")); ?></h3>
+              <h3 class="box-title">Statistics: Male vs Female [5 Year Span]</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -239,74 +239,52 @@ function find_deceased() {
 		});    
 		  }
 
-    <?php
-    $data = query("SELECT
-    CASE
-        WHEN months.month = 1 THEN 'January'
-        WHEN months.month = 2 THEN 'February'
-        WHEN months.month = 3 THEN 'March'
-        WHEN months.month = 4 THEN 'April'
-        WHEN months.month = 5 THEN 'May'
-        WHEN months.month = 6 THEN 'June'
-        WHEN months.month = 7 THEN 'July'
-        WHEN months.month = 8 THEN 'August'
-        WHEN months.month = 9 THEN 'September'
-        WHEN months.month = 10 THEN 'October'
-        WHEN months.month = 11 THEN 'November'
-        WHEN months.month = 12 THEN 'December'
-        ELSE 'Month not available'
-    END AS MONTH,
-    COALESCE(SUM(CASE WHEN gender = 'Male' THEN 1 ELSE 0 END), 0) AS male_count,
-    COALESCE(SUM(CASE WHEN gender = 'Female' THEN 1 ELSE 0 END), 0) AS female_count
-FROM
-    (
-        SELECT 1 AS MONTH
-        UNION SELECT 2
-        UNION SELECT 3
-        UNION SELECT 4
-        UNION SELECT 5
-        UNION SELECT 6
-        UNION SELECT 7
-        UNION SELECT 8
-        UNION SELECT 9
-        UNION SELECT 10
-        UNION SELECT 11
-        UNION SELECT 12
-    ) AS months
-LEFT JOIN
-    (
-        SELECT
-            MONTH(deceased_profile.burial_date) AS MONTH,
-            gender
-        FROM
-            deceased_profile
-        WHERE
-            YEAR(deceased_profile.burial_date) = YEAR(CURDATE())  -- Filter for the current year
-    ) AS profile_data
-ON
-    months.month = profile_data.month
-GROUP BY
-    months.month
-ORDER BY
-    months.month;");
-    
-    ?>
+      <?php
+$data = query("
+    SELECT
+        all_years.year AS YEAR,
+        COALESCE(SUM(CASE WHEN profile_data.gender = 'Male' THEN 1 ELSE 0 END), 0) AS male_count,
+        COALESCE(SUM(CASE WHEN profile_data.gender = 'Female' THEN 1 ELSE 0 END), 0) AS female_count
+    FROM
+        (
+            SELECT DISTINCT YEAR(CURDATE()) - n + 1 AS year
+            FROM 
+                (SELECT 1 AS n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) AS numbers
+        ) AS all_years
+    LEFT JOIN
+        (
+            SELECT
+                YEAR(deceased_profile.burial_date) AS year,
+                gender
+            FROM
+                deceased_profile
+            WHERE
+                YEAR(deceased_profile.burial_date) BETWEEN YEAR(CURDATE()) - 5 AND YEAR(CURDATE())  -- Filter for the last 5 years
+        ) AS profile_data
+    ON
+        all_years.year = profile_data.year
+    GROUP BY
+        all_years.year
+    ORDER BY
+        all_years.year;
+");
 
-    var bar = new Morris.Bar({
-      element: 'bar-chart',
-      resize: true,
-      data: [
+?>
+
+var bar = new Morris.Bar({
+    element: 'bar-chart',
+    resize: true,
+    data: [
         <?php foreach($data as $row): ?>
-          {y: '<?php echo($row["MONTH"]); ?>', a: <?php echo($row["male_count"]); ?>, b: <?php echo($row["female_count"]); ?>},
+            {y: '<?php echo $row["YEAR"]; ?>', a: <?php echo $row["male_count"]; ?>, b: <?php echo $row["female_count"]; ?>},
         <?php endforeach; ?>
-
-      ],
-      barColors: ['#00a65a', '#f56954'],
-      xkey: 'y',
-      ykeys: ['a', 'b'],
-      labels: ['Male', 'Female'],
-      hideHover: 'auto'
-    });
+    ],
+    barColors: ['#00a65a', '#f56954'],
+    xkey: 'y',
+    ykeys: ['a', 'b'],
+    labels: ['Male', 'Female'],
+    hideHover: 'auto'
+});
 
 
  <?php 
@@ -364,8 +342,39 @@ $Bracket = [];
     });
 
 
+
+    <?php
+$data = query("
+    SELECT
+        all_years.year AS YEAR,
+        COALESCE(SUM(IF(deceased_profile.burial_date IS NOT NULL, 1, 0)), 0) AS count_per_year
+    FROM
+        (
+            SELECT DISTINCT YEAR(CURDATE()) - n + 1 AS year
+            FROM 
+                (SELECT 1 AS n UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5) AS numbers
+        ) AS all_years
+    LEFT JOIN
+        deceased_profile ON all_years.year = YEAR(deceased_profile.burial_date)
+        AND YEAR(deceased_profile.burial_date) BETWEEN YEAR(CURDATE()) - 5 AND YEAR(CURDATE())  -- Filter for the last 5 years
+    GROUP BY
+        all_years.year
+    ORDER BY
+        all_years.year;
+");
+
+$labels = array();
+$dataPoints = array();
+
+foreach ($data as $row) {
+    $labels[] = $row["YEAR"];
+    $dataPoints[] = $row["count_per_year"];
+}
+?>
+
+
     var areaChartData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      labels  : <?php echo json_encode($labels); ?>,
       datasets: [
         
         {
@@ -376,40 +385,7 @@ $Bracket = [];
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [
-<?php 
-$data = query("SELECT
-months.month AS MONTH,
-COALESCE(SUM(IF(deceased_profile.burial_date IS NOT NULL, 1, 0)), 0) AS count_per_month
-FROM
-(
-    SELECT 1 AS MONTH
-    UNION SELECT 2
-    UNION SELECT 3
-    UNION SELECT 4
-    UNION SELECT 5
-    UNION SELECT 6
-    UNION SELECT 7
-    UNION SELECT 8
-    UNION SELECT 9
-    UNION SELECT 10
-    UNION SELECT 11
-    UNION SELECT 12
-) AS months
-LEFT JOIN
-deceased_profile ON months.month = MONTH(deceased_profile.burial_date)
-AND YEAR(deceased_profile.burial_date) = YEAR(CURDATE())  -- Filter for the current year
-GROUP BY
-months.month
-ORDER BY
-months.month;");
-?>
-
-<?php foreach($data as $row): ?>
-            
-        <?php echo($row["count_per_month"]); ?>,
-<?php endforeach; ?>
-          ]
+          data                : <?php echo json_encode($dataPoints); ?>
         }
       ]
     }

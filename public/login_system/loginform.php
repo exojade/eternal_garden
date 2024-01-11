@@ -84,8 +84,17 @@ background-image: url('resources/eternal_bg.jpg');
   background-size: cover;
 ">
 
+
+
 <div class="layer">
-<div class="login-box">
+  <div class="container">
+
+<div class="row">
+  <div class="col-md-5">
+    <Br>
+    <Br>
+    <Br>
+  <div class="login-box">
   <div class="login-logo">
   </div>
   <!-- /.login-logo -->
@@ -111,15 +120,37 @@ background-image: url('resources/eternal_bg.jpg');
 
    <br>
    <br>
+    
     <a href="maps?action=public_map&filter=ALL" class="text-center">Public View Map</a>
 
   </div>
   <!-- /.login-box-body -->
   <Br>
+
+    
+  </div>
+
+
+
+</div>
+
+<div class="col-md-7">
+  <Br>
+  <Br>
+  <Br>
+  <Br>
+  <img class="img-responsive img-rounded" src="resources/eternal_new.jpg">
+  <br>
+  <br>
   <p style="color:#fff; font-size:200%;" id="message" class="text-center">This is where special people are cherished 
 and remembered</p>
 </div>
+  </div>
 
+
+
+
+</div>
 </div>
 <!-- /.login-box -->
 

@@ -324,7 +324,7 @@
                 <?php foreach($services as $row): ?>
                   <div class="form-group service_list">
                     <label>
-                      <input type="checkbox" name="service[]" value="<?php echo($row["service_name"]); ?>" data-cost="<?php echo($row["cost"]); ?>" >
+                      <input id="<?php echo($row["service_id"]); ?>" type="checkbox" name="service[]" value="<?php echo($row["service_name"]); ?>" data-cost="<?php echo($row["cost"]); ?>" >
                       <span style="margin-left: 15px;"><?php echo($row["service_name"]); ?>  (<?php echo(to_peso($row["cost"])); ?>)</span>
                     </label>
                   </div>
@@ -334,6 +334,20 @@
                   <input type="text" disabled class="form-control" id="total_cost" placeholder="0">
                 </div>
               
+
+                <script>
+    $(document).ready(function () {
+        $('#Service0001, #Service0002').change(function () {
+            if ($(this).prop('checked')) {
+                // If the checkbox is checked, disable the other checkbox
+                $('#Service0001, #Service0002').not(this).prop('disabled', true);
+            } else {
+                // If the checkbox is unchecked, enable the other checkbox
+                $('#Service0001, #Service0002').prop('disabled', false);
+            }
+        });
+    });
+</script>
               <!-- <div class="form-group">
                 <label>Interment Services to be availed (optional)</label>
                 <select name="services[]" class="form-control select2" multiple data-placeholder="Select Interment Service"
