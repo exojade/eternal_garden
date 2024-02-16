@@ -31,7 +31,9 @@
 
 
 	$notification = query("select n.*,ns.*, 
-	p.client_firstname, p.client_middlename, p.client_lastname, p.email_address, p.client_contact, p.active_status
+	p.client_firstname, p.client_middlename, p.client_lastname, p.email_address, p.client_contact, p.active_status,
+	p.lease_date, p.date_expired
+
 	from notification n left join notification_status ns on 
 		ns.notification_id = n.notification_id
 		left join profile_list p
@@ -67,6 +69,8 @@
 				$toMessage[$i]["date_expired"] = $n["date_expired"];
 				$toMessage[$i]["name"] = $n["client_firstname"] . " " . $n["client_lastname"];
 				$toMessage[$i]["status"] = $n["active_status"];
+				$toMessage[$i]["lease_date"] = $n["lease_date"];
+				$toMessage[$i]["email_address"] = $n["email_address"];
 				$i++;
 				// echo("<br>");
 				// echo($n["profile_id"] . " NAMESSAGEAN NA" . " 6months_date");
@@ -88,6 +92,8 @@
 				$toMessage[$i]["date_expired"] = $n["date_expired"];
 				$toMessage[$i]["name"] = $n["client_firstname"] . " " . $n["client_lastname"];
 				$toMessage[$i]["status"] = $n["active_status"];
+				$toMessage[$i]["lease_date"] = $n["lease_date"];
+				$toMessage[$i]["email_address"] = $n["email_address"];
 				$i++;
 				//code to update notif_status
 			endif;
@@ -108,6 +114,8 @@
 				$toMessage[$i]["date_expired"] = $n["date_expired"];
 				$toMessage[$i]["name"] = $n["client_firstname"] . " " . $n["client_lastname"];
 				$toMessage[$i]["status"] = $n["active_status"];
+				$toMessage[$i]["lease_date"] = $n["lease_date"];
+				$toMessage[$i]["email_address"] = $n["email_address"];
 				$i++;
 				//code to update notif_status
 			endif;
@@ -126,6 +134,8 @@
 				$toMessage[$i]["date_expired"] = $n["date_expired"];
 				$toMessage[$i]["name"] = $n["client_firstname"] . " " . $n["client_lastname"];
 				$toMessage[$i]["status"] = $n["active_status"];
+				$toMessage[$i]["lease_date"] = $n["lease_date"];
+				$toMessage[$i]["email_address"] = $n["email_address"];
 				$i++;
 				//code to update notif_status
 			endif;
@@ -144,6 +154,8 @@
 				$toMessage[$i]["date_expired"] = $n["date_expired"];
 				$toMessage[$i]["name"] = $n["client_firstname"] . " " . $n["client_lastname"];
 				$toMessage[$i]["status"] = $n["active_status"];
+				$toMessage[$i]["lease_date"] = $n["lease_date"];
+				$toMessage[$i]["email_address"] = $n["email_address"];
 				$i++;
 				//code to update notif_status
 			endif;
@@ -162,6 +174,8 @@
 				$toMessage[$i]["date_expired"] = $n["date_expired"];
 				$toMessage[$i]["name"] = $n["client_firstname"] . " " . $n["client_lastname"];
 				$toMessage[$i]["status"] = $n["active_status"];
+				$toMessage[$i]["lease_date"] = $n["lease_date"];
+				$toMessage[$i]["email_address"] = $n["email_address"];
 				$i++;
 				//code to update notif_status
 			endif;
@@ -207,7 +221,63 @@
 		$message.=". The expiry date of your slot is on: " . $row["date_expired"] . ". Please visit the Eternal Garden Cemetery for negotiation. [System Generated Message: Please dont reply!]";
 		// dump($message);
 
+
+
+
+
+			// dump($row);
+			$lease_date = $row["lease_date"];
+			$date_expired = $row["date_expired"];
+			$current_date = date("Y-m-d");
+
+			$lease_start = new DateTime($lease_date);
+			$lease_end = new DateTime($date_expired);
+			$duration = $lease_start->diff($lease_end)->days;
+			$days_passed = $lease_start->diff(new DateTime($current_date))->days;
+			$days_left = $duration - $days_passed;
+
+			$timestamp = strtotime($row["date_expired"]);
+    		$date_expired = date("F d, Y", $timestamp);
+
+			$full_name = $row["name"];
+			$the_message = "Dear Mr./Ms. " . $full_name . ",<br><br>";
+			$the_message .= "We would like to inform you that your allocated crypt, situated at " . $crypt["crypt_name"] . " in Row " . $crypt["row_number"] . " and Column " . $crypt["column_number"] . ", requires your attention.<br><br>";
+			$the_message .= "The crypt lease has its expiration date on " . $date_expired . ", only ".$days_left." days left to settle this concern.<br><br>";
+			$the_message .= "In accordance with our policy, should the lease expire, the remains previously housed in the crypt will be respectfully relocated to our common area. We understand the importance of this matter and will handle the process with the utmost care and respect.<br><br>";
+			$the_message .= "If you have any questions or concerns regarding this matter, please do not hesitate to contact our office.<br><br>";
+			$the_message .= "Sincerely,<br><br>Eternal Garden Cemetery, Panabo City";
+	
+
+			// dump($message);
+
 		
+
+		$ch = curl_init();
+		$parameters = array(
+			'message' => $the_message, //Your API KEY
+			'subject' => "EMAIL CEMETERY",
+			'email_address' => $row["email_address"],
+		);
+		curl_setopt( $ch, CURLOPT_URL,'http://api.panabocity.gov.ph/register_final_data');
+		curl_setopt( $ch, CURLOPT_POST, 1 );
+
+		//Send the parameters set above with the request
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $parameters ) );
+
+		// Receive response from server
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		$output = curl_exec( $ch );
+		curl_close ($ch);
+
+		//Show the server response
+		// echo $output;
+		// dump($output);
+		// dump($output);
+
+
+	
+
+
 
 
 	$ch = curl_init();

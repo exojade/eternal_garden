@@ -1,7 +1,7 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "deceased_datatable"):
-			dump($_REQUEST);
+			// dump($_REQUEST);
 
 			$draw = isset($_POST["draw"]) ? $_POST["draw"] : 1;
             $offset = $_POST["start"];
@@ -34,47 +34,46 @@
 				$Profile[$row["profile_id"]] = $row;
 			endforeach;
 
-			$Deceased = [];
-			$deceased = query("select * from deceased_profile");
-			foreach($deceased as $row):
-				$Deceased[$row["deceased_id"]] = $row;
-			endforeach;
+			// $Deceased = [];
+			// $deceased = query("select * from deceased_profile");
+			// foreach($deceased as $row):
+			// 	$Deceased[$row["deceased_id"]] = $row;
+			// endforeach;
+
+
+			if($search!=""):
+				$where .= " and (deceased_name like '%".$search."%')";
+			endif;
 
 
             // $data = query("select * from tblemployee_dtras");
             if($where != ""):
-                $query_string = "select * from crypt_slot s
-				left join profile_list p
-				on s.occupied_by = p.profile_id
-				left join deceased_profile d
-				on d.profile_id = p.profile_id
+
+				$query_string = "
+				select d.*,s.crypt_slot_type from deceased_profile d
+				left join crypt_slot s
+				on s.slot_id = d.slot_number
 				".$where."
 				limit ".$limit." offset ".$offset." ";
                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("select * from crypt_slot s
-										left join profile_list p
-										on s.occupied_by = p.profile_id
-										left join deceased_profile d
-										on d.profile_id = p.profile_id
-										".$where."
+                $all_data = query("select d.*,s.crypt_slot_type from deceased_profile d
+				left join crypt_slot s
+				on s.slot_id = d.slot_number
+				".$where."
 										");
                 // $all_data = $data;
 				// dump($query_string);
             else:
-                $query_string = "select * from crypt_slot s
-				left join profile_list p
-				on s.occupied_by = p.profile_id
-				left join deceased_profile d
-				on d.profile_id = p.profile_id
+                $query_string = "select d.*,s.crypt_slot_type from deceased_profile d
+				left join crypt_slot s
+				on s.slot_id = d.slot_number
 				limit ".$limit." offset ".$offset." ";
                                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("select * from crypt_slot s
-				left join profile_list p
-				on s.occupied_by = p.profile_id
-				left join deceased_profile d
-				on d.profile_id = p.profile_id");
+                $all_data = query("select d.* from deceased_profile d
+				left join crypt_slot s
+				on s.slot_id = d.slot_number");
 		
                 // $all_data = $data;
             endif;
@@ -95,13 +94,13 @@
 					$data[$i]["deceased"] = $deceased["deceased_firstname"] . " " . $deceased["deceased_lastname"];
 				endif;
 
-				if($row["crypt_slot_type"] == "COMMON"):
-					$deceased = $Deceased[$row["occupied_by"]];
-					$data[$i]["deceased"] = $deceased["deceased_firstname"] . " " . $deceased["deceased_lastname"];
-				endif;
+				// if($row["crypt_slot_type"] == "COMMON"):
+				// 	$deceased = $Deceased[$row["occupied_by"]];
+				// 	$data[$i]["deceased"] = $deceased["deceased_firstname"] . " " . $deceased["deceased_lastname"];
+				// endif;
 
 
-				$location = $Crypt[$row["slot_id"]];
+				$location = $Crypt[$row["slot_number"]];
 				if($location["crypt_type"] == "LAWN"):
 					$data[$i]["location"] = "LAWN : TYPE : ".$location["lawn_type"];
 				elseif($location["crypt_type"] == "COFFIN" || $location["crypt_type"] == "BONE"):
@@ -112,8 +111,12 @@
 						$data[$i]["location"] = $location["crypt_type"] ." : NAME : ".$location["crypt_name"];
 				endif;
 
-				$data[$i]["date"] = $row["burial_date"];
-				$data[$i]["time"] = $row["burial_time"];
+				$data[$i]["death_certificate"] = '
+				<a href="'.$row["death_certificate"].'" target="_blank" class="btn btn-xs btn-primary btn-block">View</a>
+				';
+
+				// $data[$i]["date"] = $row["burial_date"];
+				// $data[$i]["time"] = $row["burial_time"];
 				// dump();	
                 $i++;
             endforeach;
@@ -128,7 +131,8 @@
 
 
 
-
+		elseif($_POST["action"] == "updateClient"):
+			dump($_POST);
 
 
 

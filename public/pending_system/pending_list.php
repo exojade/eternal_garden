@@ -181,6 +181,7 @@ $('.timepicker').timepicker({
       minTime: '8:00am',    // Minimum allowed time
       maxTime: '4:00pm',    // Maximum allowed time
       defaultTime: '8:00am', // Set a default time if needed
+      showInputs: false
     });
 
     // Validate time selection on change

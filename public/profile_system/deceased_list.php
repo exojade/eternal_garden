@@ -22,7 +22,32 @@
     </section>
     <section class="content">
     <div class="box">
-            <!-- /.box-header -->
+            <div class="box-header with-border">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <!-- <label>Select</label> -->
+                    <select id="burialType" class="form-control">
+                      <option value="" selected disabled>Burial Type</option>
+                      <option value="COFFIN">COFFIN</option>
+                      <option value="BONE">BONE</option>
+                      <option value="LAWN">LAWN</option>
+                      <option value="MAUSOLEUM">MAUSOLEUM</option>
+                      <option value="COMMON">COMMON</option>
+                      <option value="ANNEX">ANNEX</option>
+                     
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-2">
+                  <button onclick="filter();" class="btn btn-success btn-block">Filter</button>
+                </div>
+
+
+              </div>
+            
+            </div>
             <div class="box-body">
               <table class="table table-bordered table-striped sample_datatable">
                 <thead>
@@ -72,7 +97,6 @@
 	<script src="AdminLTE/bower_components/fastclick/lib/fastclick.js"></script>
 	<script src="AdminLTE/dist/js/adminlte.min.js"></script>
 	<script src="AdminLTE/dist/js/demo.js"></script>
-  <script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
   <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
   <?php require("public/coffin_crypt/coffin_crypt_js.php"); ?>
 
@@ -109,7 +133,7 @@
                     { data: 'deceased_name', "orderable": false },
                     { data: 'birthdate', "orderable": false  },
                     { data: 'gender', "orderable": false  },
-                    { data: 'date_death', "orderable": false  },
+                    { data: 'date_of_death', "orderable": false  },
                     { data: 'age_died', "orderable": false  },
                     { data: 'location', "orderable": false  },
                     { data: 'client', "orderable": false  },
@@ -118,23 +142,12 @@
             });
 
             function filter() {
-              // alert("new");
            
-            var activeStatusData = $('#active_status').select2('data');
-    
-            var jobType ="";
-            var depId ="";
-            var activeStatus ="";
-
-            if (jobtypeData[0])
-                jobType = jobtypeData[0].id;
-            if (depData[0])
-                depId = depData[0].id;
-            if (activeStatusData[0])
-                activeStatus = activeStatusData[0].id;
+              var burialType = $("#burialType").val();
+            
         
             // else{
-            datatable.ajax.url('employees?action=datatable&jobType=' + jobType + '&depId=' + depId + '&activeStatus=' + activeStatus).load();
+            datatable.ajax.url('profile?action=deceased_datatable&burial_space=' + burialType).load();
             // }
         }
 
