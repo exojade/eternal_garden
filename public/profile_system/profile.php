@@ -132,7 +132,128 @@
 
 
 		elseif($_POST["action"] == "updateClient"):
-			dump($_POST);
+			// dump($_POST);
+
+			query("update profile_list set
+				client_firstname = ?,
+				client_middlename = ?,
+				client_lastname = ?,
+				client_contact = ?,
+				email_address = ?,
+				province = ?,
+				city_municipality = ?,
+				barangay = ?,
+				id_presented = ?,
+				id_number = ?,
+				place_issued = ?
+				where profile_id = ?
+			",
+				$_POST["client_firstname"],
+				$_POST["client_middlename"],
+				$_POST["client_lastname"],
+				$_POST["client_contact"],
+				$_POST["email_address"],
+				$_POST["province"],
+				$_POST["city_mun"],
+				$_POST["barangay"],
+				$_POST["id_presented"],
+				$_POST["id_number"],
+				$_POST["place_issued"],
+				$_POST["profile_id"]
+		);
+
+
+
+			$fullname = strtoupper($_POST["client_lastname"] . "_" . $_POST["client_firstname"] . "_" . $_POST["client_middlename"]);
+			$fullname = str_replace(' ', '_', $fullname);
+			$target_pdf = "uploads/" . $_POST["profile_id"]."/";
+			if (!file_exists($target_pdf )) {
+				mkdir($target_pdf , 0777, true);
+			}
+
+			if($_FILES["certificate_indigency"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["certificate_indigency"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "INDIGENCY" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['certificate_indigency']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set certificate_indigency = '".$target."'
+					where profile_id = '".$profile_id."'");
+			endif;
+
+			if($_FILES["valid_id"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["valid_id"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "ID" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['valid_id']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set valid_id = '".$target."'
+					where profile_id = '".$profile_id."'");
+			endif;
+
+			if($_FILES["picture"]["size"] != 0):
+				$path_parts = pathinfo($_FILES["picture"]["name"]);
+				$extension = $path_parts['extension'];
+				$target = $target_pdf . "PICTURE" . "." . $extension;
+                    if(!move_uploaded_file($_FILES['picture']['tmp_name'], $target)){
+                        echo("FAMILY Do not have upload files");
+                        exit();
+                    }
+			query("update profile_list set picture = '".$target."'
+					where profile_id = '".$profile_id."'");
+			endif;
+
+
+
+			
+			if(isset($_POST["lease_date"])):
+				$t = strtotime($_POST["lease_date"]);
+				$lease_expired = date('Y-m-d', strtotime('+5 years', $t));
+				$notif_id = query("select * from notification where profile_id = ?", $_POST["profile_id"]);
+				query("delete from notification_status where notification_id = ?", $notif_id[0]["notification_id"]);
+				query("delete from notification where notification_id = ?", $notif_id[0]["notification_id"]);
+
+				query("update profile_list set lease_date = ?, date_expired = ? where
+							profile_id = ?", $_POST["lease_date"], $lease_expired, $_POST["profile_id"]);
+
+				$notification_id = create_uuid("NOTIF");
+				$one_year_before = date('Y-m-d', strtotime('-1 year', strtotime($lease_expired)));
+				$six_months_before = date('Y-m-d', strtotime('-6 months', strtotime($lease_expired)));
+				$three_months_before = date('Y-m-d', strtotime('-3 months', strtotime($lease_expired)));
+				$one_month_before = date('Y-m-d', strtotime('-1 month', strtotime($lease_expired)));
+				$one_week_before = date('Y-m-d', strtotime('-1 week', strtotime($lease_expired)));
+				$one_day_before = date('Y-m-d', strtotime('-1 day', strtotime($lease_expired)));
+				if (query("insert into notification 
+				(
+					notification_id, profile_id, slot_id,
+					year_date,6months_date,3months_date,month_date,
+					week_date,day_before_date,date_expired
+				) 
+				VALUES(?,?,?,?,?,?,?,?,?,?)",
+				$notification_id, $_POST["profile_id"], $_POST["slot_number"],
+				$one_year_before,$six_months_before,$three_months_before,$one_month_before,
+				$one_week_before,$one_day_before,$lease_expired) === false)
+				{
+					apologize("Sorry, that username has already been taken!");
+				}
+				else;
+			endif;
+
+
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on adding Data",
+				"link" => "profile?action=client_details&slot=".$_POST["slot_number"],
+				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+				];
+				echo json_encode($res_arr); exit();
+
+
 
 
 

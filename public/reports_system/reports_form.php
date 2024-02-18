@@ -19,7 +19,7 @@
 
   <section class="content-header">
       <h1>
-        Records
+        Reports
       </h1>
     </section>
     <section class="content">

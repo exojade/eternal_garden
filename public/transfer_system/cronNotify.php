@@ -277,7 +277,7 @@
 
 	
 
-
+		notificationLogs($row["profile_id"], $the_message, "System sent an email to " . $row["email_address"] . "<br>Type: " . $row["type"], "EMAIL", $row["slot_id"]);
 
 
 	$ch = curl_init();
@@ -300,6 +300,7 @@
 
 	//Show the server response
 	echo $output;
+	notificationLogs($row["profile_id"], $message, "System sent an SMS to " . $row["contact"]  . "<br>Type: " . $row["type"], "SMS", $row["slot_id"]);
 	endforeach;
 
 ?>

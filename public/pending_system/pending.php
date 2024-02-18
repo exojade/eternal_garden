@@ -1,15 +1,16 @@
 <?php
     if($_SERVER["REQUEST_METHOD"] === "POST") {
 		if($_POST["action"] == "add_schedule"):
-			// dump($_POST);
-
+		
+			
 
 			$selectedDate = $_POST["deceased_burial_date"];
     		$selectedTime = $_POST["deceased_burial_time"];
 			$dateTime = new DateTime($selectedDate . ' ' . $selectedTime);
+			
 
-			$minTime = new DateTime('08:00:00');
-    		$maxTime = new DateTime('16:00:00');
+			$minTime = new DateTime($selectedDate . ' ' .'08:00:00');
+    		$maxTime = new DateTime($selectedDate . ' ' .'16:00:00');
 
 			if ($dateTime < $minTime || $dateTime > $maxTime) {
 				$res_arr = [
@@ -23,7 +24,6 @@
 			}
 
 			// dump("payts");
-
 
 
 			$for_schedule = query("select * from burial_schedule where schedule_id = ?",$_POST["schedule_id"]);

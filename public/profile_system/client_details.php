@@ -335,9 +335,11 @@
               <form class="generic_form_trigger" autocomplete="off" data-url="profile">
               <div class="modal-body">
                 <input type="hidden" name="action" value="updateClient">
+                <input type="hidden" name="profile_id" value="<?php echo($client["profile_id"]); ?>">
+                <input type="hidden" name="slot_number" value="<?php echo($client["slot_number"]); ?>">
                 <input type="hidden" value="<?php echo($client["province"]); ?>" name="province" id="update_true_province" value="">
-                <input type="hidden" name="city_mun" id="update_true_city_mun" value="">
-                <input type="hidden" name="barangay" id="update_true_barangay" value="">
+                <input type="hidden" value="<?php echo($client["city_municipality"]) ?>" name="city_mun" id="update_true_city_mun" >
+                <input type="hidden" value="<?php echo($client["barangay"]) ?>" name="barangay" id="update_true_barangay" value="">
 
               
               
@@ -443,7 +445,7 @@
                   <div class="form-group">
                       <label for="exampleInputFile">Valid ID <span class="color-red"><b>*</b></span></label>
                       <br><a target="_blank" href="<?php echo($client["valid_id"]); ?>">View Existing File</a>
-                      <input name="valid_id" required type="file" accept=".pdf, image/*" id="exampleInputFile">
+                      <input name="valid_id"  type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Take a photo of the valid ID and upload it here. </p>
                   </div>
                 </div>
@@ -451,7 +453,7 @@
                   <div class="form-group">
                       <label for="exampleInputFile">2 x 2 ID <span class="color-red"><b>*</b></span></label>
                       <br><a target="_blank" href="<?php echo($client["picture"]); ?>">View Existing File</a>
-                      <input name="picture" required type="file" accept=".pdf, image/*" id="exampleInputFile">
+                      <input name="picture"  type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Upload softcopy</p>
                   </div>
                 </div>
@@ -852,7 +854,7 @@ $('#barangay_select').change(function(){
 var all_province = Philippines.sort(Philippines.provinces,"A");
     html = "<option value='' disabled selected>Select Province</option>";
 
-    <?php if($client["province"] != ""): ?>
+    <?php if(isset($client["province"])): ?>
       html = "<option value='<?php echo($client["province"]); ?>' selected><?php echo($client["province"]); ?></option>";
     <?php else: ?>
       html = "<option value='' disabled selected></option>";

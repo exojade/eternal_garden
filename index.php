@@ -69,6 +69,12 @@
 				else if ($request == 'logout')
 					require 'logout.php';
 
+				else if($request == "settings")
+					require 'public/settings_system/settings.php';
+
+				else if($request == "notification")
+					require 'public/notification_system/notification.php';
+
 
 		
 

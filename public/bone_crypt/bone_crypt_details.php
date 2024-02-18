@@ -153,6 +153,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+              <div class="table-responsive">
               <table class="table table-bordered table-striped">
                 <tbody>
                 <?php 
@@ -184,6 +185,7 @@
                 </tbody>
                 </tfoot>
               </table>
+            </div>
             </div>
             <!-- /.box-body -->
           </div>

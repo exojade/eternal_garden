@@ -11,7 +11,14 @@
      * to browser.
      */
 
-
+    function notificationLogs($profile_id, $message, $logs, $type, $crypt_slot_number){
+        if (query("insert INTO notification_logs (type, profile_id, logs, message, date, time, timestamp, crypt_slot) 
+        VALUES(?,?,?,?,?,?,?,?)", 
+        $type, $profile_id, $logs, $message, date("Y-m-d"), date("h:i:s a"), time(), $crypt_slot_number) === false)
+            {
+                dump("Sorry, that username has already been taken!");
+            }
+    }
      function convertDateFormat($inputDate) {
         // Create a DateTime object from the input date
         $dateTime = DateTime::createFromFormat('Y-m-d', $inputDate);
