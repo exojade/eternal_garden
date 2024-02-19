@@ -67,6 +67,23 @@
               </div>
               </div>
               <div class="col-md-3">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>From:</label>
+                        <input name="burial_from" id="burial_from" type="date" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                  <div class="form-group">
+                      <label>To:</label>
+                        <input name="burial_to" id="burial_to" type="date" class="form-control">
+                    </div>
+                    
+                  </div>
+                </div>
+
+<!-- 
               <div class="form-group">
                 <label>Burial Ddate:</label>
 
@@ -76,8 +93,7 @@
                   </div>
                   <input name="burial_date" type="text" class="form-control pull-right" id="reservation">
                 </div>
-                <!-- /.input group -->
-              </div>
+              </div> -->
               </div>
               <div class="col-md-3">
               <div class="form-group">
@@ -209,9 +225,10 @@
               var deceased_id = $('#deceased_id').val();
               var transaction_type = $('#transaction_type').val();
               var burial_space = $('#burial_space_id').val();
-              var burial_date = $('#reservation').val();
+              var burial_from = $('#burial_from').val();
+              var burial_to = $('#burial_to').val();
               
-              datatable.ajax.url('reports?action=reports-datatable&burial_space='+burial_space+'&client='+client_id+'&deceased_id='+deceased_id+'&burial_date='+burial_date).load();
+              datatable.ajax.url('reports?action=reports-datatable&burial_space='+burial_space+'&client='+client_id+'&deceased_id='+deceased_id+'&burial_from='+burial_from+'&burial_to='+burial_to).load();
           }
 
 

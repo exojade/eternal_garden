@@ -10,7 +10,9 @@
 
   
   </style>
-
+<?php 
+// dump($slot);
+?>
 
 <div class="modal fade" id="modal_add_deceased">
           <div class="modal-dialog modal-lg">
@@ -320,7 +322,14 @@
                   </div>
                 <?php endif; ?>
 
-                <?php $services = query("select * from services"); ?>
+                <?php
+                  if($slot["crypt_slot_type"] == "LAWN"):
+                    $services = query("select * from services"); 
+                  else:
+                    $services = query("select * from services where type = 'ALL'");
+                  endif;
+                
+                ?>
                 <?php foreach($services as $row): ?>
                   <div class="form-group service_list">
                     <label>
@@ -464,7 +473,9 @@ $progress_percentage = 0;
               </div>
     <?php endif; ?>
 
-
+<?php
+// dump(get_defined_vars());
+?>
 <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
               <li class="active"><a href="#activity" data-toggle="tab">Deceased Information</a></li>
@@ -472,7 +483,23 @@ $progress_percentage = 0;
             </ul>
             <div class="tab-content">
               <div class="active tab-pane" id="activity">
-                <a href="#" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal_add_deceased">Add New Deceased Profile</a>
+              <?php
+              // dump($slot);
+              if($slot["crypt_slot_type"] == "COFFIN"):
+                $deceased = query("select * from deceased_profile where slot_number = ? and active_status is null", $slot["slot_id"]);
+                // dump($deceased);
+                if(empty($deceased)):
+                  ?>
+                  <a href="#" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal_add_deceased">Add New Deceased Profile</a>
+                  <?php
+
+                endif;
+              else: ?>
+<a href="#" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal_add_deceased">Add New Deceased Profile</a>
+              <?php
+              endif;  
+              ?>
+                
                 <br>
                 <br>
                <table class="table table-bordered sample_datatable">

@@ -192,14 +192,294 @@
 
 		if($_POST["action"] == "print_pdf"):
 				// dump($_POST);
-				$base_url = the_base_url();
-				$options = urlencode(serialize($_POST));
-                $webpath = $base_url . "/eternal_garden/sales?action=print_pdf&options=".$options;
-                $filename = "SALES";
-				$path = "resources/sales/".$filename.".pdf";
-				$exec = '"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe" -O portrait --image-dpi 300 "'.$webpath.'" '.$path.'';
-				// dump($webpath);
-				exec($exec);
+
+
+				
+				
+$where = " where total_fee != ''  ";
+
+
+if(isset($_POST["profile"])):
+  if($_POST["profile"] != "")
+      $where = $where . " and profile_id = '" . $_POST["profile"] . "'";
+endif;
+
+
+if(isset($_POST["from"])):
+  if($_POST["from"] != "")
+      $where = $where . " and date >= '" . $_POST["from"] . "'";
+endif;
+
+if(isset($_POST["to"])):
+  if($_POST["to"] != "")
+      $where = $where . " and date <= '" . $_POST["to"] . "'";
+endif;
+
+
+$crypt = query("select * from crypt_slot s
+							left join crypt_list c
+							on c.crypt_id = s.crypt_id");
+            $Crypt = [];
+            foreach($crypt as $row):
+                $Crypt[$row["slot_id"]] = $row;
+            endforeach;
+
+			$Profile = [];
+			$profile = query("select * from profile_list");
+			foreach($profile as $row):
+				$Profile[$row["profile_id"]] = $row;
+			endforeach;
+
+			$Deceased = [];
+			$deceased = query("select * from deceased_profile");
+			foreach($deceased as $row):
+				$Deceased[$row["deceased_id"]] = $row;
+			endforeach;
+
+			$Deceased_Transaction = [];
+			$deceased_transaction = query("select * from deceased_transaction");
+			foreach($deceased_transaction as $row):
+				$Deceased_Transaction[$row["transaction_id"]][$row["deceased_id"]] = $row;
+			endforeach;
+
+
+        if($where != ""):
+          $query_string = "SELECT * FROM TRANSACTION t  ".$where."
+          ORDER BY t.timestamp DESC";
+          $data = query($query_string);
+        else:
+            $query_string = "SELECT * FROM TRANSACTION t ".$where."
+            ORDER BY t.timestamp DESC";
+            $data = query($query_string);
+        endif;
+
+
+		
+
+		$mpdf = new \Mpdf\Mpdf([
+			'mode' => 'utf-8', 'format' => 'FOLIO-P',
+			'margin_top' => 15,
+			'margin_left' => 5,
+			'margin_right' => 5,
+			'margin_bottom' => 5,
+			'margin_footer' => 1,
+			'default_font' => 'helvetica'
+		]);
+	
+	   $mpdf->showImageErrors = true;
+	
+	   $html = <<< EOD
+											<style>
+												.p-2 {
+													padding: 3px;
+												}
+												.u {
+													border-bottom: 1px solid black;
+												}
+												.nw {
+													white-space:nowrap;
+												}
+												.w {
+													width: 250;
+												}
+												th,td {
+													font-size: 10px;
+												}
+												.tbl {
+													width: 100%;
+													border-collapse: collapse;
+												}
+												.tbl tr th {
+													border: 1px inset grey;
+												}
+												.tbl tr td {
+													border: 1px inset grey;
+													padding: 3px;
+												}
+												.center {
+													text-align: center;
+												}
+												.grey {
+													background-color: lightgrey;
+												}
+											</style>
+											
+											<htmlpagefooter name="myFooter2">
+												<table width="100%" style="border: none; font-size: 9px; font-weight: bold; font-style: italic;">
+													<tr><td colspan="3" class="u"></td></tr>
+													<tr>
+														<td width="33%">Printed on {DATE F d, Y}</td>
+														<td width="33%"></td>
+														<td width="33%" style="text-align:right;">Page {PAGENO} of {nbpg}</td>
+													</tr>
+												</table>
+											</htmlpagefooter>
+											<sethtmlpagefooter name="myFooter2" value="on" force="1" />
+											<div style="position: fixed; left: 175px; top: 1px;">
+												<img src="./resources/logo.png" width="60">
+											</div>
+											<div style="text-align:center; width: 100%;">
+												<p>City Economic Enterprise Management <br>
+												and Development Office <br>
+												CEEMDO - CEMETERY</p>
+											</div>
+											<h4 style="text-align: center; padding: 0px; margin: 0px;">SALES REPORT</h4>
+											
+											<table class="tbl">
+												<tr class="grey">
+													<th>Client</th>
+													<th>Location</th>
+													<th>Type</th>
+													<th>Date</th>
+													<th>Time</th>
+													<th>Fee</th>
+												</tr>
+											EOD;
+	
+											$i = 0;
+											$grand_total_fee = 0;
+											foreach ($data as $row) {
+												$i++;
+												$grand_total_fee = $grand_total_fee + $row["total_fee"];
+
+												$client = "";
+												if(isset($Profile[$row["profile_id"]])):
+													$profile = $Profile[$row["profile_id"]];
+													$client = $profile["client_firstname"] . " " . $profile["client_lastname"];
+												endif;
+												$client = strtoupper($client);
+
+
+												$location = $Crypt[$row["slot_id"]];
+												if($location["crypt_type"] == "LAWN"):
+													$the_location = "LAWN : TYPE : ".$location["lawn_type"];
+												elseif($location["crypt_type"] == "COFFIN" || $location["crypt_type"] == "BONE"):
+													$the_location = $location["crypt_type"] ." : NAME : ".$location["crypt_name"] . " : ROW : " . $location["row_number"] . " : COLUMN : " . $location["column_number"];
+												elseif($location["crypt_type"] == "COMMON"):
+													$the_location = $location["crypt_type"] ." : NAME : ".$location["crypt_name"];
+												endif;
+
+												$total_fee = to_peso($row["total_fee"]);
+											
+												$html .= <<< EOD
+												<tr>
+													<td>$client</td>
+													<td>$the_location</td>
+													<td>$row[transaction_type]</td>
+													<td>$row[date]</td>
+													<td>$row[time]</td>
+													<td style="text-align: right; float:right;">$total_fee</td>
+												</tr>
+											EOD;
+	
+											if($i == 34):
+	
+	
+												$html .= <<< EOD
+												<tr>
+													<td  colspan="6" class="center grey">************************************************* NEXT PAGE *************************************************</td>
+												</tr>
+											</table>
+	
+										
+	
+
+	
+	EOD;
+	
+	
+	
+	
+	
+	$mpdf->WriteHTML($html);
+	$mpdf->AddPage();
+	
+	$html = <<< EOD
+	<div style="position: fixed; left: 175px; top: 1px;">
+												<img src="./resources/logo.png" width="60">
+											</div>
+											<div style="text-align:center; width: 100%;">
+												<p>City Economic Enterprise Management <br>
+												and Development Office <br>
+												CEEMDO - CEMETERY</p>
+											</div>
+											<h4 style="text-align: center; padding: 0px; margin: 0px;">SALES REPORT</h4>
+
+	
+	
+	<table class="tbl">
+
+	EOD;
+	
+	// $mpdf->WriteHTML($html);
+	
+											endif;
+	// continue;
+											// break;
+											}
+
+											$grand_total_fee = to_peso($grand_total_fee);
+
+											$html .= <<< EOD
+												<tr>
+													<td  colspan="6" class="center grey">************************************************* nothing follows *************************************************</td>
+												</tr>
+											</table>
+											<table width="100%" style="padding-top: 20px;">
+	<tr><td colspan="2" class="center"></td></tr>
+	<tr>
+		<td></td>
+		<td class="center nw" width="50%"><strong></strong></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td class="center nw" width="50%"></td>
+	</tr>
+	
+	</table>
+	
+	
+	<table width="100%" style="padding-top: 5px;">
+	<tr ><td><h3 style="text-align:right; float: right;">
+	Total: $grand_total_fee</h3>
+	</td></tr>
+	
+	</table>
+	
+	EOD;
+											
+												// dump($html);
+	
+											$mpdf->WriteHTML($html);
+	
+											$mpdf->Output("resources/sales/sales.pdf", \Mpdf\Output\Destination::FILE);
+	
+			$res_arr = [
+						"result" => "success",
+						"title" => "Success",
+						"message" => "Success",
+						"link" => "resources/sales/sales.pdf",
+						"newlink" => "newlink",
+						];
+						echo json_encode($res_arr); exit();
+
+
+
+
+
+
+
+
+
+
+				// $base_url = the_base_url();
+				// $options = urlencode(serialize($_POST));
+                // $webpath = $base_url . "/eternal_garden/sales?action=print_pdf&options=".$options;
+                // $filename = "SALES";
+				// $path = "resources/sales/".$filename.".pdf";
+				// $exec = '"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe" -O portrait --image-dpi 300 "'.$webpath.'" '.$path.'';
+				// // dump($webpath);
+				// exec($exec);
 				$res_arr = [
 					"result" => "success",
 					"title" => "Success",
