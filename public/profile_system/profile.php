@@ -988,29 +988,31 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 				endforeach;
 				
 				
+				$status = "FOR SCHEDULING";
+				$update_query = "update deceased_profile set burial_status = 'FOR SCHEDULING', transaction_id = '".$transaction_id."' where 
+				slot_number = '".$_POST["slot_number"]."' and burial_status = 'NO BURIAL DATE'";
 
-
-
-				if($_POST["deceased_burial_date"] == ""):
-					$status = "FOR SCHEDULING";
-					$update_query = "update deceased_profile set burial_status = 'FOR SCHEDULING', transaction_id = '".$transaction_id."' where 
-					slot_number = '".$_POST["slot_number"]."' and burial_status = 'NO BURIAL DATE'";
-				else:
-					if($_POST["deceased_burial_time"] == ""):
-						$res_arr = [
-							"result" => "failed",
-							"title" => "Failed",
-							"message" => "Burial Time is required if Burial Date is not blank!",
-							];
-							echo json_encode($res_arr); exit();
-					else:
-						$status = "PENDING";
-						$burial_date = $_POST["deceased_burial_date"];
-						$burial_time = $_POST["deceased_burial_time"];
-						$update_query = "update deceased_profile set burial_status = 'PENDING', transaction_id = '".$transaction_id."' where 
-						slot_number = '".$_POST["slot_number"]."' and burial_status = 'NO BURIAL DATE'";
-					endif;
-				endif;
+			
+				// if($_POST["deceased_burial_date"] == ""):
+				// 	$status = "FOR SCHEDULING";
+				// 	$update_query = "update deceased_profile set burial_status = 'FOR SCHEDULING', transaction_id = '".$transaction_id."' where 
+				// 	slot_number = '".$_POST["slot_number"]."' and burial_status = 'NO BURIAL DATE'";
+				// else:
+				// 	if($_POST["deceased_burial_time"] == ""):
+				// 		$res_arr = [
+				// 			"result" => "failed",
+				// 			"title" => "Failed",
+				// 			"message" => "Burial Time is required if Burial Date is not blank!",
+				// 			];
+				// 			echo json_encode($res_arr); exit();
+				// 	else:
+				// 		$status = "PENDING";
+				// 		$burial_date = $_POST["deceased_burial_date"];
+				// 		$burial_time = $_POST["deceased_burial_time"];
+				// 		$update_query = "update deceased_profile set burial_status = 'PENDING', transaction_id = '".$transaction_id."' where 
+				// 		slot_number = '".$_POST["slot_number"]."' and burial_status = 'NO BURIAL DATE'";
+				// 	endif;
+				// endif;
 
 				$schedule_id = create_uuid("SCHED");
 				if (query("insert into burial_schedule 
@@ -1078,7 +1080,8 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 					echo json_encode($res_arr); exit();
 
 		elseif($_POST["action"] == "vacate"):
-			$deceased = query("select count(*) as count from deceased_profile where slot_number = ?", $_POST["slot_id"]);
+			// $deceased = query("select count(*) as count from deceased_profile where slot_number = ?", $_POST["slot_id"]);
+			$deceased = query("select count(*) as count from deceased_profile where slot_number = ? and active_status is null", $_POST["slot_id"]);
 			// dump($deceased);
 			$count = $deceased[0]["count"];
 			if($count != 0):

@@ -49,24 +49,24 @@
 
             // $data = query("select * from tblemployee_dtras");
             if($where != ""):
-                $query_string = "SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
+                $query_string = "SELECT t.*,d.deceased_id FROM transaction t LEFT JOIN
 				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
 				ORDER BY t.timestamp DESC
 				limit ".$limit." offset ".$offset." ";
                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
+                $all_data = query("SELECT t.*,d.deceased_id FROM transaction t LEFT JOIN
 				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
 				ORDER BY t.timestamp DESC");
                 // $all_data = $data;
             else:
-                $query_string = "SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
+                $query_string = "SELECT t.*,d.deceased_id FROM transaction t LEFT JOIN
 				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
 				ORDER BY t.timestamp DESC
 				limit ".$limit." offset ".$offset." ";
                                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("SELECT t.*,d.deceased_id FROM TRANSACTION t LEFT JOIN
+                $all_data = query("SELECT t.*,d.deceased_id FROM transaction t LEFT JOIN
 				deceased_transaction d ON d.transaction_id = t.transaction_id  ".$where."
 				ORDER BY t.timestamp DESC");
                 // $all_data = $data;

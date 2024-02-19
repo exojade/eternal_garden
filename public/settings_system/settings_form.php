@@ -31,7 +31,7 @@
         <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">LAWN PRICES</h3>
-          <span style="float:right;"><a class="btn btn-info btn">Add Lawn</a></span>
+          <!-- <span style="float:right;"><a class="btn btn-info btn">Add Lawn</a></span> -->
         </div>
         <div class="box-body">
           <?php $pricing_lawn = query("select * from pricing_lawn"); ?>
@@ -110,7 +110,7 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">SERVICES PRICE</h3>
-          <span style="float:right;"><a class="btn btn-info btn">Add Service</a></span>
+          <!-- <span style="float:right;"><a class="btn btn-info btn">Add Service</a></span> -->
         </div>
         <div class="box-body">
           <?php $services = query("select * from services"); ?>

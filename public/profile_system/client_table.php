@@ -366,7 +366,7 @@
                   <option value="Tents and Chairs Rental">Tents and Chairs Rental</option>
                 </select>
               </div> -->
-              <div class="row">
+              <!-- <div class="row">
                   <div class="col-md-6">
 
                   <div class="bootstrap-timepicker">
@@ -395,7 +395,7 @@
                       </div>
                     </div>
                   </div>
-              </div>
+              </div> -->
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

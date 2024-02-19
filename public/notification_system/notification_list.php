@@ -36,11 +36,12 @@
           <?php $notification = query("select logs.*, p.client_firstname, p.client_lastname from notification_logs logs
                                       left join profile_list p
                                       on p.profile_id = logs.profile_id
-                                      order by timestamp desc
+                                      order by logs.timestamp desc
                                         "); ?>
           <table class="table table-bordered" id="datatable">
             <thead>
               <th>Date</th>
+              <th>Timestamp</th>
               <th>Time</th>
               <th>Type</th>
               <th>Profile</th>
@@ -52,6 +53,7 @@
               <?php foreach($notification as $row): ?>
                 <tr>
                   <td><?php echo($row["date"]); ?></td>
+                  <td><?php echo($row["timestamp"]); ?></td>
                   <td><?php echo($row["time"]); ?></td>
                   <td><?php echo($row["type"]); ?></td>
                   <td><?php echo($row["client_firstname"] . " " . $row["client_lastname"]); ?></td>
@@ -123,9 +125,13 @@
 
 
     $(function () {
-    $('#datatable').DataTable()
-   
-  })
+        $('#datatable').DataTable({
+            "order": [[1, "desc"]], // 1 is the index of the second column in the table (Time)
+            "columnDefs": [
+                { "visible": false, "targets": 1 } // Hide the first column (Date)
+            ]
+        });
+    });
   </script>
 
 

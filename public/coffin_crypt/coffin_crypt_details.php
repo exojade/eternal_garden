@@ -20,9 +20,11 @@
   <div class="content-wrapper">
 
   <section class="content-header">
-      <h1>
-        Coffin Crypt List
-      <!-- <a class="btn btn-primary pull-right btn-flat" data-toggle="modal" data-target="#modal_add_client">Add Crypt</a> -->
+  <h1>
+        Coffin Crypt Details
+        <button class="pull-right btn btn-flat btn-primary">VACANT</button>
+        <button class="pull-right btn btn-flat btn-danger">OCCUPIED</button>
+        <span class="pull-right" style="margin-right: 20px;">Legends:</span>
       </h1>
     </section>
     <section class="content">
@@ -177,7 +179,7 @@
 
 <!-- <td><a data-id="<?php echo($crypt_slots[$x]["slot_id"]); ?>" data-toggle="modal" data-target="#modal_add_client" href="#" class="btn btn-primary btn-block btn-flat open_modal"><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td> -->
 <?php elseif($crypt_slots[$x]["active_status"] == "OCCUPIED"): ?>
-<td><a href="profile?action=details&id="<?php echo($crypt_slots[$x]["slot_id"]); ?> href="#" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
+<td><a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" href="#" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
                     <?php endif; ?>
                     <?php $x++; ?>
                   <?php endfor; ?>

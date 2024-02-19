@@ -52,21 +52,21 @@
 
             // $data = query("select * from tblemployee_dtras");
             if($where != ""):
-                $query_string = "SELECT * FROM TRANSACTION t  ".$where."
+                $query_string = "SELECT * FROM transaction t  ".$where."
 				ORDER BY t.timestamp DESC
 				limit ".$limit." offset ".$offset." ";
                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("SELECT * FROM TRANSACTION t ".$where."
+                $all_data = query("SELECT * FROM transaction t ".$where."
 				ORDER BY t.timestamp DESC");
                 // $all_data = $data;
             else:
-                $query_string = "SELECT * FROM TRANSACTION t ".$where."
+                $query_string = "SELECT * FROM transaction t ".$where."
 				ORDER BY t.timestamp DESC
 				limit ".$limit." offset ".$offset." ";
                                 // dump($query_string);
                 $data = query($query_string);
-                $all_data = query("SELECT * FROM TRANSACTION t ".$where."
+                $all_data = query("SELECT * FROM transaction t ".$where."
 				ORDER BY t.timestamp DESC");
                 // $all_data = $data;
             endif;
@@ -244,11 +244,11 @@ $crypt = query("select * from crypt_slot s
 
 
         if($where != ""):
-          $query_string = "SELECT * FROM TRANSACTION t  ".$where."
+          $query_string = "SELECT * FROM transaction t  ".$where."
           ORDER BY t.timestamp DESC";
           $data = query($query_string);
         else:
-            $query_string = "SELECT * FROM TRANSACTION t ".$where."
+            $query_string = "SELECT * FROM transaction t ".$where."
             ORDER BY t.timestamp DESC";
             $data = query($query_string);
         endif;

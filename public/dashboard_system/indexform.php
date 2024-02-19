@@ -193,7 +193,7 @@
 <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
 <script src="AdminLTE/bower_components/morris.js/morris.min.js"></script>
 <script src="AdminLTE/bower_components/raphael/raphael.min.js"></script>
-<script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
+<script src="AdminLTE/bower_components/chart.js/Chart.js"></script>
 
 
   <script>
