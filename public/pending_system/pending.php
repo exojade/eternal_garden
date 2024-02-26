@@ -47,11 +47,21 @@
 		endif;
     }
 	else {
-		$for_schedule = query("select *,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name,
-		bs.services_availed as services_availed from burial_schedule bs
-								left join profile_list profile
-								on bs.profile_id = profile.profile_id
-								where remarks = 'FOR SCHEDULING' order by date asc, time asc");
+
+		$for_schedule = query("select bs.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name,
+									t.services as services_availed
+									from 
+									burial_schedule bs left join profile_list profile
+									on bs.profile_id = profile.profile_id
+									left join transaction t
+									on bs.transaction_id = t.transaction_id
+									where remarks = 'FOR SCHEDULING' order by date asc, time asc");
+
+		// $for_schedule = query("select *,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name,
+		// bs.services_availed as services_availed from burial_schedule bs
+		// 						left join profile_list profile
+		// 						on bs.profile_id = profile.profile_id
+		// 						where remarks = 'FOR SCHEDULING' order by date asc, time asc");
 								// dump($for_schedule);
 		if($_GET["action"] == "list"){
 			render("public/pending_system/pending_list.php",

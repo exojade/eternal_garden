@@ -320,6 +320,20 @@ $deceased_profile = query("select d.*, slot.crypt_id, slot.row_number, slot.colu
                             left join crypt_slot slot
                             on slot.slot_id = d.slot_number
 ");
+$DeceasedClients = [];
+$deceasedClients = query("select * from deceased_profile");
+foreach($deceasedClients as $row):
+    $DeceasedClients[$row["profile_id"]][$row["deceased_id"]] = $row;
+endforeach;
+
+$allDeceased = [];
+foreach($deceasedClients as $row):
+    $allDeceased[$row["deceased_id"]] = $row;
+endforeach;
+
+// dump($DeceasedClients);
+
+
 // dump($deceased_profile);
 $Deceased = [];
 $Deceased2 = [];
@@ -362,6 +376,7 @@ endforeach;
 						if($c["occupied_by"] != "")
 							$Crypt_slot[$c["crypt_id"]][$c["occupied_by"]] = $c;
 					endforeach;
+        
               
         ?>
         <script>
@@ -371,10 +386,12 @@ endforeach;
             "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
             "features": [
                 <?php
+                // dump($Cryptss);
                     foreach($result as $row){
                         if(!isset($Cryptss[$row["coordinates"]])):
-                        if(isset($Deceased[$row["slot_id"]])):
-                            $deceased = $Deceased[$row["slot_id"]];
+                            // dump($result);
+                        if($row["active_status"] == "OCCUPIED"):
+                            // dump($row);
                             $trim = str_replace('""', '', $row['coordinates']);
                             $location = $row["lawn_type"];
                             echo '{ "type": "Feature", "properties": { ';
@@ -386,8 +403,7 @@ endforeach;
                                 echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
-                                
-                            foreach($deceased as $d):
+                            foreach($DeceasedClients[$row["occupied_by"]] as $d):
                                 $location = $row["lawn_type"];
                                 $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
@@ -400,9 +416,8 @@ endforeach;
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
                             endforeach;
-                        else:
-                        // if($row["crypt_id"] == "CRYPT-796caa375ef68-230525"):
 
+                        else:
                             $trim = str_replace('""', '', $row['coordinates']);
                                 echo '{ "type": "Feature", "properties": { ';
                                 echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
@@ -416,7 +431,9 @@ endforeach;
                                 echo '"slot_number": "'.$row['slot_id'].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+
                         endif;
+                       
                         endif;
                         // endif;
                     }

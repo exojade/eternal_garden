@@ -1,3 +1,5 @@
+  
+  <script src="AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
   <footer class="main-footer no-print">
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.0
@@ -318,7 +320,7 @@
                 },
                 error: function(results) {
                     console.log(results);
-                    swal("Error!", "Unexpected error occur!", "error");
+                    swal("Error!", "Unexpected error occured!", "error");
                 }
             });
         }

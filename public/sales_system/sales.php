@@ -372,48 +372,7 @@ $crypt = query("select * from crypt_slot s
 												</tr>
 											EOD;
 	
-											if($i == 34):
-	
-	
-												$html .= <<< EOD
-												<tr>
-													<td  colspan="6" class="center grey">************************************************* NEXT PAGE *************************************************</td>
-												</tr>
-											</table>
-	
-										
-	
-
-	
-	EOD;
-	
-	
-	
-	
-	
-	$mpdf->WriteHTML($html);
-	$mpdf->AddPage();
-	
-	$html = <<< EOD
-	<div style="position: fixed; left: 175px; top: 1px;">
-												<img src="./resources/logo.png" width="60">
-											</div>
-											<div style="text-align:center; width: 100%;">
-												<p>City Economic Enterprise Management <br>
-												and Development Office <br>
-												CEEMDO - CEMETERY</p>
-											</div>
-											<h4 style="text-align: center; padding: 0px; margin: 0px;">SALES REPORT</h4>
-
-	
-	
-	<table class="tbl">
-
-	EOD;
-	
-	// $mpdf->WriteHTML($html);
-	
-											endif;
+											
 	// continue;
 											// break;
 											}
@@ -425,23 +384,12 @@ $crypt = query("select * from crypt_slot s
 													<td  colspan="6" class="center grey">************************************************* nothing follows *************************************************</td>
 												</tr>
 											</table>
-											<table width="100%" style="padding-top: 20px;">
-	<tr><td colspan="2" class="center"></td></tr>
-	<tr>
-		<td></td>
-		<td class="center nw" width="50%"><strong></strong></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td class="center nw" width="50%"></td>
-	</tr>
-	
-	</table>
+									
 	
 	
 	<table width="100%" style="padding-top: 5px;">
 	<tr ><td><h3 style="text-align:right; float: right;">
-	Total: $grand_total_fee</h3>
+	Total:₱  $grand_total_fee</h3>
 	</td></tr>
 	
 	</table>

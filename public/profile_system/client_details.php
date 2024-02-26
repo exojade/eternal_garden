@@ -50,6 +50,8 @@
     <section class="content">
 
 
+
+
     <div class="modal fade" id="modal_add_client">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -118,7 +120,7 @@
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Address Home <span class="color-red"><b>*</b></span></label>
+                  <label for="exampleInputEmail1">Home Address <span class="color-red"><b>*</b></span></label>
                   <input required type="text" name="client_address" class="form-control" id="exampleInputEmail1" placeholder="Subdivision / Village / Purok (Complete Address)">
                 </div>
               </div>
@@ -314,7 +316,7 @@
               <div class="alert alert-warning alert-dismissible">
          
                 <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                There's no lease information here! Click add Client to get started.
+                There's no lease information here! Click add Profile to get started.
                 <br>
                 <br>
                 <a href="#" data-toggle="modal" data-target="#modal_add_client" class="btn btn-primary">Add Profile</a>
@@ -611,9 +613,6 @@
               <div class="text-center">
                 <a href="#" data-toggle="modal" data-target="#updateClientModal" class="btn btn-warning btn-sm">Update</a>
                 <?php $transaction = query("select * from transaction where profile_id = ?", $client["profile_id"]); ?>
-                <?php if(empty($transaction)): ?>
-                  <button class="btn btn-danger btn-sm">Delete</button>
-                <?php endif; ?>
               </div>
               <br>
               
@@ -631,15 +630,20 @@
                 <li class="list-group-item">
                   <b>Slot / Lawn #</b> <a class="pull-right"><?php echo($slot["slot_number"]); ?></a>
                 </li>
-                <li class="list-group-item">
-                  <b>Lease Status</b> <a class="pull-right"><?php echo($client["lease_status"]); ?></a>
-                </li>
-                <li class="list-group-item">
+                <?php if($slot["crypt_slot_type"] == "LAWN"): ?>
+                  <li class="list-group-item">
+                    <b>Purchase Status</b> <a class="pull-right"><?php echo($client["lease_status"]); ?></a>
+                  </li>
+                <?php endif; ?>
+
+                <?php if($slot["crypt_slot_type"] == "COFFIN"): ?>
+                  <li class="list-group-item">
                   <b>Lease Date</b> <a class="pull-right"><?php echo($client["lease_date"]); ?></a>
                 </li>
                 <li class="list-group-item">
                   <b>Date Expired</b> <a class="pull-right"><?php echo($client["date_expired"]); ?></a>
                 </li>
+                <?php endif; ?>
               </ul>
             </div>
             <!-- /.box-body -->

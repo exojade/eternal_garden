@@ -164,7 +164,7 @@
             render: function (data, type, row) {
                 if (type === 'display' || type === 'filter') {
                     // Format the data as currency when displaying or filtering
-                    return parseFloat(data).toLocaleString('en-US', {
+                    return '₱ ' + parseFloat(data).toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2
                     });
@@ -199,8 +199,12 @@
                         }, 0);
                         console.log(received);
 
-                    $('#currentTotal').html('P ' + received.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
-                }
+                    $('#currentTotal').html('₱ ' + received.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+                },
+                "columnDefs": [{
+        "targets": 3, // Target the third column (index 2)
+        "className": "text-right" // Apply text-right class to align content to the right
+    }]
             });
 
             $('.sales-datatable td:nth-child(4').addClass('text-right');

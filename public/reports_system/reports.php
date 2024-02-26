@@ -38,7 +38,7 @@
 
 			if(isset($_REQUEST["client"])):
                 if($_REQUEST["client"] != "")
-                    $where = $where . " and s.profile_id = '" . $_REQUEST["client"] . "'";
+                    $where = $where . " and s.occupied_by = '" . $_REQUEST["client"] . "'";
             endif;
 
 
@@ -89,7 +89,7 @@
 										".$where."
 										");
                 // $all_data = $data;
-				// dump($query_string);
+				
             else:
                 $query_string = "select * from crypt_slot s
 				left join profile_list p
@@ -370,7 +370,7 @@ $query_string = "select * from crypt_slot s
                                             </table>
                                         </htmlpagefooter>
                                         <sethtmlpagefooter name="myFooter2" value="on" force="1" />
-                                        <div style="position: fixed; left: 175px; top: 1px;">
+                                        <div style="position: fixed; left: 200px; top: 1px;">
                                             <img src="./resources/logo.png" width="60">
                                         </div>
                                         <div style="text-align:center; width: 100%;">
@@ -449,84 +449,6 @@ $query_string = "select * from crypt_slot s
                                             </tr>
                                         EOD;
 
-                                        if($i == 34):
-
-
-                                            $html .= <<< EOD
-                                            <tr>
-                                                <td  colspan="8" class="center grey">************************************************* NEXT PAGE *************************************************</td>
-                                            </tr>
-                                        </table>
-
-                                        <table width="100%" style="padding-top: 20px;">
-<tr><td colspan="2" class="center"></td></tr>
-<tr>
-    <td></td>
-    <td class="center nw" width="50%"><strong></strong></td>
-</tr>
-<tr>
-    <td></td>
-    <td class="center nw" width="50%"></td>
-</tr>
-<tr><td colspan="2" class="center">Issued in compliance with Executive Order No. 54, dated August 10, 1954 and in accordance with Circular No. 58, dated August 10, 1954 of the System.
-</td></tr>
-<tr><td colspan="2" class="center">Issued this $datenow at Panabo City, Davao del Norte, Philippines.
-</td></tr>
-</table>
-
-
-<table width="100%" style="padding-top: 20px;">
-<tr><td colspan="2" class="center">Certified Correct:</td></tr>
-<tr><td colspan="2" class="center">&nbsp;</td></tr>
-<tr><td colspan="2" class="center">&nbsp;</td></tr>
-<tr><td colspan="2" class="center">&nbsp;</td></tr>
-</table>
-
-EOD;
-
-
-
-
-
-$mpdf->WriteHTML($html);
-$mpdf->AddPage();
-
-$html = <<< EOD
-<div style="position: fixed; left: 200px; top: 1px;">
-<img src="./resources/hr_logo.png" width="60">
-</div>
-<div style="text-align:center; width: 100%;">
-<p>Republic of the Philippines <br>
-Province of Davao del Norte <br>
-City of Panabo</p>
-</div>
-<h4 style="text-align: center; padding: 0px; margin: 0px;">SERVICE RECORD</h4>
-<p style="text-indent: 5%; font-size: 12px;">This is to certify that the employee herein shows actually rendered service in this office as shown by the service record below, each line of which
-is supported by appointment and other papers actually issued by this Office and approved by authorities concerned.</p>
-
-
-<table class="tbl">
-<tr class="grey">
-    <th rowspan="2">#</th>
-    <th colspan="2">SERVICE<br>(inclusive dates)</th>
-    <th colspan="3">RECORD OF APPOINTMENT</th>
-    <th colspan="2">OFFICE / ENTITY / DIVISION</th>
-    <th rowspan="2" width="25%">REMARKS</th>
-</tr>
-<tr class="grey">
-    <th>From</th>
-    <th>To</th>
-    <th>Designation</th>
-    <th>Status</th>
-    <th>Salary</th>
-    <th>Station / Place of Assignment</th>
-    <th>Branch</th>
-</tr>
-EOD;
-
-// $mpdf->WriteHTML($html);
-
-                                        endif;
 // continue;
                                         // break;
                                         }
@@ -535,31 +457,9 @@ EOD;
                                                 <td  colspan="8" class="center grey">************************************************* nothing follows *************************************************</td>
                                             </tr>
                                         </table>
-                                        <table width="100%" style="padding-top: 20px;">
-<tr><td colspan="2" class="center"></td></tr>
-<tr>
-    <td></td>
-    <td class="center nw" width="50%"><strong></strong></td>
-</tr>
-<tr>
-    <td></td>
-    <td class="center nw" width="50%"></td>
-</tr>
-
-</table>
 
 
-<table width="100%" style="padding-top: 20px;">
-<tr><td colspan="2" class="center">&nbsp;</td></tr>
-<tr><td colspan="2" class="center">&nbsp;</td></tr>
-<tr><td colspan="2" class="center">&nbsp;</td></tr>
 
-
-<tr><td colspan="2">
-
-</td></tr>
-
-</table>
 
 EOD;
                                         

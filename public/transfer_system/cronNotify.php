@@ -79,27 +79,6 @@
 			endif;
 		endif;
 
-		$data = strtotime($n["3months_date"]);
-		$current = strtotime(date("Y-m-d"));
-		if($data <= $current):
-			if($n["3months_notif_status"] == ""):
-				$toMessage[$i]["profile_id"] = $n["profile_id"];
-				$toMessage[$i]["type"] = "3months_date";
-				$toMessage[$i]["contact"] = $n["client_contact"];
-				$toMessage[$i]["date"] = $n["3months_date"];
-				$toMessage[$i]["notification_id"] = $n["notification_id"];
-				$toMessage[$i]["slot_id"] = $n["slot_id"];
-				$toMessage[$i]["date_expired"] = $n["date_expired"];
-				$toMessage[$i]["name"] = $n["client_firstname"] . " " . $n["client_lastname"];
-				$toMessage[$i]["status"] = $n["active_status"];
-				$toMessage[$i]["lease_date"] = $n["lease_date"];
-				$toMessage[$i]["email_address"] = $n["email_address"];
-				$i++;
-				//code to update notif_status
-			endif;
-		endif;
-
-	
 
 		$data = strtotime($n["month_date"]);
 		$current = strtotime(date("Y-m-d"));
@@ -129,26 +108,6 @@
 				$toMessage[$i]["type"] = "week_date";
 				$toMessage[$i]["contact"] = $n["client_contact"];
 				$toMessage[$i]["date"] = $n["week_date"];
-				$toMessage[$i]["notification_id"] = $n["notification_id"];
-				$toMessage[$i]["slot_id"] = $n["slot_id"];
-				$toMessage[$i]["date_expired"] = $n["date_expired"];
-				$toMessage[$i]["name"] = $n["client_firstname"] . " " . $n["client_lastname"];
-				$toMessage[$i]["status"] = $n["active_status"];
-				$toMessage[$i]["lease_date"] = $n["lease_date"];
-				$toMessage[$i]["email_address"] = $n["email_address"];
-				$i++;
-				//code to update notif_status
-			endif;
-		endif;
-
-		$data = strtotime($n["day_before_date"]);
-		$current = strtotime(date("Y-m-d"));
-		if($data <= $current):
-			if($n["day_before_notif_status"] == ""):
-				$toMessage[$i]["profile_id"] = $n["profile_id"];
-				$toMessage[$i]["type"] = "day_before_date";
-				$toMessage[$i]["contact"] = $n["client_contact"];
-				$toMessage[$i]["date"] = $n["day_before_date"];
 				$toMessage[$i]["notification_id"] = $n["notification_id"];
 				$toMessage[$i]["slot_id"] = $n["slot_id"];
 				$toMessage[$i]["date_expired"] = $n["date_expired"];
@@ -197,18 +156,12 @@
 		if($row["type"] == "6months_date"):
 			$message.="6 month notification message.";
 			query("update notification_status set 6months_notif_status = 1 where notification_id = ?", $row["notification_id"]);
-		elseif($row["type"] == "3months_date"):
-			$message.="3 month notification message.";
-			query("update notification_status set 3months_notif_status = 1 where notification_id = ?", $row["notification_id"]);
 		elseif($row["type"] == "month_date"):
 			$message.="month notification message.";
 			query("update notification_status set month_notif_status = 1 where notification_id = ?", $row["notification_id"]);
 		elseif($row["type"] == "week_date"):
 			$message.="week notification message.";
 			query("update notification_status set week_notif_status = 1 where notification_id = ?", $row["notification_id"]);
-		elseif($row["type"] == "day_before_date"):
-			$message.="day before notification message.";
-			query("update notification_status set day_before_notif_status = 1 where notification_id = ?", $row["notification_id"]);
 		elseif($row["type"] == "date_expired"):
 			$message.="day expired notification message.";
 			query("update notification_status set day_notif_status = 1 where notification_id = ?", $row["notification_id"]);
@@ -218,7 +171,13 @@
 			$crypt = $Crypt[$row["slot_id"]];
 			$message.=" Location: " . $crypt["crypt_name"] . " : Row:" . $crypt["row_number"] . " : Col:" . $crypt["column_number"];
 		endif;
-		$message.=". The expiry date of your slot is on: " . $row["date_expired"] . ". Please visit the Eternal Garden Cemetery for negotiation. [System Generated Message: Please dont reply!]";
+
+
+		if($row["type"] == "date_expired"):
+			$message.=". The expiry date of your slot is today. Please visit the Eternal Garden Cemetery for negotiation. [System Generated Message: Please dont reply!]";
+		else:
+			$message.=". The expiry date of your slot is on: " . $row["date_expired"] . ". Please visit the Eternal Garden Cemetery for negotiation. [System Generated Message: Please dont reply!]";
+		endif;
 		// dump($message);
 
 
@@ -242,7 +201,13 @@
 			$full_name = $row["name"];
 			$the_message = "Dear Mr./Ms. " . $full_name . ",<br><br>";
 			$the_message .= "We would like to inform you that your allocated crypt, situated at " . $crypt["crypt_name"] . " in Row " . $crypt["row_number"] . " and Column " . $crypt["column_number"] . ", requires your attention.<br><br>";
-			$the_message .= "The crypt lease has its expiration date on " . $date_expired . ", only ".$days_left." days left to settle this concern.<br><br>";
+
+			if($row["type"] == "date_expired"):
+				$the_message .= "The crypt lease has its expiration date on " . $date_expired . ", only ".$days_left." days left to settle this concern.<br><br>";
+			else:
+				$the_message .= "The crypt lease has its expiration date today.<br><br>";
+			endif;
+
 			$the_message .= "In accordance with our policy, should the lease expire, the remains previously housed in the crypt will be respectfully relocated to our common area. We understand the importance of this matter and will handle the process with the utmost care and respect.<br><br>";
 			$the_message .= "If you have any questions or concerns regarding this matter, please do not hesitate to contact our office.<br><br>";
 			$the_message .= "Sincerely,<br><br>Eternal Garden Cemetery, Panabo City";
@@ -252,22 +217,22 @@
 
 		
 
-		$ch = curl_init();
-		$parameters = array(
-			'message' => $the_message, //Your API KEY
-			'subject' => "EMAIL CEMETERY",
-			'email_address' => $row["email_address"],
-		);
-		curl_setopt( $ch, CURLOPT_URL,'http://api.panabocity.gov.ph/register_final_data');
-		curl_setopt( $ch, CURLOPT_POST, 1 );
+		// $ch = curl_init();
+		// $parameters = array(
+		// 	'message' => $the_message, //Your API KEY
+		// 	'subject' => "EMAIL CEMETERY",
+		// 	'email_address' => $row["email_address"],
+		// );
+		// curl_setopt( $ch, CURLOPT_URL,'http://api.panabocity.gov.ph/register_final_data');
+		// curl_setopt( $ch, CURLOPT_POST, 1 );
 
-		//Send the parameters set above with the request
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $parameters ) );
+		// //Send the parameters set above with the request
+		// curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $parameters ) );
 
-		// Receive response from server
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-		$output = curl_exec( $ch );
-		curl_close ($ch);
+		// // Receive response from server
+		// curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		// $output = curl_exec( $ch );
+		// curl_close ($ch);
 
 		//Show the server response
 		// echo $output;
@@ -280,26 +245,26 @@
 		notificationLogs($row["profile_id"], $the_message, "System sent an email to " . $row["email_address"] . "<br>Type: " . $row["type"], "EMAIL", $row["slot_id"]);
 
 
-	$ch = curl_init();
-	$parameters = array(
-		'apikey' => 'c7886ec1b7c43d0fdddf002e6bd7b1e3', //Your API KEY
-		'number' => $row["contact"],
-		'message' => $message,
-		'sendername' => 'PANABOCMTRY'
-	);
-	curl_setopt( $ch, CURLOPT_URL,'https://semaphore.co/api/v4/messages' );
-	curl_setopt( $ch, CURLOPT_POST, 1 );
+	// $ch = curl_init();
+	// $parameters = array(
+	// 	'apikey' => 'c7886ec1b7c43d0fdddf002e6bd7b1e3', //Your API KEY
+	// 	'number' => $row["contact"],
+	// 	'message' => $message,
+	// 	'sendername' => 'PANABOCMTRY'
+	// );
+	// curl_setopt( $ch, CURLOPT_URL,'https://semaphore.co/api/v4/messages' );
+	// curl_setopt( $ch, CURLOPT_POST, 1 );
 
-	//Send the parameters set above with the request
-	curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $parameters ) );
+	// //Send the parameters set above with the request
+	// curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $parameters ) );
 
-	// Receive response from server
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-	$output = curl_exec( $ch );
-	curl_close ($ch);
+	// // Receive response from server
+	// curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+	// $output = curl_exec( $ch );
+	// curl_close ($ch);
 
-	//Show the server response
-	echo $output;
+	// //Show the server response
+	// echo $output;
 	notificationLogs($row["profile_id"], $message, "System sent an SMS to " . $row["contact"]  . "<br>Type: " . $row["type"], "SMS", $row["slot_id"]);
 	endforeach;
 

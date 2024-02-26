@@ -99,7 +99,6 @@
                   <th>Slot</th>
                   <th>Lease Date</th>
                   <th>Lease Expiry</th>
-                  <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -112,7 +111,6 @@
                   <td><?php echo($p["slot_number"]); ?></td>
                   <td><?php echo($p["lease_date"]); ?></td>
                   <td><?php echo($p["date_expired"]); ?></td>
-                  <td><?php echo($p["active_status"]); ?></td>
                 </tr>
                 <?php endforeach; ?>
                 </tbody>

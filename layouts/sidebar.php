@@ -4,7 +4,11 @@ $role = $_SESSION["eternal_garden"]["role"];
 $pending = query("select COUNT(*) as count from burial_schedule where remarks = 'FOR SCHEDULING'");
 $pend = $pending[0]["count"];
 ?>
-
+<style>
+.sidebar{
+  overflow-y: auto !important;
+}
+  </style>
 <aside class="main-sidebar">
     <section class="sidebar">
       <div class="user-panel">

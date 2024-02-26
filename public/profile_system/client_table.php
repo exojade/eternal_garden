@@ -30,19 +30,19 @@
               <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">First Name*</label>
+                  <label for="exampleInputEmail1">First Name <span class="color-red">*</span></label>
                   <input required type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Middle Name</label>
+                  <label for="exampleInputEmail1">Middle Name </label>
                   <input  type="text" name="middlename" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Last Name*</label>
+                  <label for="exampleInputEmail1">Last Name <span class="color-red">*</span></label>
                   <input required type="text" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
@@ -55,18 +55,18 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Date of Birth</label>
-                  <input required type="date" name="birthdate" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <input max="<?php echo date('Y-m-d'); ?>" required type="date" name="birthdate" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Date of Death</label>
-                  <input required type="date" name="date_of_death" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <label for="exampleInputEmail1">Date of Death <span class="color-red">*</span></label>
+                  <input max="<?php echo date('Y-m-d'); ?>" required type="date" name="date_of_death" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Gender</label>
+                  <label for="exampleInputEmail1">Gender <span class="color-red">*</span></label>
                   <select required class="form-control" name="gender">
                   <option value="" selected disabled>Please select gender</option>
                     <option value="Male">Male</option>
@@ -77,14 +77,14 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Religion</label>
-                  <input required type="text" name="religion" class="form-control" id="exampleInputEmail1" placeholder="---">
+                  <input type="text" name="religion" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
               
               <?php if($slot["crypt_slot_type"] == "LAWN"): ?>
                 <div class="col-md-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Interment Type</label>
+                  <label for="exampleInputEmail1">Interment Type <span class="color-red">*</span></label>
                   <select required class="form-control" name="interment_type">
                   <option value="" selected disabled>Please select interment</option>
                     <option value="1st Interment">1st Interment</option>
@@ -95,7 +95,7 @@
 
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Deceased Type</label>
+                  <label for="exampleInputEmail1">Deceased Type <span class="color-red">*</span></label>
                   <select required class="form-control" name="deceased_type">
                   <option value="" selected disabled>Please select type of deceased</option>
                     <option value="REMAINS">REMAINS</option>
@@ -111,7 +111,7 @@
 
               <div class="col-md-12">
                   <div class="form-group">
-                      <label for="exampleInputFile">Death Certificate</label>
+                      <label for="exampleInputFile">Death Certificate <span class="color-red">*</span></label>
                       <input name="death_certificate" required type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Upload death certificate here!</p>
                   </div>
@@ -267,21 +267,21 @@
                   <div class="form-group service_list">
                     <label>
                       <input disabled checked class="coffin_price disable-click" type="checkbox" name="coffin_amount" value="<?php echo($price["amount"]); ?>" data-cost="<?php echo($price["amount"]); ?>" >
-                      <span style="margin-left: 15px;">Coffin Amount  (<?php echo(to_peso($price["amount"])); ?>)</span>
+                      <span style="margin-left: 15px;">Coffin Amount  (<?php echo("₱ " . to_peso($price["amount"])); ?>)</span>
                     </label>
                   </div>
 
                   <div class="form-group service_list">
                     <label>
                       <input disabled checked class="coffin_price disable-click" type="checkbox" name="certification_amount" value="<?php echo($price["certification_amount"]); ?>" data-cost="<?php echo($price["certification_amount"]); ?>" >
-                      <span style="margin-left: 15px;">Certification Fee  (<?php echo(to_peso($price["certification_amount"])); ?>)</span>
+                      <span style="margin-left: 15px;">Certification Fee  (<?php echo("₱ " . to_peso($price["certification_amount"])); ?>)</span>
                     </label>
                   </div>
 
                   <div class="form-group service_list">
                     <label>
                       <input checked class="coffin_price" type="checkbox" name="lapida_amount" value="<?php echo($price["lapida_amount"]); ?>" data-cost="<?php echo($price["lapida_amount"]); ?>" >
-                      <span style="margin-left: 15px;">Lapida Cost  (<?php echo(to_peso($price["lapida_amount"])); ?>)</span>
+                      <span style="margin-left: 15px;">Lapida Cost  (<?php echo("₱ " . to_peso($price["lapida_amount"])); ?>)</span>
                     </label>
                   </div>
                   <hr>
@@ -334,7 +334,7 @@
                   <div class="form-group service_list">
                     <label>
                       <input id="<?php echo($row["service_id"]); ?>" type="checkbox" name="service[]" value="<?php echo($row["service_name"]); ?>" data-cost="<?php echo($row["cost"]); ?>" >
-                      <span style="margin-left: 15px;"><?php echo($row["service_name"]); ?>  (<?php echo(to_peso($row["cost"])); ?>)</span>
+                      <span style="margin-left: 15px;"><?php echo($row["service_name"]); ?>  (<?php echo("₱ " . to_peso($row["cost"])); ?>)</span>
                     </label>
                   </div>
                 <?php endforeach; ?>
@@ -504,20 +504,133 @@ $progress_percentage = 0;
                 <br>
                <table class="table table-bordered sample_datatable">
                 <thead>
-                    <th>Transfer</th>
+                    <th width="10%">Delete</th>
+                    <th width="15%">Action</th>
                     <th>Deceased Name</th>
                     <th>Birth</th>
                     <th>Death</th>
                     <th>Age Died</th>
                     <th>Burial Date</th>
                     <th>Burial Status</th>
-                    <th>Remarks</th>
+                    <?php 
+                    // dump($slot);
+                    if($slot["crypt_slot_type"] == "LAWN"): ?>
+                      <th>Remarks</th>
+                    <?php endif; ?>
                 </thead>
                 <tbody>
                     <?php foreach($deceased as $d): ?>
+                      
+
+                      <div class="modal fade" id="modalDeceased_<?php echo($d["deceased_id"]); ?>">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="modal-header bg-primary">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                              <h4 class="modal-title">Update Deceased</h4>
+                            </div>
+                            <form class="generic_form_trigger" data-url="profile">
+                            <div class="modal-body">
+                <input type="hidden" name="action" value="updateDeceased">
+                <input type="hidden" name="deceased_id" value="<?php echo($d["deceased_id"]); ?>">
+              <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">First Name <span class="color-red">*</span></label>
+                  <input value="<?php echo($d["deceased_firstname"]); ?>" required type="text" name="firstname" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Middle Name </label>
+                  <input value="<?php echo($d["deceased_middlename"]); ?>" type="text" name="middlename" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Last Name <span class="color-red">*</span></label>
+                  <input value="<?php echo($d["deceased_lastname"]); ?>" required type="text" name="lastname" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Suffix</label>
+                  <input value="<?php echo($d["deceased_suffix"]); ?>" type="text" name="suffix" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Date of Birth <span class="color-red">*</span></label>
+                  <input value="<?php echo($d["birthdate"]); ?>" max="<?php echo date('Y-m-d'); ?>" required type="date" name="birthdate" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Date of Death <span class="color-red">*</span></label>
+                  <input value="<?php echo($d["date_of_death"]); ?>" max="<?php echo date('Y-m-d'); ?>" required type="date" name="date_of_death" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Gender <span class="color-red">*</span></label>
+                  <select required class="form-control" name="gender">
+                    <option value="" disabled>Please select gender</option>
+                    <option value="Male" <?php echo ($d["gender"] == "Male") ? "selected" : ""; ?>>Male</option>
+                    <option value="Female" <?php echo ($d["gender"] == "Female") ? "selected" : ""; ?>>Female</option>
+                </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Religion</label>
+                  <input value="<?php echo($d["religion"]); ?>" type="text" name="religion" class="form-control" id="exampleInputEmail1" placeholder="---">
+                </div>
+              </div>
+              
+
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <label for="exampleInputFile">Death Certificate </label>
+                      <?php if($d["death_certificate"] != ""): ?>
+                        <a target="_blank" href="<?php echo($d["death_certificate"]); ?>">View Existing File</a>
+                      <?php endif; ?>
+                      <input name="death_certificate" type="file" accept=".pdf, image/*" id="exampleInputFile">
+                      <p class="help-block">Upload death certificate here!</p>
+                  </div>
+              </div>
+            </div>
+              </div>
+                            <div class="modal-footer">
+                              <button class="btn btn-primary" type="submit">Save</button>
+                              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                            </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+
+
                         <tr>
                             <td>
-                            <a href="#" data-id="<?php echo($d["deceased_id"]); ?>" data-toggle="modal" data-target="#modal_transfer" class="btn btn-danger btn-xs btn-block open_transfer_modal"><i class="fa fa-fw fa-exchange"></i></a>
+                            <?php $transaction = query("select * from transaction where profile_id = ?", $client["profile_id"]); ?>
+                              <?php if(empty($transaction)): ?>
+                                <form class="generic_form_trigger" data-url="profile">
+                                  <input type="hidden" name="action" value="deleteDeceased">
+                                  <input type="hidden" name="deceased_id" value="<?php echo($d["deceased_id"]); ?>">
+                                  <button class="btn btn-danger btn-xs btn-block"><i class="fa fa-fw fa-trash"></i></button>
+                                </form>
+                               <?php else: ?>
+                                <button disabled class="btn btn-danger btn-xs btn-block"><i class="fa fa-fw fa-trash"></i></button>
+                              <?php endif; ?>
+                            </td>
+                            <td>
+                            <div class="btn-group btn-group-justified">
+                           
+                                <a href="#" data-toggle="modal" data-target="#modalDeceased_<?php echo($d["deceased_id"]); ?>" class="btn btn-xs btn-warning"><i class="fa fa-fw fa-pencil"></i></a>
+                                <a href="#" data-id="<?php echo($d["deceased_id"]); ?>" data-toggle="modal" data-target="#modal_transfer" class="btn btn-primary btn-xs btn-block open_transfer_modal"><i class="fa fa-fw fa-exchange"></i></a>
+                            </div>
+                            <!-- <a href="#" data-id="<?php echo($d["deceased_id"]); ?>" data-toggle="modal" data-target="#modal_transfer" class="btn btn-danger btn-xs btn-block open_transfer_modal"><i class="fa fa-fw fa-exchange"></i></a> -->
                             </td>
                             <td><?php echo($d["deceased_name"]); ?></td>
                             <td><?php echo($d["birthdate"]); ?></td>
@@ -525,7 +638,9 @@ $progress_percentage = 0;
                             <td><?php echo($d["age_died"]); ?></td>
                             <td><?php echo($d["burial_date"]); ?></td>
                             <td><?php echo($d["burial_status"]); ?></td>
-                            <td><?php echo($d["interment_type"]); ?></td>
+                            <?php if($slot["crypt_slot_type"] == "LAWN"): ?>
+                              <td><?php echo($d["interment_type"]); ?></td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -540,9 +655,17 @@ $progress_percentage = 0;
                   <?php 
                   $burial_schedule = query("select * from burial_schedule where profile_id = ? and remarks not in ('DONE', 'POSTPONED')", $client["profile_id"]); 
                   if(!empty($burial_schedule)):
+
+                  $cancellation = query("select * from services where service_id = 'Service0004'");
+                  $cancellation = $cancellation[0];
+
+                  $message = "Cancellation of Burial will cost: ".to_peso($cancellation["cost"])." and this slot will be vacant after submission. Do you want to continue?";
+
+
+
                   ?>
                   <form class="generic_form_trigger" data-url="profile" 
-                  data-message="Cancellation of Burial will cost: 500.00 and this slot will be vacant after submission. Do you want to continue?" 
+                  data-message="<?php echo($message); ?>" 
                   data-title="Cancellation of Burial" style="display:inline;">
                   <input type="hidden" name="action" value="cancellation">
                   <input type="hidden" name="profile_id" value="<?php echo($client["profile_id"]); ?>">
@@ -567,6 +690,7 @@ $progress_percentage = 0;
                 on t.profile_id = p.profile_id where slot_id = ?
                 order by timestamp desc
                 ", $slot["slot_id"]);
+                // dump($transaction);
                 
                 $Deceased_transaction = [];
                 $deceased_transaction = query("select * from deceased_transaction");
@@ -594,7 +718,7 @@ $progress_percentage = 0;
                               
                             <?php endif; ?>
                       </td>
-                        <td><?php echo(to_peso($row["total_fee"])); ?></td>
+                        <td><?php echo("₱ " . to_peso($row["total_fee"])); ?></td>
                         <td><?php echo($row["logs"]); ?></td>
                       </tr>
                     <?php endforeach; ?>

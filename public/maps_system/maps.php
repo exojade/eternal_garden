@@ -135,16 +135,16 @@
 				<ul class="list-unstyled">
                 <li>INDIGENT
                   <ul>
-                    <li>Amount : '.to_peso($pricing[1]["amount"]).'</li>
-                    <li>Lapida : '.to_peso($pricing[1]["lapida_amount"]).'</li>
-                    <li>Certification : '.to_peso($pricing[1]["certification_amount"]).'</li>
+                    <li>Amount : ₱'.to_peso($pricing[1]["amount"]).'</li>
+                    <li>Lapida : ₱'.to_peso($pricing[1]["lapida_amount"]).'</li>
+                    <li>Certification : ₱'.to_peso($pricing[1]["certification_amount"]).'</li>
                   </ul>
                 </li>
 				<li>NON - INDIGENT
                   <ul>
-                    <li>Amount : '.to_peso($pricing[0]["amount"]).'</li>
-                    <li>Lapida : '.to_peso($pricing[0]["lapida_amount"]).'</li>
-                    <li>Certification : '.to_peso($pricing[0]["certification_amount"]).'</li>
+                    <li>Amount : ₱'.to_peso($pricing[0]["amount"]).'</li>
+                    <li>Lapida : ₱'.to_peso($pricing[0]["lapida_amount"]).'</li>
+                    <li>Certification : ₱'.to_peso($pricing[0]["certification_amount"]).'</li>
                   </ul>
                 </li>
               </ul>
@@ -156,7 +156,7 @@
 				<ul>';
 
 				foreach($services as $row):
-					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+					$message = $message . '<li>'.$row["service_name"].' : ₱'.to_peso($row["cost"]).'</li>';
 				endforeach;
 
 				$message = $message . '
@@ -236,15 +236,15 @@
 				<ul class="list-unstyled">
                 <li>
                   <ul>
-                    <li>Amount : '.to_peso($pricing[0]["amount"]).'</li>
-                    <li>Certification : '.to_peso($pricing[0]["certification"]).'</li>
+                    <li>Amount : ₱'.to_peso($pricing[0]["amount"]).'</li>
+                    <li>Certification : ₱'.to_peso($pricing[0]["certification"]).'</li>
                   </ul>
                 </li>
 				<li><b>LAPIDA COST</b>
                   <ul>
 				  ';
 				  foreach($pricing as $row):
-					$message = $message . '<li>'.$row["type"].' : '.to_peso($row["lapida_amount"]).'</li>';
+					$message = $message . '<li>'.$row["type"].' : ₱'.to_peso($row["lapida_amount"]).'</li>';
 				  endforeach;
 
 				  $message = $message . '
@@ -259,7 +259,7 @@
 				<ul>';
 
 				foreach($services as $row):
-					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+					$message = $message . '<li>'.$row["service_name"].' : ₱'.to_peso($row["cost"]).'</li>';
 				endforeach;
 
 				$message = $message . '
@@ -545,8 +545,11 @@
 				$bone = query("select * from crypt_list where crypt_type = 'BONE'");
 				$lawn = query("select slot.*,concat(client_firstname, ' ', client_middlename, ' ', client_lastname, ' ', client_suffix) as client_name, lease_date, date_expired from crypt_slot slot
                 left join profile_list client
-                on client.slot_number = slot.slot_id
+                on slot.occupied_by = client.profile_id
                 where crypt_slot_type = 'LAWN'");
+
+
+
 				$common = query("select * from crypt_list where crypt_type = 'COMMON'");
 				$annex = query("select * from crypt_list where crypt_type = 'ANNEX'");
 				$no_slot = query("select * from crypt_slot where crypt_slot_type = 'NO_SLOT'");

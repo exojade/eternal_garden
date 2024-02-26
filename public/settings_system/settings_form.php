@@ -41,7 +41,6 @@
               <th>Type</th>
               <th class="text-right">Pre Need</th>
               <th class="text-right">At Need</th>
-              <th>Status</th>
             </thead>
             <tbody>
               <?php foreach($pricing_lawn as $row): ?>
@@ -50,7 +49,6 @@
                 <td><?php echo($row["name"]); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["pre_need"])); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["at_need"])); ?></td>
-                <td><?php echo($row["active_status"]); ?></td>
               </tr>
               <?php endforeach; ?>
             </tbody>
@@ -74,20 +72,20 @@
 
               <div class="form-group">
                 <label for="exampleInputEmail1">Lawn Type</label>
-                <input type="text" name="name" value="<?php echo($row["name"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                <input type="text" name="name" value="<?php echo($row["name"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
               </div>
 
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Pre Need</label>
-                    <input type="number" name="pre_need" value="<?php echo($row["pre_need"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="pre_need" value="<?php echo($row["pre_need"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">At Need</label>
-                    <input type="number" name="at_need" value="<?php echo($row["at_need"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="at_need" value="<?php echo($row["at_need"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
               </div>
@@ -151,14 +149,14 @@
 
               <div class="form-group">
                 <label for="exampleInputEmail1">Service</label>
-                <input type="text" name="service_name" value="<?php echo($row["service_name"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                <input type="text" name="service_name" value="<?php echo($row["service_name"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
               </div>
 
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Cost</label>
-                    <input type="number" name="cost" value="<?php echo($row["cost"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="cost" value="<?php echo($row["cost"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
               </div>
@@ -226,7 +224,7 @@
 
               <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
-                <input type="text" name="type" value="<?php echo($row["type"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                <input type="text" name="type" value="<?php echo($row["type"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
               </div>
 
 
@@ -234,19 +232,19 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Amount</label>
-                    <input type="number" name="amount" value="<?php echo($row["amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="amount" value="<?php echo($row["amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Certification</label>
-                    <input type="number" name="certification" value="<?php echo($row["certification"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="certification" value="<?php echo($row["certification"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Lapida Cost</label>
-                    <input type="number" name="lapida_amount" value="<?php echo($row["lapida_amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="lapida_amount" value="<?php echo($row["lapida_amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
               </div>
@@ -308,7 +306,7 @@
 
               <div class="form-group">
                 <label for="exampleInputEmail1">Type</label>
-                <input type="text" name="type" value="<?php echo($row["type"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                <input type="text" name="type" value="<?php echo($row["type"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
               </div>
 
 
@@ -316,19 +314,19 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Amount</label>
-                    <input type="number" name="amount" value="<?php echo($row["amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="amount" value="<?php echo($row["amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Certification</label>
-                    <input type="number" name="certification_amount" value="<?php echo($row["certification_amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="certification_amount" value="<?php echo($row["certification_amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Lapida Cost</label>
-                    <input type="number" name="lapida_amount" value="<?php echo($row["lapida_amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                    <input type="number" name="lapida_amount" value="<?php echo($row["lapida_amount"]); ?>" class="form-control" id="exampleInputEmail1" placeholder="---">
                   </div>
                 </div>
               </div>

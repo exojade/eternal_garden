@@ -56,8 +56,8 @@
                 <option selected value="" >Select Type...</option>
                   <option value="LAWN PURCHASE">LAWN PURCHASE</option>
                   <option value="BURIAL">BURIAL</option>
-                  <option value="CANCELLED">CANCELLED</option>
-                  <option value="POSTPONED">POSTPONED</option>
+                  <option value="CANCELLATION">CANCELLATION</option>
+                  <option value="POSTPONEMENT">POSTPONEMENT</option>
                   <option value="TRANSFER COMMON">TRANSFER COMMON</option>
                 </select>
               </div>

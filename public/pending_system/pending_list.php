@@ -18,8 +18,7 @@
 
   <section class="content-header">
       <h1>
-        For Scheduling List
-      <a class="btn btn-primary pull-right btn-flat" data-toggle="modal" data-target="#modal_add_crypt">Add Crypt</a>
+        Pending for Burial
       </h1>
     </section>
     <section class="content">
@@ -42,7 +41,7 @@
                 <div class="form-group">
                         <label>Burial Schedule Date *</label>
                         <div class="input-group">
-                          <input name="deceased_burial_date" id="deceased_burial_date" required type="date" class="form-control">
+                          <input max="<?php echo(date('Y-m-d', strtotime('+2 weeks'))); ?>" name="deceased_burial_date" id="deceased_burial_date" required type="date" class="form-control">
                           <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                           </div>
@@ -69,7 +68,7 @@
                 
                       <div class="bootstrap-timepicker">
                       <div class="form-group">
-                        <label>Burial Time (optional)</label>
+                        <label>Burial Time</label>
                         <div class="input-group">
                           <input name="deceased_burial_time" id="deceased_burial_time" value="" type="text" class="form-control timepicker">
                           <div class="input-group-addon">
@@ -114,7 +113,9 @@
                                   on crypt.crypt_id = slot.crypt_id
                                   where slot.slot_id = ?
                                   ", $fs["slot_number"]);
+                  // $transaction 
                   $crypt = $crypt[0];
+
                   ?>
                 <tr>
                   <td>
@@ -129,7 +130,8 @@
                   if($fs["services_availed"] != ""):
                     $services = unserialize($fs["services_availed"]);
                     foreach($services as $s):
-                      echo($s . ",<br>");
+                      // dump($s);
+                      echo("** " . $s["service_name"] . "<br>");
                     endforeach;
                   endif;
                ?></td>

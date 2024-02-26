@@ -77,7 +77,7 @@
                   <div class="col-md-6">
                   <div class="form-group">
                       <label>To:</label>
-                        <input name="burial_to" id="burial_to" type="date" class="form-control">
+                        <input max="<?php echo(date("Y-m-d")); ?>" name="burial_to" id="burial_to" type="date" class="form-control">
                     </div>
                     
                   </div>

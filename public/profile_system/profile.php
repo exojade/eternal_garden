@@ -128,6 +128,88 @@
             );
             echo json_encode($json_data);
 
+		elseif($_POST["action"] == "updateDeceased"):
+			// dump($_POST);
+			
+			$fullname = $_POST["firstname"] . " " . $_POST["middlename"] . " " . $_POST["lastname"] . " " . $_POST["suffix"];
+			$datetime1 = new DateTime($_POST["birthdate"]);
+			$datetime2 = new DateTime($_POST["date_of_death"]);
+			$interval = $datetime1->diff($datetime2);
+			$age = $interval->format('%y');
+
+
+			query("update deceased_profile set
+				deceased_name = ?,
+				deceased_firstname = ?,
+				deceased_middlename = ?,
+				deceased_lastname = ?,
+				deceased_suffix = ?,
+				birthdate = ?,
+				date_of_death = ?,
+				age_died = ?,
+				religion = ?,
+				gender = ?
+				where deceased_id = ?
+			",
+				$fullname,
+				$_POST["firstname"],
+				$_POST["middlename"],
+				$_POST["lastname"],
+				$_POST["suffix"],
+				$_POST["birthdate"],
+				$_POST["date_of_death"],
+				$age,
+				$_POST["religion"],
+				$_POST["gender"],
+				$_POST["deceased_id"]
+		);
+		
+
+
+
+	
+
+		if($_FILES["death_certificate"]["size"] != 0):
+			$target_pdf = "uploads/" . $_POST["deceased_id"]."/";
+			if (!file_exists($target_pdf )) {
+				mkdir($target_pdf , 0777, true);
+			}
+			$path_parts = pathinfo($_FILES["death_certificate"]["name"]);
+			$extension = $path_parts['extension'];
+			$target = $target_pdf . "DEATHCERTIFICATE" . "." . $extension;
+				if(!move_uploaded_file($_FILES['death_certificate']['tmp_name'], $target)){
+					echo("FAMILY Do not have upload files");
+					exit();
+				}
+		query("update deceased_profile set death_certificate = '".$target."'
+				where deceased_id = '".$_POST["deceased_id"]."'");
+		endif;
+
+
+		$res_arr = [
+			"result" => "success",
+			"title" => "Success",
+			"message" => "Success on updating data",
+			"link" => "refresh",
+			// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+			];
+			echo json_encode($res_arr); exit();
+
+	
+
+		elseif($_POST["action"] == "deleteDeceased"):
+
+			// dump($_POST);
+			query("delete from deceased_profile where deceased_id = ?", $_POST["deceased_id"]);
+
+			$res_arr = [
+				"result" => "success",
+				"title" => "Success",
+				"message" => "Success on updating data",
+				"link" => "refresh",
+				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
+				];
+				echo json_encode($res_arr); exit();
 
 
 
@@ -145,7 +227,8 @@
 				barangay = ?,
 				id_presented = ?,
 				id_number = ?,
-				place_issued = ?
+				place_issued = ?,
+				client_address = ?
 				where profile_id = ?
 			",
 				$_POST["client_firstname"],
@@ -159,6 +242,7 @@
 				$_POST["id_presented"],
 				$_POST["id_number"],
 				$_POST["place_issued"],
+				$_POST["client_address"],
 				$_POST["profile_id"]
 		);
 
@@ -248,7 +332,7 @@
 				"result" => "success",
 				"title" => "Success",
 				"message" => "Success on adding Data",
-				"link" => "profile?action=client_details&slot=".$_POST["slot_number"],
+				"link" => "refresh",
 				// "html" => '<a href="#">View or Print '.$transaction_id.'</a>'
 				];
 				echo json_encode($res_arr); exit();
@@ -677,8 +761,8 @@
 				<ul class="list-unstyled">
                 <li> <b>'.$crypt_slot[0]["lawn_type"].'</b>
                   <ul>
-                    <li>PRE NEED : '.to_peso($pricing[0]["pre_need"]).'</li>
-                    <li>AT NEED : '.to_peso($pricing[0]["at_need"]).'</li>
+                    <li>PRE NEED : ₱'.to_peso($pricing[0]["pre_need"]).'</li>
+                    <li>AT NEED : ₱'.to_peso($pricing[0]["at_need"]).'</li>
                   </ul>
                 </li>
 			
@@ -695,7 +779,7 @@
 				<ul>';
 
 				foreach($services as $row):
-					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+					$message = $message . '<li>'.$row["service_name"].' : ₱'.to_peso($row["cost"]).'</li>';
 				endforeach;
 
 				$message = $message . '
@@ -778,8 +862,8 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 				<ul class="list-unstyled">
                 <li> <b>'.$crypt_slot[0]["lawn_type"].'</b>
                   <ul>
-                    <li>PRE NEED : '.to_peso($pricing[0]["pre_need"]).'</li>
-                    <li>AT NEED : '.to_peso($pricing[0]["at_need"]).'</li>
+                    <li>PRE NEED : ₱'.to_peso($pricing[0]["pre_need"]).'</li>
+                    <li>AT NEED : ₱'.to_peso($pricing[0]["at_need"]).'</li>
                   </ul>
                 </li>
 			
@@ -796,7 +880,7 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 				<ul>';
 
 				foreach($services as $row):
-					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+					$message = $message . '<li>'.$row["service_name"].' : ₱'.to_peso($row["cost"]).'</li>';
 				endforeach;
 
 				$message = $message . '
@@ -838,8 +922,8 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 				<ul class="list-unstyled">
                 <li> <b>'.$crypt_slot[0]["lawn_type"].'</b>
                   <ul>
-                    <li>PRE NEED : '.to_peso($pricing[0]["pre_need"]).'</li>
-                    <li>AT NEED : '.to_peso($pricing[0]["at_need"]).'</li>
+                    <li>PRE NEED : ₱'.to_peso($pricing[0]["pre_need"]).'</li>
+                    <li>AT NEED : ₱'.to_peso($pricing[0]["at_need"]).'</li>
                   </ul>
                 </li>
 			
@@ -856,7 +940,7 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 				<ul>';
 
 				foreach($services as $row):
-					$message = $message . '<li>'.$row["service_name"].' : '.to_peso($row["cost"]).'</li>';
+					$message = $message . '<li>'.$row["service_name"].' : ₱'.to_peso($row["cost"]).'</li>';
 				endforeach;
 
 				$message = $message . '
@@ -1138,16 +1222,21 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 
 				query("update burial_schedule set remarks = 'CANCELLED' where profile_id = ?", $_POST["profile_id"]);
 				$transaction_id = create_uuid("TRANSACTION");
+
+				$cancellation = query("select * from services where service_id = 'Service0004'");
+				$cancellation = $cancellation[0];
+
+
 				$message = "BURIAL SCHEDULE IS CANCELLED";
 				$service = [];
 				$service[0]["service_name"] = "Cancellation";
-				$service[0]["cost"] = "500";
+				$service[0]["cost"] = $cancellation["cost"];
 				$service = serialize($service);
 				
 				if (query("insert into transaction 
 				(transaction_id,date,total_fee,services,time,profile_id,logs,timestamp,slot_id,transaction_type) 
 				VALUES(?,?,?,?,?,?,?,?,?,?)", 
-				$transaction_id,date("Y-m-d"),"500",$service,date("H:i:s"),
+				$transaction_id,date("Y-m-d"),$cancellation["cost"],$service,date("H:i:s"),
 				$_POST["profile_id"],$message,time(),$_POST["slot_id"],"CANCELLATION"
 				) === false)
 				{
@@ -1183,18 +1272,23 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 			
 			elseif($_POST["action"] == "postponement"):
 				// dump($_POST);
+
+
+				$cancellation = query("select * from services where service_id = 'Service0004'");
+				$cancellation = $cancellation[0];
+
 				query("update burial_schedule set remarks = 'POSTPONED' where profile_id = ?", $_POST["profile_id"]);
 				$transaction_id = create_uuid("TRANSACTION");
 				$message = "BURIAL SCHEDULE IS POSTPONED";
 				$service = [];
 				$service[0]["service_name"] = "Postponement";
-				$service[0]["cost"] = "500";
+				$service[0]["cost"] = $cancellation["cost"];
 				$service = serialize($service);
 				
 				if (query("insert into transaction 
 				(transaction_id,date,total_fee,services,time,profile_id,logs,timestamp,slot_id,transaction_type) 
 				VALUES(?,?,?,?,?,?,?,?,?,?)", 
-				$transaction_id,date("Y-m-d"),"500",$service,date("H:i:s"),
+				$transaction_id,date("Y-m-d"),$cancellation["cost"],$service,date("H:i:s"),
 				$_POST["profile_id"],$message,time(),$_POST["slot_id"],"POSTPONEMENT"
 				) === false)
 				{
@@ -1393,7 +1487,8 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 			left join crypt_slot s
 			on s.slot_id = p.slot_number
 			left join crypt_list c
-			on c.crypt_id = s.crypt_id");
+			on c.crypt_id = s.crypt_id
+			where p.active_status IS NULL");
 			// dump($_GET);
 			render("public/profile_system/profile_list.php",
 			[
@@ -1415,6 +1510,8 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 			WHERE d.active_status IS NULL OR d.active_status != 'FOR TRANSFER'
 			order by d.burial_date desc, d.burial_time desc
 			");
+
+			// dump($deceased_profile);
 
 
 			render("public/profile_system/deceased_list.php",
