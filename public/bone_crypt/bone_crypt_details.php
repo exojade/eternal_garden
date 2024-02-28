@@ -121,9 +121,10 @@
                   <?php for($j=1;$j<=$coffin_crypt["crypt_columns"];$j++): ?>
                     <?php if($crypt_slots[$x]["active_status"] == "VACANT"): ?>
                       <td>
-                        <form class="coffin_crypt_form" data-my_id="<?php echo($crypt_slots[$x]["slot_id"]); ?>">
+                      <a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-primary btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a>
+                        <!-- <form class="coffin_crypt_form" data-my_id="<?php echo($crypt_slots[$x]["slot_id"]); ?>">
                           <button type="submit" class="btn btn-primary btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></button>
-                        </form>
+                        </form> -->
                       </td>
                       <!-- <td><a data-id="<?php echo($crypt_slots[$x]["slot_id"]); ?>" data-toggle="modal" data-target="#modal_add_client" href="#" class="btn btn-primary btn-block btn-flat open_modal"><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td> -->
                     <?php elseif($crypt_slots[$x]["active_status"] == "OCCUPIED"): ?>
@@ -131,7 +132,7 @@
                         if($Occupied[$crypt_slots[$x]["slot_id"]]["count"] != 4): ?>
                         <td><a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-warning btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
                       <?php else: ?>
-                        <td><a href="profile?action=details&id=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
+                        <td><a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
                       <?php endif; ?>
                     <?php endif; ?>
                     <?php $x++; ?>
@@ -163,9 +164,10 @@
                     <?php if($crypt_slots[$x]["active_status"] == "VACANT"): ?>
 
                     <td>
-                      <form class="coffin_crypt_form" data-my_id="<?php echo($crypt_slots[$x]["slot_id"]); ?>">
+                    <a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-primary btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a>
+                      <!-- <form class="coffin_crypt_form" data-my_id="<?php echo($crypt_slots[$x]["slot_id"]); ?>">
                         <button type="submit" class="btn btn-primary btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></button>
-                      </form>
+                      </form> -->
                     </td>
 
 
@@ -175,7 +177,7 @@
                         if($Occupied[$crypt_slots[$x]["slot_id"]]["count"] != 4): ?>
                         <td><a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-warning btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
                       <?php else: ?>
-                        <td><a href="profile?action=details&id=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
+                        <td><a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" class="btn btn-danger btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a></td>
                       <?php endif; ?>
                     <?php endif; ?>
                     <?php $x++; ?>

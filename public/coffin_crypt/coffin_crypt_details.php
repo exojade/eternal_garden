@@ -12,10 +12,6 @@
   font-size:12px !important;
 }
 </style>
-
-
-
-
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
@@ -132,9 +128,10 @@
                       ?>
 
                       <td>
-                        <form class="coffin_crypt_form" data-my_id="<?php echo($crypt_slots[$x]["slot_id"]); ?>">
+                      <a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" href="#" class="btn btn-primary btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a>
+                        <!-- <form class="coffin_crypt_form" data-my_id="<?php echo($crypt_slots[$x]["slot_id"]); ?>">
                           <button type="submit" class="btn btn-primary btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></button>
-                        </form>
+                        </form> -->
                       </td>
 
 
@@ -171,9 +168,10 @@
                     <?php if($crypt_slots[$x]["active_status"] == "VACANT"): ?>
 
 <td>
-  <form class="coffin_crypt_form" data-my_id="<?php echo($crypt_slots[$x]["slot_id"]); ?>">
+<a href="profile?action=client_details&slot=<?php echo($crypt_slots[$x]["slot_id"]); ?>" href="#" class="btn btn-primary btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></a>
+  <!-- <form class="coffin_crypt_form" data-my_id="<?php echo($crypt_slots[$x]["slot_id"]); ?>">
     <button type="submit" class="btn btn-primary btn-block btn-flat "><?php echo($crypt_slots[$x]["slot_number"]); ?></button>
-  </form>
+  </form> -->
 </td>
 
 

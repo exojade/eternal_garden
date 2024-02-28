@@ -21,7 +21,7 @@
 
   <section class="content-header">
       <h1>
-        Transaction
+        Activity Logs
       </h1>
     </section>
     <section class="content">

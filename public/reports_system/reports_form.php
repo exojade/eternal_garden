@@ -23,7 +23,7 @@
       </h1>
     </section>
     <section class="content">
-    <form class="generic_form_trigger" data-url="reports">
+    <form class="generic_form_no_trigger" data-url="reports">
       <input type="hidden" name="action" value="printForm">
     <div class="row">
               <div class="col-md-3">

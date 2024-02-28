@@ -1,4 +1,11 @@
+  <style>
+.white-text{
+  color: #fff;
+}
+  </style>
   
+
+
   <script src="AdminLTE/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
   <footer class="main-footer no-print">
     <div class="pull-right hidden-xs">
@@ -326,6 +333,198 @@
         }
     });
 });
+
+
+
+
+$(document).on('submit', '#deleteFormTrigger', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    var form = $(this)[0];
+    var formData = new FormData(form);
+    var promptmessage = "";
+    var prompttitle = "";
+    if(typeof($(this).data('title')) != "undefined" ) {
+      promptmessage = $(this).data('message');
+      prompttitle = $(this).data('title');
+    }
+    else{
+      promptmessage = 'This form will be submitted. Are you sure you want to continue?';
+      prompttitle = 'Data submission';
+    }
+
+
+    
+    var url = $(this).data('url');
+
+    swal({
+      //  customClass: { // Add custom class only for this SweetAlert dialog
+      //       popup: 'delete-alert' // Custom class for the SweetAlert dialog triggered by the form with ID "deleteFormTrigger"
+      //   },
+        title: prompttitle,
+        text: promptmessage,
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'Cancel',
+        // footer: '<a href="#">Why do I have this issue?</a>',
+        // customClass: { // Add custom class only for this SweetAlert dialog
+        //     popup: 'delete-alert',
+        //     backdrop: 'red-backdrop' // Custom class for the background of the specific SweetAlert dialog
+        // }
+        background: "#fff url(resources/red.jpg)",
+  backdrop: `
+    rgba(0,0,123,0.4)
+    url("resources/red.jpg")
+    left top
+    no-repeat
+  `,
+  onOpen: function() {
+        // Set the font color of text and title to white
+        $(".swal2-title, .swal2-content").css("color", "white");
+    }
+       
+    }).then((result) => {
+      $('.swal-text').addClass('white-text');
+    $('.swal-title').addClass('white-text');
+        if (result.value) {
+            swal({ title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false });
+            $.ajax({
+                type: 'post',
+                url: url,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(results) {
+                    var o = jQuery.parseJSON(results);
+                    console.log(o);
+                    if (o.result === "success") {
+                        swal.close();
+                        swal({
+                            title: "Submit success",
+                            text: o.message,
+                            type: "success"
+                        }).then(function () {
+                          if(typeof(o.newlink) != "undefined" && o.newlink !== null) {
+                          if(o.newlink == "newlink"){
+                            console.log(o);
+                            if(o.link == "refresh")
+                            window.location.reload();
+                            else if(o.link == "not_refresh")
+                              console.log("");
+                            else
+                              window.open(o.link, '_blank');
+                              // window.location.replace(o.link, "_blank");
+                          }
+                      }
+                      else{
+                        if(o.link == "refresh")
+                        window.location.reload();
+                        else if(o.link == "not_refresh")
+                          console.log("");
+                        else
+                          window.location.replace(o.link);
+
+                      }
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: o.message,
+                            type: "error"
+                        });
+                        console.log(results);
+                    }
+                },
+                error: function(results) {
+                    console.log(results);
+                    swal("Error!", "Unexpected error occured!", "error");
+                }
+            });
+        }
+    });
+});
+// $('.swal-overlay').css('background-color', 'rgba(255, 0, 0, 0.6)');
+
+$(document).on('submit', '.generic_form_no_trigger', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    var form = $(this)[0];
+    var formData = new FormData(form);
+    var promptmessage = "";
+    var prompttitle = "";
+    if(typeof($(this).data('title')) != "undefined" ) {
+      promptmessage = $(this).data('message');
+      prompttitle = $(this).data('title');
+    }
+    else{
+      promptmessage = 'This form will be submitted. Are you sure you want to continue?';
+      prompttitle = 'Data submission';
+    }
+
+
+    
+    var url = $(this).data('url');
+
+    // swal({
+    //     title: prompttitle,
+    //     text: promptmessage,
+    //     type: 'info',
+    //     showCancelButton: true,
+    //     confirmButtonText: 'Yes',
+    //     cancelButtonText: 'Cancel'
+    // }).then((result) => {
+    //     if (result.value) {
+            swal({ title: 'Please wait...', imageUrl: 'AdminLTE/dist/img/loader.gif', showConfirmButton: false });
+            $.ajax({
+                type: 'post',
+                url: url,
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(results) {
+                    var o = jQuery.parseJSON(results);
+                    console.log(o);
+                    if (o.result === "success") {
+                        swal.close();
+                        if(typeof(o.newlink) != "undefined" && o.newlink !== null) {
+                          if(o.newlink == "newlink"){
+                            console.log(o);
+                            if(o.link == "refresh")
+                            window.location.reload();
+                            else if(o.link == "not_refresh")
+                              console.log("");
+                            else
+                              window.open(o.link, '_blank');
+                              // window.location.replace(o.link, "_blank");
+                          }
+                      }
+                      else{
+                        if(o.link == "refresh")
+                        window.location.reload();
+                        else if(o.link == "not_refresh")
+                          console.log("");
+                        else
+                          window.location.replace(o.link);
+
+                      }
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: o.message,
+                            type: "error"
+                        });
+                        console.log(results);
+                    }
+                },
+                error: function(results) {
+                    console.log(results);
+                    swal("Error!", "Unexpected error occured!", "error");
+                }
+            });
+        // }
+    });
+// });
 
 
   // $('.generic_form_trigger').submit(function(e) {

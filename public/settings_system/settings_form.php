@@ -37,18 +37,20 @@
           <?php $pricing_lawn = query("select * from pricing_lawn"); ?>
           <table class="table table-bordered">
             <thead>
-              <th></th>
               <th>Type</th>
               <th class="text-right">Pre Need</th>
               <th class="text-right">At Need</th>
+              <th></th>
+
             </thead>
             <tbody>
               <?php foreach($pricing_lawn as $row): ?>
               <tr>
-                <td><a href="#" data-toggle="modal" data-target="#updateModalLawn_<?php echo($row["tbl_id"]); ?>" class="btn btn-warning btn-xs btn-block"><i class="fa fa-pencil"></i></a></td>
                 <td><?php echo($row["name"]); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["pre_need"])); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["at_need"])); ?></td>
+                <td><a href="#" data-toggle="modal" data-target="#updateModalLawn_<?php echo($row["tbl_id"]); ?>" class="btn btn-warning btn-xs btn-block"><i class="fa fa-pencil"></i></a></td>
+
               </tr>
               <?php endforeach; ?>
             </tbody>
@@ -114,16 +116,16 @@
           <?php $services = query("select * from services"); ?>
           <table class="table table-bordered">
             <thead>
-              <th></th>
               <th>Service</th>
               <th class="text-right">Cost</th>
+              <th></th>
             </thead>
             <tbody>
               <?php foreach($services as $row): ?>
               <tr>
-                <td><a href="#" data-toggle="modal" data-target="#updateModalServices_<?php echo($row["service_id"]); ?>" class="btn btn-warning btn-xs btn-block"><i class="fa fa-pencil"></i></a></td>
                 <td><?php echo($row["service_name"]); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["cost"])); ?></td>
+                <td><a href="#" data-toggle="modal" data-target="#updateModalServices_<?php echo($row["service_id"]); ?>" class="btn btn-warning btn-xs btn-block"><i class="fa fa-pencil"></i></a></td>
               </tr>
               <?php endforeach; ?>
             </tbody>
@@ -184,20 +186,20 @@
           <?php $bone_crypt = query("select * from pricing_bonecrypt"); ?>
           <table class="table table-bordered">
             <thead>
-              <th></th>
               <th>Type</th>
               <th class="text-right">Amount</th>
               <th class="text-right">Certification</th>
               <th class="text-right">Lapida</th>
+              <th></th>
             </thead>
             <tbody>
               <?php foreach($bone_crypt as $row): ?>
               <tr>
-                <td><a href="#" data-toggle="modal" data-target="#updateModalBone_<?php echo($row["tbl_id"]); ?>" class="btn btn-warning btn-xs btn-block"><i class="fa fa-pencil"></i></a></td>
                 <td><?php echo($row["type"]); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["amount"])); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["certification"])); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["lapida_amount"])); ?></td>
+                <td><a href="#" data-toggle="modal" data-target="#updateModalBone_<?php echo($row["tbl_id"]); ?>" class="btn btn-warning btn-xs btn-block"><i class="fa fa-pencil"></i></a></td>
               </tr>
               <?php endforeach; ?>
             </tbody>
@@ -269,20 +271,22 @@
           <?php $coffin_crypt = query("select * from pricing_coffincrypt"); ?>
           <table class="table table-bordered">
             <thead>
-              <th></th>
               <th>Type</th>
               <th class="text-right">Amount</th>
               <th class="text-right">Certification</th>
               <th class="text-right">Lapida</th>
+              <th></th>
+
             </thead>
             <tbody>
               <?php foreach($coffin_crypt as $row): ?>
               <tr>
-                <td><a href="#" data-toggle="modal" data-target="#updateModalCoffin_<?php echo($row["tbl_id"]); ?>" class="btn btn-warning btn-xs btn-block"><i class="fa fa-pencil"></i></a></td>
                 <td><?php echo($row["type"]); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["amount"])); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["certification_amount"])); ?></td>
                 <td class="text-right"><?php echo(to_peso($row["lapida_amount"])); ?></td>
+                <td><a href="#" data-toggle="modal" data-target="#updateModalCoffin_<?php echo($row["tbl_id"]); ?>" class="btn btn-warning btn-xs btn-block"><i class="fa fa-pencil"></i></a></td>
+
               </tr>
               <?php endforeach; ?>
             </tbody>

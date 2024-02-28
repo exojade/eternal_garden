@@ -4,24 +4,24 @@
 		
 			
 
-			$selectedDate = $_POST["deceased_burial_date"];
-    		$selectedTime = $_POST["deceased_burial_time"];
-			$dateTime = new DateTime($selectedDate . ' ' . $selectedTime);
+			// $selectedDate = $_POST["deceased_burial_date"];
+    		// $selectedTime = $_POST["deceased_burial_time"];
+			// $dateTime = new DateTime($selectedDate . ' ' . $selectedTime);
 			
 
-			$minTime = new DateTime($selectedDate . ' ' .'08:00:00');
-    		$maxTime = new DateTime($selectedDate . ' ' .'16:00:00');
+			// $minTime = new DateTime($selectedDate . ' ' .'08:00:00');
+    		// $maxTime = new DateTime($selectedDate . ' ' .'16:00:00');
 
-			if ($dateTime < $minTime || $dateTime > $maxTime) {
-				$res_arr = [
-					"result" => "failed",
-					"title" => "Failed",
-					"message" => "Time should be between 8:00 AM and 4:00 PM",
-					// "link" => "pending_burial?action=list",
-					];
-					echo json_encode($res_arr); exit();
-				// Handle the error as needed
-			}
+			// if ($dateTime < $minTime || $dateTime > $maxTime) {
+			// 	$res_arr = [
+			// 		"result" => "failed",
+			// 		"title" => "Failed",
+			// 		"message" => "Time should be between 8:00 AM and 4:00 PM",
+			// 		// "link" => "pending_burial?action=list",
+			// 		];
+			// 		echo json_encode($res_arr); exit();
+			// 	// Handle the error as needed
+			// }
 
 			// dump("payts");
 

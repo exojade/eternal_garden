@@ -796,6 +796,7 @@
 <script src="AdminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
 <script src="AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js"></script>
 <script type="text/javascript" src="node_modules/philippine-location-json-for-geer/build/phil.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.1.0/autoNumeric.min.js"></script>
 <script type="text/javascript">
 
 
@@ -959,7 +960,29 @@ $('.timepicker').timepicker({
 
 
 <script>
+
+// $(document).ready(function() {
+//     // Initialize autoNumeric for each input field with the class allowanceInput
+//     new AutoNumeric('#total_cost', {
+//         currencySymbol: '₱',
+//         digitGroupSeparator: ',', // optional thousand separator
+//         decimalCharacter: '.', // decimal separator
+//         decimalPlaces: 2, // number of decimal places
+//         minimumValue: '0' // optional minimum value
+//     });
+// });
+
 $(document).ready(function() {
+
+  var totalCostInput = new AutoNumeric('#total_cost', {
+        currencySymbol: '₱',              // Set currency symbol to '₱'
+        digitGroupSeparator: ',',         // Use comma as the thousand separator
+        decimalCharacter: '.',            // Use dot as the decimal separator
+        decimalPlaces: 2,                 // Set number of decimal places to 2
+        minimumValue: '0'                 // Set minimum value to '0'
+    });
+
+
     $('input.coffin_price,input#lapida ,input[type="checkbox"][name="service[]"]').on('change', function() {
         updateTotalCost();
     });
@@ -982,6 +1005,8 @@ $(document).ready(function() {
             totalCost += parseInt($(this).data('cost'));
         });
         $('#total_cost').val(totalCost);
+        totalCostInput.set(totalCost);
+        // $('#total_cost').autoNumeric('set', totalCost);
     }
     $('#pricingOption').on('change', updateTotalCost);
 });

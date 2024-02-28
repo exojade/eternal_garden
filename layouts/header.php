@@ -19,9 +19,24 @@
   <link rel="stylesheet" href="AdminLTE/dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="AdminLTE/dist/css/AdminLTE.min.css">
 
+  
+
   <style>
 body {
 font-size:120% !important;
+}
+
+.delete-alert .swal-title,
+.delete-alert .swal-text {
+    color: red; // Change text color to red
+}
+
+.delete-alert .swal-footer {
+    border-top: 1px solid red; // Change border color to red
+}
+
+.delete-alert .swal-button--confirm {
+    background-color: red; // Change background color to red
 }
     </style>
 
@@ -37,14 +52,31 @@ $user = $_SESSION["eternal_garden"];
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>C</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>CTMS</b></span>
+      <span class="logo-lg"><b>CMTS</b></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
       <!-- Sidebar toggle button-->
+    
       <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
+
+      <div class="navbar-custom-menu" style="float:left !important;">
+        <ul class="nav navbar-nav">
+           <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size: 130%;">
+              <span class="hidden-xs">CEMETERY MANAGEMENT AND TRACKING SYSTEM</span>
+            </a>
+           
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <!--<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a> -->
+          </li>
+        </ul>
+      </div>
+
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
            <li class="dropdown user user-menu">
@@ -72,6 +104,21 @@ $user = $_SESSION["eternal_garden"];
                 </div>
               </li>
             </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <!--<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a> -->
+          </li>
+        </ul>
+      </div>
+  
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+           <li class="dropdown user user-menu">
+            <a href="settings" class="dropdown-toggle" >
+              <!-- <img src="AdminLTE/dist/img/user-avatar.png" class="user-image" alt="User Image"> -->
+              <span class="hidden-xs"><i class="fa fa-gear"></i> <span> SETTINGS</span></span>
+            </a>
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>

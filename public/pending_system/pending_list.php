@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="AdminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" href="AdminLTE/bower_components/sweetalert/sweetalert2.min.css">
 <link rel="stylesheet" href="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 <style>
 .products-list {
@@ -41,32 +42,18 @@
                 <div class="form-group">
                         <label>Burial Schedule Date *</label>
                         <div class="input-group">
-                          <input max="<?php echo(date('Y-m-d', strtotime('+2 weeks'))); ?>" name="deceased_burial_date" id="deceased_burial_date" required type="date" class="form-control">
+                          <input min="<?php echo(date("Y-m-d")); ?>" max="<?php echo(date('Y-m-d', strtotime('+2 weeks'))); ?>" name="deceased_burial_date" id="deceased_burial_date" required type="date" class="form-control">
                           <div class="input-group-addon">
                             <i class="fa fa-clock-o"></i>
                           </div>
                         </div>
                       </div>
-                      <script>
-    // Get the current date in the format YYYY-MM-DD
-    function getCurrentDate() {
-      const today = new Date();
-      const year = today.getFullYear();
-      let month = today.getMonth() + 1;
-      let day = today.getDate();
-
-      // Add leading zero if month or day is less than 10
-      month = month < 10 ? `0${month}` : month;
-      day = day < 10 ? `0${day}` : day;
-
-      return `${year}-${month}-${day}`;
-    }
-
-    // Set the minimum date for the input field
-    document.getElementById('deceased_burial_date').min = getCurrentDate();
-  </script>
+                      <div class="form-group">
+    <label for="deceased_burial_time">Burial Time</label>
+    <input required type="text" id="deceased_burial_time" name="deceased_burial_time" class="form-control deceased_burial_time">
+</div>
                 
-                      <div class="bootstrap-timepicker">
+                      <!-- <div class="bootstrap-timepicker">
                       <div class="form-group">
                         <label>Burial Time</label>
                         <div class="input-group">
@@ -76,7 +63,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
 
                   <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -162,6 +149,7 @@
   <script src="AdminLTE/bower_components/Chart.js/Chart.js"></script>
   <script src="AdminLTE/bower_components/sweetalert/sweetalert2.min.js"></script>
   <script src="AdminLTE/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <?php require("public/coffin_crypt/coffin_crypt_js.php"); ?>
 
   <?php
@@ -177,25 +165,38 @@
 </script>
 
 <script>
-$('.timepicker').timepicker({
-      timeFormat: 'h:i A', // 12-hour format with AM/PM
-      interval: 30,         // Set time interval if needed
-      minTime: '8:00am',    // Minimum allowed time
-      maxTime: '4:00pm',    // Maximum allowed time
-      defaultTime: '8:00am', // Set a default time if needed
-      showInputs: false
-    });
+
+flatpickr(".deceased_burial_time", {
+    enableTime: true,               // Enable time selection
+    noCalendar: true,               // Disable calendar
+    dateFormat: "h:i K",           // Date format (12-hour with AM/PM)
+    minTime: "08:00",               // Minimum allowed time
+    maxTime: "16:00",               // Maximum allowed time
+    time_24hr: false,               // Use 12-hour time format
+    minuteIncrement: 30,            // Set time interval if needed
+    disableMobile: true,             // Disable mobile-friendly mode
+    defaultDate: "08:00", 
+});
+
+
+// $('#deceased_burial_time').timepicker({
+//     timeFormat: 'h:i A', // 12-hour format with AM/PM
+//     minTime: '8:00am',    // Minimum allowed time
+//     maxTime: '4:00pm',    // Maximum allowed time
+//     step: 30,             // Set time interval if needed
+//     scrollbar: true      // Enable scrollbar if needed
+// });
 
     // Validate time selection on change
-    $('#deceased_burial_time').on('changeTime', function() {
-      const selectedTime = $(this).val();
-      const maxTime = '4:00pm';
+    // $('#deceased_burial_time').on('changeTime', function() {
+    //   const selectedTime = $(this).val();
+    //   const maxTime = '4:00pm';
 
-      // Compare selected time with the maximum allowed time
-      if (selectedTime > maxTime) {
-        alert('Please select a time before 4:00 PM.');
-        $(this).val(''); // Clear the invalid selection
-      }
-    });
+    //   // Compare selected time with the maximum allowed time
+    //   if (selectedTime > maxTime) {
+    //     alert('Please select a time before 4:00 PM.');
+    //     $(this).val(''); // Clear the invalid selection
+    //   }
+    // });
   </script>
 

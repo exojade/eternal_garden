@@ -615,7 +615,7 @@ $progress_percentage = 0;
                             <td>
                             <?php $transaction = query("select * from transaction where profile_id = ?", $client["profile_id"]); ?>
                               <?php if(empty($transaction)): ?>
-                                <form class="generic_form_trigger" data-url="profile">
+                                <form id="deleteFormTrigger" data-url="profile" data-title="ARE YOU SURE YOU WANT TO DELETE?">
                                   <input type="hidden" name="action" value="deleteDeceased">
                                   <input type="hidden" name="deceased_id" value="<?php echo($d["deceased_id"]); ?>">
                                   <button class="btn btn-danger btn-xs btn-block"><i class="fa fa-fw fa-trash"></i></button>

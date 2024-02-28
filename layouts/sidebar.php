@@ -25,21 +25,41 @@ $pend = $pending[0]["count"];
         <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
           <li><a href="index"><i class="fa fa-home"></i> <span>Main</span></a></li>
-          <li><a href="settings"><i class="fa fa-cogs"></i> <span>Settings</span></a></li>
+          <!-- <li><a href="settings"><i class="fa fa-cogs"></i> <span>Settings</span></a></li> -->
           <!-- <li><a href="maps?filter=ALL"><i class="fa fa-map"></i> <span>Map</span></a></li> -->
-          <li><a href="maps?action=map_editor"><i class="fa fa-map"></i> <span>Map Editor</span></a></li>
-          <li><a href="transaction?action=list"><i class="fa fa-file"></i> <span>Transaction</a></li>
-          <li><a href="sales?action=list"><i class="fa fa-dollar"></i> <span>Sales</a></li>
-          <li><a href="reports?action=list"><i class="fa fa-table"></i> <span>Reports</a></li>
           <li><a href="burial_space?action=list"><i class="fa fa-cross"></i> <span>Burial Space</span></a></li>
+          <li class="treeview">
+          <a href="#">
+            <i class="fa fa-table"></i>
+            <span>Reports</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="reports?action=list"><i class="fa fa-minus"></i> Reports</a></li>
+            <li><a href="sales?action=list"><i class="fa fa-minus"></i> Sales</a></li>
+            <li><a href="profile?action=client_list"><i class="fa fa-minus"></i> Client</a></li>
+            <li><a href="profile?action=deceased_list"><i class="fa fa-minus"></i> Deceased</a></li>
+            <!-- <li><a href="transaction?action=list"><i class="fa fa-minus"></i> Transaction</a></li> -->
+          </ul>
+        </li>
+
+
+          <li><a href="maps?action=map_editor"><i class="fa fa-map"></i> <span>Map Editor</span></a></li>
+          <li><a href="transaction?action=list"><i class="fa fa-file"></i> <span>Activity Logs</a></li>
+          <!-- <li><a href="sales?action=list"><i class="fa fa-dollar"></i> <span>Sales</a></li> -->
+          <!-- <li><a href="reports?action=list"><i class="fa fa-table"></i> <span>Reports</a></li> -->
           <!-- <li><a href="coffin_crypt?action=list"><i class="fa fa-building"></i> <span>Coffin Crypt</span></a></li> -->
           <!-- <li><a href="bone_crypt?action=list"><i class="fa fa-bone"></i> <span>Bone Crypt</span></a></li> -->
           
           <!-- <li><a href="lawn?action=list"><i class="fa fa-cross"></i> <span>Lawn</span></a></li> -->
           <!-- <li><a href="mausoleum?action=list"><i class="fa fa-home"></i> <span>Mausoleum</span></a></li> -->
-          <li><a href="profile?action=client_list"><i class="fa fa-users"></i> <span>Client Profile</span></a></li>
-          <li><a href="profile?action=deceased_list"><i class="fa fa-users"></i> <span>Deceased Profile</span></a></li>
-          <li><a href="users?action=list"><i class="fa fa-users"></i> <span>Users</span></a></li>
+          <!-- <li><a href="profile?action=client_list"><i class="fa fa-users"></i> <span>Client Profile</span></a></li> -->
+          <!-- <li><a href="profile?action=deceased_list"><i class="fa fa-users"></i> <span>Deceased Profile</span></a></li> -->
+          <li><a href="users?action=list"><i class="fa fa-users"></i> <span>User Logs</span></a></li>
+          <li><a href="notification"><i class="fa fa-bell"></i> <span>Notification Logs</span>
+
           <?php if($pend != 0): ?>
             <li><a href="pending_burial?action=list"><i class="fa fa-calendar"></i> <span>Pending for Burial</span>
             <span class="pull-right-container">
@@ -96,7 +116,6 @@ $pend = $pending[0]["count"];
           
           ?>
 
-          <li><a href="notification"><i class="fa fa-bell"></i> <span>Notification Logs</span>
           <?php 
           // if(isset($count[0])): 
           ?>

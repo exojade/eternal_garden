@@ -45,7 +45,7 @@
     <section class="content">
 
     <div class="row">
-      <form class="generic_form_trigger" data-url="sales">
+      <form class="generic_form_no_trigger" data-url="sales">
         <input type="hidden" name="action" value="print_pdf">
               <div class="col-md-3">
               <div class="form-group">
