@@ -982,7 +982,10 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 							];
 							echo json_encode($res_arr); exit();
 			elseif($_POST["action"] == "forward_cemetery"):
-				// dump($_POST);
+				
+
+				$_POST["discount"] = convertCurrencyToNumeric($_POST["discount"]);
+				//dump($_POST);
 				$status = "";
 				$burial_date = "";
 				$burial_time = "";
@@ -1048,14 +1051,17 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 				endif;	
 
 				$logs = "PAID Transaction and Forward to scheduler!";
+				$total_fee = $total_fee - $_POST["discount"];
 
 				if(empty($crypt_fee))
 				$crypt_fee = "";
 
 				if (query("insert into transaction 
-					(transaction_id,date,total_fee,services,time,crypt_fee,profile_id,logs,timestamp,slot_id,transaction_type) 
-					VALUES(?,?,?,?,?,?,?,?,?,?,?)", 
-					$transaction_id,date("Y-m-d"),$total_fee,$service,date("H:i:s"),$crypt_fee,$client["occupied_by"],$logs,time(),$_POST["slot_number"], "BURIAL"
+					(transaction_id,date,total_fee,services,time,crypt_fee,profile_id,logs,timestamp,slot_id,
+						transaction_type,discount,orNumber,paymentRemarks) 
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+					$transaction_id,date("Y-m-d"),$total_fee,$service,date("H:i:s"),$crypt_fee,$client["occupied_by"],$logs,time()
+					,$_POST["slot_number"], "BURIAL",$_POST["discount"],$_POST["orNumber"],$_POST["paymentRemarks"]
 					) === false)
 					{
 						apologize("Sorry, that username has already been taken!");
@@ -1448,6 +1454,8 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 				endif;
 
 				$message = $message . "<p><b>Total Fee: </b>".to_peso($transaction["total_fee"])."</p>";
+				$message = $message . "<p><b>Discount: </b>(".to_peso($transaction["discount"]).")</p>";
+				$message = $message . "<p><b>OR Number: </b>".$transaction["orNumber"]."</p>";
 				$message = $message . "<p><b>Logs: </b>".$transaction["logs"]."</p>";
 
 				// dump($deceased);
@@ -1488,7 +1496,7 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 			on s.slot_id = p.slot_number
 			left join crypt_list c
 			on c.crypt_id = s.crypt_id
-			where p.active_status IS NULL");
+			where p.active_status IS NULL and tempStatus != 'TEMP'");
 			// dump($_GET);
 			render("public/profile_system/profile_list.php",
 			[
@@ -1507,7 +1515,8 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 			left join crypt_list as c
 			on c.crypt_id = cs.crypt_id
 			
-			WHERE d.active_status IS NULL OR d.active_status != 'FOR TRANSFER'
+			WHERE (d.active_status IS NULL OR d.active_status != 'FOR TRANSFER')
+			and d.tempStatus = 'TEMP'
 			order by d.burial_date desc, d.burial_time desc
 			");
 

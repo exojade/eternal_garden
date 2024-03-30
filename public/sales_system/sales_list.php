@@ -95,6 +95,7 @@
                   <th>Client</th>
                   <th>Location</th>
                   <th>Total</th>
+                  <th>OR #</th>
                   <th>Date</th>
                   <th>Time</th>
                   <th>Type</th>
@@ -172,6 +173,7 @@
                 return data; // For sorting and other purposes, return the original data
             }
         },
+                    { data: 'orNumber', "orderable": false },
                     { data: 'date', "orderable": false },
                     { data: 'time', "orderable": false },
                     { data: 'transaction_type', "orderable": false },

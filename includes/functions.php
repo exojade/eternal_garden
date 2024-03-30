@@ -11,6 +11,20 @@
      * to browser.
      */
 
+
+     function convertCurrencyToNumeric($currencyValue) {
+        // Remove currency symbol (assuming it's always at the beginning)
+        $cleanedValue = ltrim($currencyValue, '₱');
+    
+        // Remove thousand separators (comma in this case)
+        $cleanedValue = str_replace(',', '', $cleanedValue);
+    
+        // Convert to float (or integer if no decimal places are expected)
+        $numericValue = floatval($cleanedValue);
+    
+        return $numericValue;
+    }
+
     function notificationLogs($profile_id, $message, $logs, $type, $crypt_slot_number){
         if (query("insert INTO notification_logs (type, profile_id, logs, message, date, time, timestamp, crypt_slot) 
         VALUES(?,?,?,?,?,?,?,?)", 

@@ -111,8 +111,8 @@
 
               <div class="col-md-12">
                   <div class="form-group">
-                      <label for="exampleInputFile">Death Certificate <span class="color-red">*</span></label>
-                      <input name="death_certificate" required type="file" accept=".pdf, image/*" id="exampleInputFile">
+                      <label for="exampleInputFile">Death Certificate </label>
+                      <input name="death_certificate"  type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Upload death certificate here!</p>
                   </div>
                 </div>
@@ -141,7 +141,7 @@
               <div class="modal-header bg-primary">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Deceased Profile</h4>
+                <h4 class="modal-title">Transaction Logs</h4>
               </div>
               <div class="modal-body">
                   <div class="fetched_data"></div>
@@ -338,6 +338,26 @@
                     </label>
                   </div>
                 <?php endforeach; ?>
+
+                  <hr>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Discount</label>
+                  <input value="0" type="text" id="discount" class="form-control" name="discount" placeholder="0">
+                </div>
+
+
+                <div class="form-group">
+                  <label>Payment Remarks (Care of)</label>
+                  <textarea name="paymentRemarks" class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                </div>
+
+
+                  <hr>
+
+                  <div class="form-group">
+                  <label for="exampleInputEmail1">OR Number</label>
+                  <input required type="text" class="form-control" name="orNumber" placeholder="Enter...">
+                </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Total Cost</label>
                   <input type="text" disabled class="form-control" id="total_cost" placeholder="0">
@@ -702,10 +722,11 @@ $progress_percentage = 0;
                 <div class="table-responsive">
                 <table class="table table-bordered table-striped sample_datatable">
                   <thead>
-                    <th width="10%">Details</th>
+                    <th>Details</th>
                     <th>Date</th>
                     <th>Client</th>
                     <th>Fee</th>
+                    <th>OR #</th>
                     <th width="30%">Remarks</th>
                   </thead>
                   <tbody>
@@ -719,6 +740,7 @@ $progress_percentage = 0;
                             <?php endif; ?>
                       </td>
                         <td><?php echo("₱ " . to_peso($row["total_fee"])); ?></td>
+                        <td><?php echo($row["orNumber"]); ?></td>
                         <td><?php echo($row["logs"]); ?></td>
                       </tr>
                     <?php endforeach; ?>

@@ -137,8 +137,8 @@
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Client Email <span class="color-red"><b>*</b></span></label>
-                    <input required type="email" name="email_address" class="form-control" id="exampleInputEmail1" placeholder="---">
+                    <label for="exampleInputEmail1">Client Email (optional)</label>
+                    <input type="email" name="email_address" class="form-control" id="exampleInputEmail1" placeholder="---">
                 </div>
               </div>
 
@@ -166,15 +166,15 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                      <label for="exampleInputFile">Valid ID <span class="color-red"><b>*</b></span></label>
-                      <input name="valid_id" required type="file" accept=".pdf, image/*" id="exampleInputFile">
+                      <label for="exampleInputFile">Valid ID (optional)</label>
+                      <input name="valid_id"  type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Take a photo of the valid ID and upload it here. </p>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                      <label for="exampleInputFile">2 x 2 ID <span class="color-red"><b>*</b></span></label>
-                      <input name="picture" required type="file" accept=".pdf, image/*" id="exampleInputFile">
+                      <label for="exampleInputFile">2 x 2 ID (optional)</label>
+                      <input name="picture"  type="file" accept=".pdf, image/*" id="exampleInputFile">
                       <p class="help-block">Upload softcopy</p>
                   </div>
                 </div>
@@ -983,16 +983,43 @@ $(document).ready(function() {
     });
 
 
-    $('input.coffin_price,input#lapida ,input[type="checkbox"][name="service[]"]').on('change', function() {
+   new AutoNumeric('#discount', {
+        currencySymbol: '₱',              // Set currency symbol to '₱'
+        digitGroupSeparator: ',',         // Use comma as the thousand separator
+        decimalCharacter: '.',            // Use dot as the decimal separator
+        decimalPlaces: 2,                 // Set number of decimal places to 2
+        minimumValue: '0'                 // Set minimum value to '0'
+    });
+
+
+    $('input.coffin_price,input#lapida,input#discount ,input[type="checkbox"][name="service[]"]').on('change', function() {
         updateTotalCost();
     });
 
-    $('input.coffin_price:checked,input#lapida input[type="checkbox"][name="service[]"]:checked').trigger('change');
+
+    $('input#discount').on('input', function() {
+        updateTotalCost();
+    });
+
+
+
+    $('input.coffin_price:checked,input#lapida,input#discount input[type="checkbox"][name="service[]"]:checked').trigger('change');
+
+
+    function convertCurrencyToDouble(currencyString) {
+        // Remove currency symbol and commas
+        var cleanedString = currencyString.replace('₱', '').replace(',', '');
+        // Parse as a floating-point number
+        var result = parseFloat(cleanedString);
+        return result;
+    }
 
     function updateTotalCost() {
      
       var totalCost = 0;
 
+      var discount = convertCurrencyToDouble($('#discount').val());
+      console.log(discount);
 
       <?php if($slot["crypt_type"] == "BONE"): ?>
         var selectedOption = $('#pricingOption option:selected');
@@ -1004,6 +1031,7 @@ $(document).ready(function() {
         selectedServices.each(function() {
             totalCost += parseInt($(this).data('cost'));
         });
+        totalCost = totalCost - discount;
         $('#total_cost').val(totalCost);
         totalCostInput.set(totalCost);
         // $('#total_cost').autoNumeric('set', totalCost);

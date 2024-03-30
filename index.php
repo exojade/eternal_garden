@@ -75,6 +75,10 @@
 				else if($request == "notification")
 					require 'public/notification_system/notification.php';
 
+				else if($request == "uploadCapture")
+					require 'public/uploadCapture_system/uploadCapture.php';
+
+
 
 		
 

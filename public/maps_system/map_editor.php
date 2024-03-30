@@ -234,7 +234,7 @@
                         <?php if(isset($_GET["type"])): ?>
                         <input type="hidden" name="type" value="<?php echo($_GET["type"]); ?>">
                         <?php endif; ?>
-                        <!-- <input type="hidden" name="id" value="<?php echo($_GET["id"]); ?>"> -->
+                     
                         <div class="row">
                             <div class="col-md-8">
                                 <?php  ?>
@@ -386,13 +386,14 @@ endforeach;
             "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
             "features": [
                 <?php
-                // dump($Cryptss);
+                        //dump($result);
                     foreach($result as $row){
                         if(!isset($Cryptss[$row["coordinates"]])):
-                            // dump($result);
+                        //dump($result);
                         if($row["active_status"] == "OCCUPIED"):
-                            // dump($row);
+                           
                             $trim = str_replace('""', '', $row['coordinates']);
+                            //dump($trim);
                             $location = $row["lawn_type"];
                             echo '{ "type": "Feature", "properties": { ';
                                 echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
@@ -403,22 +404,26 @@ endforeach;
                                 echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
                                 echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
                                 echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
-                            foreach($DeceasedClients[$row["occupied_by"]] as $d):
-                                $location = $row["lawn_type"];
-                                $trim = str_replace('""', '', $row['coordinates']);
-                                echo '{ "type": "Feature", "properties": { ';
-                                echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
-                                echo '"Status": "OCCUPIED",';
-                                echo '"description": "<b>'.convertDateFormat($d["birthdate"]) . ' - ' . convertDateFormat($d["date_of_death"]) .'</b><br>Location: '.$location.'",';
-                                echo '"slot_number": "'.$row['slot_id'].'",';
-                                echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
-                                echo '"Name": "'.$d["deceased_name"].' [DECEASED]",';
-                                echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
-                                echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
-                            endforeach;
+                            if(isset($DeceasedClients[$row["occupied_by"]])):
+                                foreach($DeceasedClients[$row["occupied_by"]] as $d):
+                                    $location = $row["lawn_type"];
+                                    $trim = str_replace('""', '', $row['coordinates']);
+                                    echo '{ "type": "Feature", "properties": { ';
+                                    echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
+                                    echo '"Status": "OCCUPIED",';
+                                    echo '"description": "<b>'.convertDateFormat($d["birthdate"]) . ' - ' . convertDateFormat($d["date_of_death"]) .'</b><br>Location: '.$location.'",';
+                                    echo '"slot_number": "'.$row['slot_id'].'",';
+                                    echo '"link_url": "profile?action=client_details&slot='.$row["slot_id"].'",';
+                                    echo '"Name": "'.$d["deceased_name"].' [DECEASED]",';
+                                    echo '"auxiliary_storage_labeling_offsetquad": "'.$row['slot_number'].'" },'; 
+                                    echo '"geometry": { "type": "Point", "coordinates": ['.$trim.'] } },';
+                                endforeach;
+                            endif;
 
                         else:
+                            
                             $trim = str_replace('""', '', $row['coordinates']);
+                        
                                 echo '{ "type": "Feature", "properties": { ';
                                 echo '"button": "<a target=\'_blank\' href=\'profile?action=client_details&slot='.$row["slot_id"].'\' style=\'color:#fff;\' class=\'btn btn-primary btn-flat btn-block\'>Add Profile</a>",';
                                 if($row["active_status"] == "OCCUPIED"):
