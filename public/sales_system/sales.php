@@ -7,7 +7,7 @@
             $offset = $_POST["start"];
             $limit = $_POST["length"];
             $search = $_POST["search"]["value"];
-			$where = " where total_fee != ''  ";
+			$where = " where (total_fee != '' or orNumber != '')  ";
             if(isset($_REQUEST["client"])):
                 if($_REQUEST["client"] != "")
                     $where = $where . " and profile_id = '" . $_REQUEST["client"] . "'";
@@ -71,11 +71,14 @@
                 // $all_data = $data;
             endif;
             $i=0;
+			// dump($data);
             foreach($data as $row):
 				// dump($row);
 
 				$data[$i]["action"] = '<a href="#" data-id="'.$row["transaction_id"].'"  class="btn btn-primary btn-xs btn-flat btn-block open_transaction_modal">View</a>';
-
+				if($row["total_fee"] == ""):
+					$data[$i]["total_fee"] = 0;
+				endif;
 
 				$data[$i]["client"] = "";
 				if(isset($Profile[$row["profile_id"]])):
@@ -196,7 +199,7 @@
 
 				
 				
-$where = " where total_fee != ''  ";
+$where = " where (total_fee != '' or orNumber != '')  ";
 
 
 if(isset($_POST["profile"])):

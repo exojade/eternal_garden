@@ -195,6 +195,8 @@
 			];
 			echo json_encode($res_arr); exit();
 
+		// elseif($_POST["action"] == )
+
 	
 
 		elseif($_POST["action"] == "deleteDeceased"):
@@ -1496,7 +1498,7 @@ $pricing = query("select * from pricing_lawn where name = ?", $crypt_slot[0]["la
 			on s.slot_id = p.slot_number
 			left join crypt_list c
 			on c.crypt_id = s.crypt_id
-			where p.active_status IS NULL and tempStatus != 'TEMP'");
+			where p.active_status IS NULL and tempStatus is null");
 			// dump($_GET);
 			render("public/profile_system/profile_list.php",
 			[

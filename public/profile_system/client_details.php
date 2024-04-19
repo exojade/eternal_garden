@@ -42,12 +42,70 @@
           <input type="hidden" name="slot_id" value="<?php echo($_GET["slot"]) ?>">
           <button class="btn btn-danger btn-flat">Vacate</button>
         </form>
+
+
+        <?php if($slot["active_status"] != "OCCUPIED"): ?>
+          <a href="#" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modalTemp" style="display:inline;float: right; margin-right: 10px;">Capture</a>
+        <?php endif; ?>
+
+        
+
+        <!-- <form class="generic_form_trigger" data-url="profile" style="display:inline;float: right; margin-right: 10px;">
+          <input type="hidden" name="action" value="vacate">
+          <input type="hidden" name="slot_id" value="<?php echo($_GET["slot"]) ?>">
+          <button class="btn btn-info btn-flat">Capture</button>
+        </form> -->
       
       </h1>
     </section>
 
 
     <section class="content">
+
+
+    <?php if($slot["active_status"] != "OCCUPIED"): ?>
+    <div class="modal fade" id="modalTemp">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Capture TEMP</h4>
+              </div>
+              <form class="generic_form_trigger" autocomplete="off" data-url="uploadCapture">
+              <input type="hidden" name="action" value="uploadCaptureTempProfile">
+              <input type="hidden" name="crypt_slot" value="<?php echo($_GET["slot"]) ?>">
+              <div class="modal-body">
+
+              <?php $tempProfile = query("select * from profile_list where tempStatus = 'TEMP'"); ?>
+
+
+              <div class="form-group">
+                <label>Temp Profile</label>
+                <select style="width: 100%;" class="form-control" id="tempProfile" name="tempProfile">
+                  <option value=""></option>
+                  <?php foreach($tempProfile as $row): ?>
+                    <option value="<?php echo($row["profile_id"]); ?>"><?php echo($row["client_firstname"] . " " . $row["client_lastname"]); ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-info">Submit</button>
+
+            
+
+          
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <!-- <button type="submit" class="btn btn-primary">Save changes</button> -->
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+        <?php endif; ?>
 
 
 
@@ -923,6 +981,15 @@ $('#courseInput').select2({
         placeholder: "Select ID or enter a new one",
         allowClear: true
     });
+
+    $('#tempProfile').select2({
+        // tags: true,
+        placeholder: "Select temp Profile",
+        allowClear: true
+    });
+
+
+    
 
     $('#courseInput').on('select2:open', function() {
         $('.select2-search__field').attr('placeholder', 'Search here. If not found, type the ID presented.');
